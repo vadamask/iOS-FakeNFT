@@ -42,6 +42,12 @@
 		3FC8C38B29D242E90081F015 /* ProductDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C38A29D242E90081F015 /* ProductDetailsTableViewCell.swift */; };
 		3FC8C39129D2453B0081F015 /* ExampleRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C39029D2453B0081F015 /* ExampleRequest.swift */; };
 		3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */; };
+		AB30F7CB2AF528B6001F8A26 /* SwiftGen_SwiftGenCLI.bundle in Resources */ = {isa = PBXBuildFile; fileRef = AB30F7C62AF528B6001F8A26 /* SwiftGen_SwiftGenCLI.bundle */; };
+		AB30F7CC2AF528B6001F8A26 /* swiftgen in Resources */ = {isa = PBXBuildFile; fileRef = AB30F7C72AF528B6001F8A26 /* swiftgen */; };
+		AB30F7CD2AF528B6001F8A26 /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = AB30F7C82AF528B6001F8A26 /* CHANGELOG.md */; };
+		AB30F7CE2AF528B6001F8A26 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = AB30F7C92AF528B6001F8A26 /* README.md */; };
+		AB30F7CF2AF528B6001F8A26 /* LICENCE in Resources */ = {isa = PBXBuildFile; fileRef = AB30F7CA2AF528B6001F8A26 /* LICENCE */; };
+		AB30F7D52AF52C22001F8A26 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB30F7D42AF52C22001F8A26 /* Assets.swift */; };
 		DD8923012AF419D8001DB539 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = DD8923002AF419D8001DB539 /* SnapKit */; };
 		E19CD5AB2A98B56600CA39A5 /* NftImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19CD5AA2A98B56600CA39A5 /* NftImageCollectionViewCell.swift */; };
 		E1A1B9DA2AA01CE400C3AFBC /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A1B9D92AA01CE400C3AFBC /* TabBarController.swift */; };
@@ -104,6 +110,13 @@
 		3FC8C39029D2453B0081F015 /* ExampleRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleRequest.swift; sourceTree = "<group>"; };
 		3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatters+Presets.swift"; sourceTree = "<group>"; };
 		AB30F7C22AF51D83001F8A26 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		AB30F7C62AF528B6001F8A26 /* SwiftGen_SwiftGenCLI.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SwiftGen_SwiftGenCLI.bundle; sourceTree = "<group>"; };
+		AB30F7C72AF528B6001F8A26 /* swiftgen */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = swiftgen; sourceTree = "<group>"; };
+		AB30F7C82AF528B6001F8A26 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
+		AB30F7C92AF528B6001F8A26 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		AB30F7CA2AF528B6001F8A26 /* LICENCE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENCE; sourceTree = "<group>"; };
+		AB30F7D02AF5293D001F8A26 /* swiftgen.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
+		AB30F7D42AF52C22001F8A26 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		E19CD5AA2A98B56600CA39A5 /* NftImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		E1A1B9D92AA01CE400C3AFBC /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E1CD40D82A96BE7D00BE7FE8 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
@@ -205,7 +218,9 @@
 		3F68068A29CBBAF100B4F915 = {
 			isa = PBXGroup;
 			children = (
+				AB30F7D02AF5293D001F8A26 /* swiftgen.yml */,
 				AB30F7C22AF51D83001F8A26 /* .swiftlint.yml */,
+				AB30F7C32AF5282B001F8A26 /* ThirdParty */,
 				3F68069529CBBAF100B4F915 /* FakeNFT */,
 				3F6806AC29CBBAF200B4F915 /* FakeNFTTests */,
 				3F6806B629CBBAF200B4F915 /* FakeNFTUITests */,
@@ -334,6 +349,42 @@
 			path = Requests;
 			sourceTree = "<group>";
 		};
+		AB30F7C32AF5282B001F8A26 /* ThirdParty */ = {
+			isa = PBXGroup;
+			children = (
+				AB30F7C42AF528B6001F8A26 /* swiftgen-6-2 */,
+			);
+			path = ThirdParty;
+			sourceTree = "<group>";
+		};
+		AB30F7C42AF528B6001F8A26 /* swiftgen-6-2 */ = {
+			isa = PBXGroup;
+			children = (
+				AB30F7C52AF528B6001F8A26 /* bin */,
+				AB30F7C82AF528B6001F8A26 /* CHANGELOG.md */,
+				AB30F7C92AF528B6001F8A26 /* README.md */,
+				AB30F7CA2AF528B6001F8A26 /* LICENCE */,
+			);
+			path = "swiftgen-6-2";
+			sourceTree = "<group>";
+		};
+		AB30F7C52AF528B6001F8A26 /* bin */ = {
+			isa = PBXGroup;
+			children = (
+				AB30F7C62AF528B6001F8A26 /* SwiftGen_SwiftGenCLI.bundle */,
+				AB30F7C72AF528B6001F8A26 /* swiftgen */,
+			);
+			path = bin;
+			sourceTree = "<group>";
+		};
+		AB30F7D32AF52C12001F8A26 /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				AB30F7D42AF52C22001F8A26 /* Assets.swift */,
+			);
+			path = Generated;
+			sourceTree = "<group>";
+		};
 		E19CD5A92A98B55900CA39A5 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -354,6 +405,7 @@
 		E1CD40DA2A96BE9B00BE7FE8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				AB30F7D32AF52C12001F8A26 /* Generated */,
 				3F68069C29CBBAF100B4F915 /* Main.storyboard */,
 				3F68069F29CBBAF200B4F915 /* Assets.xcassets */,
 				3F6806A129CBBAF200B4F915 /* LaunchScreen.storyboard */,
@@ -369,6 +421,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3F6806BD29CBBAF200B4F915 /* Build configuration list for PBXNativeTarget "FakeNFT" */;
 			buildPhases = (
+				AB30F7D12AF52972001F8A26 /* SwiftGen */,
 				3FC8C39529D24CDB0081F015 /* Swiftlint */,
 				3F68068F29CBBAF100B4F915 /* Sources */,
 				3F68069029CBBAF100B4F915 /* Frameworks */,
@@ -478,10 +531,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB30F7CF2AF528B6001F8A26 /* LICENCE in Resources */,
 				3F6806A329CBBAF200B4F915 /* LaunchScreen.storyboard in Resources */,
 				E1CD40DC2A96BECC00BE7FE8 /* Localizable.strings in Resources */,
 				3F6806A029CBBAF200B4F915 /* Assets.xcassets in Resources */,
+				AB30F7CB2AF528B6001F8A26 /* SwiftGen_SwiftGenCLI.bundle in Resources */,
 				3F68069E29CBBAF100B4F915 /* Main.storyboard in Resources */,
+				AB30F7CD2AF528B6001F8A26 /* CHANGELOG.md in Resources */,
+				AB30F7CE2AF528B6001F8A26 /* README.md in Resources */,
+				AB30F7CC2AF528B6001F8A26 /* swiftgen in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -520,6 +578,24 @@
 			shellPath = /bin/sh;
 			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
+		AB30F7D12AF52972001F8A26 /* SwiftGen */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftGen;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\".$PROJECT_ROOT/ThirdParty/swiftgen-6-2/bin/swiftgen\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -555,6 +631,7 @@
 				3F6806D329CBBE9600B4F915 /* NetworkRequest.swift in Sources */,
 				0CFCB7492A7808900009A829 /* TestCatalogController.swift in Sources */,
 				3F6806D129CBBE6B00B4F915 /* NetworkClient.swift in Sources */,
+				AB30F7D52AF52C22001F8A26 /* Assets.swift in Sources */,
 				0CFCB7442A7802440009A829 /* NftDetailInput.swift in Sources */,
 				0C79EE632A76DD1900EE90EA /* RequestConstants.swift in Sources */,
 			);
