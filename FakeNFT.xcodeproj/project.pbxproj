@@ -47,6 +47,7 @@
 		AB30F7CE2AF528B6001F8A26 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = AB30F7C92AF528B6001F8A26 /* README.md */; };
 		AB30F7CF2AF528B6001F8A26 /* LICENCE in Resources */ = {isa = PBXBuildFile; fileRef = AB30F7CA2AF528B6001F8A26 /* LICENCE */; };
 		AB30F7D52AF52C22001F8A26 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB30F7D42AF52C22001F8A26 /* Assets.swift */; };
+		AB30F7D72AF55DCE001F8A26 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB30F7D62AF55DCE001F8A26 /* ActionButton.swift */; };
 		DD8923012AF419D8001DB539 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = DD8923002AF419D8001DB539 /* SnapKit */; };
 		E19CD5AB2A98B56600CA39A5 /* NftImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19CD5AA2A98B56600CA39A5 /* NftImageCollectionViewCell.swift */; };
 		E1A1B9DA2AA01CE400C3AFBC /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A1B9D92AA01CE400C3AFBC /* TabBarController.swift */; };
@@ -115,6 +116,7 @@
 		AB30F7CA2AF528B6001F8A26 /* LICENCE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENCE; sourceTree = "<group>"; };
 		AB30F7D02AF5293D001F8A26 /* swiftgen.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		AB30F7D42AF52C22001F8A26 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
+		AB30F7D62AF55DCE001F8A26 /* ActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
 		E19CD5AA2A98B56600CA39A5 /* NftImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		E1A1B9D92AA01CE400C3AFBC /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E1CD40D92A96BE7D00BE7FE8 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				0CF2C2E02A784C7000FDC837 /* LinePageControl.swift */,
+				AB30F7D62AF55DCE001F8A26 /* ActionButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -605,6 +608,7 @@
 				3F478ED129DB476500F6D39E /* Fonts.swift in Sources */,
 				0C79EE6A2A76DE1000EE90EA /* NftDetailAssembly.swift in Sources */,
 				3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */,
+				AB30F7D72AF55DCE001F8A26 /* ActionButton.swift in Sources */,
 				0CFCB7422A78013E0009A829 /* Nft.swift in Sources */,
 				0CF2C2DD2A783CE600FDC837 /* ErrorView.swift in Sources */,
 				0C79EE682A76DE0900EE90EA /* NftDetailPresenter.swift in Sources */,
