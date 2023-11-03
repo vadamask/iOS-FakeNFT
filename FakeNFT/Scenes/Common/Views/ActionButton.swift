@@ -81,21 +81,16 @@ class ActionButton: UIControl {
         }
     }
 
-    #warning("insert colors (UIColor) for states")
     private func configure() {
         switch type {
         case .primary:
-            setBackgroundColor(<#T##color: UIColor##UIColor#>, for: .normal)
-            setBackgroundColor(<#T##color: UIColor##UIColor#>, for: .disabled)
-            setTitleColor(<#T##color: UIColor##UIColor#>, for: .normal)
-            setTitleColor(<#T##color: UIColor##UIColor#>, for: .disabled)
+            setBackgroundColor(Asset.blackDynamic.color, for: .normal)
+            setTitleColor(Asset.whiteDynamic.color, for: .normal)
         case .secondary:
             setBackgroundColor(.clear, for: .normal)
-            setBackgroundColor(.clear, for: .disabled)
-            setTitleColor(<#T##color: UIColor##UIColor#>, for: .normal)
-            setTitleColor(<#T##color: UIColor##UIColor#>, for: .disabled)
+            setTitleColor(Asset.blackDynamic.color, for: .normal)
             layer.borderWidth = 1
-            layer.borderColor = <#T##color: UIColor##UIColor#>
+            layer.borderColor = Asset.blackUni.color.cgColor
         }
 
         addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
