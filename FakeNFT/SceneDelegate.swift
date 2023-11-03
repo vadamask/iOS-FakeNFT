@@ -8,8 +8,13 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         nftStorage: NftStorageImpl()
     )
 
-    func scene(_: UIScene, willConnectTo _: UISceneSession, options _: UIScene.ConnectionOptions) {
-        let tabBarController = window?.rootViewController as? TabBarController
-        tabBarController?.servicesAssembly = servicesAssembly
+    func scene(_ scene: UIScene, willConnectTo _: UISceneSession, options _: UIScene.ConnectionOptions) {
+        guard let scene = (scene as? UIWindowScene) else {
+            return
+        }
+        window = UIWindow(windowScene: scene)
+        let mainTabBarController = TabBarController(servicesAssembly: servicesAssembly)
+        window?.rootViewController = mainTabBarController
+        window?.makeKeyAndVisible()
     }
 }
