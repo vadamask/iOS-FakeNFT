@@ -1,7 +1,7 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
-
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var servicesAssembly: ServicesAssembly!
 
     private let catalogTabBarItem = UITabBarItem(

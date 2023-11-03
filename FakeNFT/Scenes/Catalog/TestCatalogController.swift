@@ -1,7 +1,6 @@
 import UIKit
 
 final class TestCatalogViewController: UIViewController {
-
     let servicesAssembly: ServicesAssembly
     let testNftButton = UIButton()
 
@@ -26,8 +25,7 @@ final class TestCatalogViewController: UIViewController {
         testNftButton.setTitleColor(.systemBlue, for: .normal)
     }
 
-    @objc
-    func showNft() {
+    @objc func showNft() {
         let assembly = NftDetailAssembly(servicesAssembler: servicesAssembly)
         let nftInput = NftDetailInput(id: Constants.testNftId)
         let nftViewController = assembly.build(with: nftInput)
