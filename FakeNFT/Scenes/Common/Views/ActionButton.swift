@@ -84,13 +84,13 @@ class ActionButton: UIControl {
     private func configure() {
         switch type {
         case .primary:
-            setBackgroundColor(Asset.blackDynamic.color, for: .normal)
-            setTitleColor(Asset.whiteDynamic.color, for: .normal)
+            setBackgroundColor(.buttonBackground, for: .normal)
+            setTitleColor(.textPrimary, for: .normal)
         case .secondary:
             setBackgroundColor(.clear, for: .normal)
-            setTitleColor(Asset.blackDynamic.color, for: .normal)
+            setTitleColor(.textPrimary, for: .normal)
             layer.borderWidth = 1
-            layer.borderColor = Asset.blackUni.color.cgColor
+            layer.borderColor = UIColor.borderColor.cgColor
         }
 
         addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)

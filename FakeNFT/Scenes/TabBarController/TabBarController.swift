@@ -5,7 +5,7 @@ final class TabBarController: UITabBarController {
 
     private let catalogTabBarItem = UITabBarItem(
         title: L10n.Tab.catalog,
-        image: UIImage(systemName: "square.stack.3d.up.fill"),
+        image: Asset.catalog.image,
         tag: 0
     )
 
@@ -18,6 +18,9 @@ final class TabBarController: UITabBarController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tabBar.unselectedItemTintColor = .tabInactive
+        tabBar.tintColor = .tabActive
 
         let catalogController = TestCatalogViewController(
             servicesAssembly: servicesAssembly
@@ -26,6 +29,6 @@ final class TabBarController: UITabBarController {
 
         viewControllers = [catalogController]
 
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .screenBackground
     }
 }

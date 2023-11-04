@@ -25,17 +25,7 @@ internal typealias AssetImageTypeAlias = ImageAsset.Image
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 internal enum Asset {
   internal static let accentColor = ColorAsset(name: "AccentColor")
-  internal static let backgroundUni = ColorAsset(name: "BackgroundUni")
-  internal static let blackDynamic = ColorAsset(name: "BlackDynamic")
-  internal static let blackUni = ColorAsset(name: "BlackUni")
-  internal static let blueUni = ColorAsset(name: "BlueUni")
-  internal static let grayUni = ColorAsset(name: "GrayUni")
-  internal static let greenUni = ColorAsset(name: "GreenUni")
-  internal static let lightGrayDynamic = ColorAsset(name: "LightGrayDynamic")
-  internal static let redUni = ColorAsset(name: "RedUni")
-  internal static let whiteDynamic = ColorAsset(name: "WhiteDynamic")
-  internal static let whiteUni = ColorAsset(name: "WhiteUni")
-  internal static let yellowUni = ColorAsset(name: "YellowUni")
+  internal static let close = ImageAsset(name: "close")
   internal static let beigeApril = ImageAsset(name: "BeigeApril")
   internal static let beigeAurora = ImageAsset(name: "BeigeAurora")
   internal static let beigeBimbo = ImageAsset(name: "BeigeBimbo")
@@ -142,7 +132,8 @@ internal enum Asset {
   internal static let yellowPumpkin = ImageAsset(name: "YellowPumpkin")
   internal static let yellowWillow = ImageAsset(name: "YellowWillow")
   internal static let yellowWinnie = ImageAsset(name: "YellowWinnie")
-  internal static let close = ImageAsset(name: "close")
+  internal static let catalog = ImageAsset(name: "Catalog")
+  internal static let logo = ImageAsset(name: "logo")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 
