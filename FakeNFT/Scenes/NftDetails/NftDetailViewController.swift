@@ -26,7 +26,7 @@ final class NftDetailViewController: UIViewController {
     private lazy var closeButton: UIButton = {
         let button = UIButton()
         button.tintColor = .closeButton
-        button.setImage(Asset.close.image, for: .normal)
+        button.setImage(Asset.closeButton.image, for: .normal)
         button.addTarget(self, action: #selector(close), for: .touchUpInside)
         return button
     }()
