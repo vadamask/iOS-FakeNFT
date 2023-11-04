@@ -117,6 +117,8 @@
 		AB30F7D02AF5293D001F8A26 /* swiftgen.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		AB30F7D42AF52C22001F8A26 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		AB30F7D62AF55DCE001F8A26 /* ActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
+		AB30F7DB2AF68B46001F8A26 /* Decomposition.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Decomposition.md; sourceTree = "<group>"; };
+		AB30F7DC2AF68F69001F8A26 /* Requirements.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Requirements.md; sourceTree = "<group>"; };
 		DD2B80C32AF62BC400D71619 /* Strings+Localizable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Strings+Localizable.swift"; sourceTree = "<group>"; };
 		DD2B80C72AF62C1C00D71619 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DD2B80C92AF62C2E00D71619 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -221,6 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				AB30F7D02AF5293D001F8A26 /* swiftgen.yml */,
+				AB30F7D82AF68A44001F8A26 /* Docs */,
 				AB30F7C32AF5282B001F8A26 /* ThirdParty */,
 				3F68069529CBBAF100B4F915 /* FakeNFT */,
 				3F6806AC29CBBAF200B4F915 /* FakeNFTTests */,
@@ -385,6 +388,15 @@
 				DD2B80C32AF62BC400D71619 /* Strings+Localizable.swift */,
 			);
 			path = Generated;
+			sourceTree = "<group>";
+		};
+		AB30F7D82AF68A44001F8A26 /* Docs */ = {
+			isa = PBXGroup;
+			children = (
+				AB30F7DC2AF68F69001F8A26 /* Requirements.md */,
+				AB30F7DB2AF68B46001F8A26 /* Decomposition.md */,
+			);
+			path = Docs;
 			sourceTree = "<group>";
 		};
 		E19CD5A92A98B55900CA39A5 /* Cell */ = {
