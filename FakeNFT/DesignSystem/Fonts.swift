@@ -1,7 +1,6 @@
 import UIKit
 
 extension UIFont {
-
     // Headline Fonts
     static var headline34 = UIFont.systemFont(ofSize: 34, weight: .bold)
     static var headline32 = UIFont.systemFont(ofSize: 32, weight: .bold)
