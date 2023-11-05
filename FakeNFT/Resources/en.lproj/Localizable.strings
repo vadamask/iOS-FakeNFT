@@ -1,4 +1,5 @@
 "Tab.catalog" = "Catalog";
+"Tab.cart" = "Cart";
 "Catalog.openNft" = "Open Nft";
 "Error.network" = "A network error has occurred";
 "Error.unknown" = "An unknown error has occurred";
