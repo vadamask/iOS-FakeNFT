@@ -22,12 +22,13 @@ final class TabBarController: UITabBarController {
         tabBar.unselectedItemTintColor = .tabInactive
         tabBar.tintColor = .tabActive
 
-        let catalogController = TestCatalogViewController(
+        // Catalog
+        let catalogViewController = CatalogViewController(
             servicesAssembly: servicesAssembly
         )
-        catalogController.tabBarItem = catalogTabBarItem
-
-        viewControllers = [catalogController]
+        catalogViewController.tabBarItem = catalogTabBarItem
+        let catalogNavigationController = UINavigationController(rootViewController: catalogViewController)
+        viewControllers = [catalogNavigationController]
 
         view.backgroundColor = .screenBackground
     }
