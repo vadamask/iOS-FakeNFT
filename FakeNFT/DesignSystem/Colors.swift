@@ -68,6 +68,12 @@ extension UIColor {
         : .primaryBlack
     }
 
+    static let textPrimaryInvert = UIColor { traits in
+        return traits.userInterfaceStyle == .dark
+        ? .primaryBlack
+        : .primaryWhite
+    }
+
     // Tint colors
     static let segmentActive = UIColor { traits in
         return traits.userInterfaceStyle == .dark
