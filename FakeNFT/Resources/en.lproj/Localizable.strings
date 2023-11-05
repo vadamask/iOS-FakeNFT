@@ -5,3 +5,5 @@
 "Error.unknown" = "An unknown error has occurred";
 "Error.repeat" = "Repeat";
 "Error.title" = "Error";
+"Cart.buyNFT" = "Buy";
+"Cart.price" = "Price";
