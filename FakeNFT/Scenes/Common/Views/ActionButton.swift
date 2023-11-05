@@ -85,7 +85,7 @@ class ActionButton: UIControl {
         switch type {
         case .primary:
             setBackgroundColor(.buttonBackground, for: .normal)
-            setTitleColor(.textPrimary, for: .normal)
+            setTitleColor(.textPrimaryInvert, for: .normal)
         case .secondary:
             setBackgroundColor(.clear, for: .normal)
             setTitleColor(.textPrimary, for: .normal)
