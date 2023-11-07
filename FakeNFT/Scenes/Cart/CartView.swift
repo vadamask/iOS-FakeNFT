@@ -48,7 +48,7 @@ final class CartView: UIView {
         emptyStateLabel.text = L10n.Cart.emptyState
         emptyStateLabel.font = .bodyBold17
         emptyStateLabel.textColor = .textPrimary
-        emptyStateLabel.isHidden = true        
+        emptyStateLabel.isHidden = true
     }
 
     private func setupLayout() {

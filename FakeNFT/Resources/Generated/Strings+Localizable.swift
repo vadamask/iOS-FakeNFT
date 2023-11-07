@@ -17,6 +17,20 @@ internal enum L10n {
     internal static let emptyState = L10n.tr("Localizable", "Cart.emptyState", fallback: "Корзина пуста")
     /// Цена
     internal static let price = L10n.tr("Localizable", "Cart.price", fallback: "Цена")
+    internal enum AlertController {
+      /// Закрыть
+      internal static let close = L10n.tr("Localizable", "Cart.alertController.close", fallback: "Закрыть")
+      /// Сортировка
+      internal static let title = L10n.tr("Localizable", "Cart.alertController.title", fallback: "Сортировка")
+    }
+    internal enum Sort {
+      /// По названию
+      internal static let name = L10n.tr("Localizable", "Cart.sort.name", fallback: "По названию")
+      /// По цене
+      internal static let price = L10n.tr("Localizable", "Cart.sort.price", fallback: "По цене")
+      /// По рейтингу
+      internal static let rating = L10n.tr("Localizable", "Cart.sort.rating", fallback: "По рейтингу")
+    }
   }
   internal enum Catalog {
     /// Открыть Nft

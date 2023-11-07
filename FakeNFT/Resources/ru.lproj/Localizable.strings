@@ -8,3 +8,8 @@
 "Cart.buyNFT" = "К оплате";
 "Cart.price" = "Цена";
 "Cart.emptyState" = "Корзина пуста";
+"Cart.alertController.title" = "Сортировка";
+"Cart.alertController.close" = "Закрыть";
+"Cart.sort.price" = "По цене";
+"Cart.sort.rating" = "По рейтингу";
+"Cart.sort.name" = "По названию";

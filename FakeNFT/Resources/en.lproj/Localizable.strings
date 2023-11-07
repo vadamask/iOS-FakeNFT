@@ -8,3 +8,8 @@
 "Cart.buyNFT" = "Buy";
 "Cart.price" = "Price";
 "Cart.emptyState" = "Cart is empty";
+"Cart.alertController.title" = "Sorting";
+"Cart.alertController.close" = "Close";
+"Cart.sort.price" = "By price";
+"Cart.sort.rating" = "By rating";
+"Cart.sort.name" = "By name";

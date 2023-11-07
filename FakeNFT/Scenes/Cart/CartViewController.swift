@@ -95,13 +95,57 @@ final class CartViewController: UIViewController {
                 hideLoading()
             } else {
                 cartView.emptyStateLabel.isHidden = true
-                
             }
         }
         .store(in: &cancellables)
     }
 
-    @objc private func sortNFT() {}
+    @objc private func sortNFT() {
+        let actionSheet = UIAlertController(
+            title: nil,
+            message: L10n.Cart.AlertController.title,
+            preferredStyle: .actionSheet
+        )
+        
+        let priceSort = UIAlertAction(
+            title: L10n.Cart.Sort.price,
+            style: .default,
+            handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.viewModel.nfts = self.viewModel.nfts.sorted { $0.price < $1.price }
+            }
+        )
+        
+        let ratingSort = UIAlertAction(
+            title: L10n.Cart.Sort.rating,
+            style: .default,
+            handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.viewModel.nfts = self.viewModel.nfts.sorted { $0.rating > $1.rating }
+            }
+        )
+        
+        let nameSort = UIAlertAction(
+            title: L10n.Cart.Sort.name,
+            style: .default,
+            handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.viewModel.nfts = self.viewModel.nfts.sorted { $0.name < $1.name }
+            }
+        )
+        
+        let closeAction = UIAlertAction(
+            title: L10n.Cart.AlertController.close,
+            style: .cancel
+        )
+        
+        actionSheet.addAction(priceSort)
+        actionSheet.addAction(ratingSort)
+        actionSheet.addAction(nameSort)
+        actionSheet.addAction(closeAction)
+        
+        present(actionSheet, animated: true)
+    }
 }
 
 extension CartViewController: UITableViewDataSource {
