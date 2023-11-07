@@ -9,9 +9,10 @@ import UIKit
 import SnapKit
 
 final class RatingViewController: UIViewController {
+    // TODO: Реализовать безопасный анврап
+    private var viewModel: RatingViewModel!
 
     // MARK: UI elements
-
     private var sortButton: UIBarButtonItem?
 
     private lazy var tableView: UITableView = {
@@ -21,23 +22,18 @@ final class RatingViewController: UIViewController {
         return tableView
     }()
 
-    // MARK: - Mock data
-    private let userArray: [User] = [
-        User(image: Asset.blueLoki.image, name: "Alex", score: 112),
-        User(image: Asset.blueLoki.image, name: "Bill", score: 98),
-        User(image: Asset.blueLoki.image, name: "Alla", score: 72),
-        User(image: Asset.blueLoki.image, name: "Mads", score: 71),
-        User(image: Asset.blueLoki.image, name: "Timothée", score: 51),
-        User(image: Asset.blueLoki.image, name: "Lea", score: 23),
-        User(image: Asset.blueLoki.image, name: "Eric", score: 11)
-    ]
-
     // MARK: Lifecycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        viewModel = RatingViewModel()
+        viewModel.reloadTableViewClosure = { [weak self] () in
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+        }
         setupUI()
+        viewModel.fetchUsers()
     }
 
     private func setupUI() {
@@ -57,17 +53,17 @@ final class RatingViewController: UIViewController {
         // TODO: Локализовать
         let alertController = UIAlertController(title: nil, message: "Сортировка", preferredStyle: .actionSheet)
 
-        let sortByNameAction = UIAlertAction(title: "По имени", style: .default) { action in
-            // Тут сортируем по имени
+        let sortByNameAction = UIAlertAction(title: "По имени", style: .default) { _ in
+            self.viewModel.sortByName()
         }
         alertController.addAction(sortByNameAction)
 
-        let sortByRatingAction = UIAlertAction(title: "По рейтингу", style: .default) { action in
-            // Тут сортируем по рейтингу
+        let sortByRatingAction = UIAlertAction(title: "По рейтингу", style: .default) { _ in
+            self.viewModel.sortByRating()
         }
         alertController.addAction(sortByRatingAction)
 
-        let cancelAction = UIAlertAction(title: "Закрыть", style: .cancel) { action in
+        let cancelAction = UIAlertAction(title: "Закрыть", style: .cancel) { _ in
             self.dismiss(animated: true)
         }
         alertController.addAction(cancelAction)
@@ -93,22 +89,23 @@ final class RatingViewController: UIViewController {
     }
 }
 
+// MARK: UITableViewDataSource
 extension RatingViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // TODO: Вернуть количество элементов в массиве Рейтинга
-        return userArray.count
+        return viewModel.getNumberOfRows()
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RatingTableViewCell", for: indexPath) as! RatingTableViewCell
 
-        let user = userArray[indexPath.row]
+        let user = viewModel.getUser(at: indexPath)
         cell.configure(with: user, at: indexPath.row + 1)
 
         return cell
     }
 }
 
+// MARK: UITableViewDelegate
 extension RatingViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80

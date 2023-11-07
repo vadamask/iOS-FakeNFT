@@ -8,18 +8,12 @@
 import UIKit
 import SnapKit
 
-struct User {
-    let image: UIImage // String?
-    let name: String
-    let score: Int
-}
-
 final class RatingTableViewCell: UITableViewCell {
     private let contentContainer = UIView()
     private let numberLabel = UILabel()
     private let userImageView = UIImageView()
     private let nameLabel = UILabel()
-    private let scoreLabel = UILabel()
+    private let ratingLabel = UILabel()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -32,23 +26,25 @@ final class RatingTableViewCell: UITableViewCell {
     }
 
     private func setupUI() {
+        selectionStyle = .none
+
         contentView.addSubview(contentContainer)
         contentView.addSubview(numberLabel)
         contentContainer.addSubview(userImageView)
         contentContainer.addSubview(nameLabel)
-        contentContainer.addSubview(scoreLabel)
+        contentContainer.addSubview(ratingLabel)
 
         contentView.backgroundColor = .clear
 
         contentContainer.backgroundColor = .placeholderBackground
         contentContainer.layer.cornerRadius = 8
 
-        userImageView.layer.cornerRadius = 20
+        userImageView.layer.cornerRadius = 16
         userImageView.clipsToBounds = true
 
         numberLabel.font = UIFont.bodyRegular15
         nameLabel.font = UIFont.headline22
-        scoreLabel.font = UIFont.headline22
+        ratingLabel.font = UIFont.headline22
 
         contentContainer.snp.makeConstraints { make in
             make.top.equalToSuperview()
@@ -58,7 +54,7 @@ final class RatingTableViewCell: UITableViewCell {
         }
 
         numberLabel.snp.makeConstraints { make in
-            make.right.equalTo(contentContainer.snp.left).offset(-16)
+            make.right.lessThanOrEqualTo(contentContainer.snp.left).offset(-16)
             make.centerY.equalToSuperview()
         }
 
@@ -73,16 +69,29 @@ final class RatingTableViewCell: UITableViewCell {
             make.centerY.equalToSuperview()
         }
 
-        scoreLabel.snp.makeConstraints { make in
+        ratingLabel.snp.makeConstraints { make in
             make.right.equalToSuperview().offset(-16)
             make.centerY.equalToSuperview()
         }
     }
 
-    func configure(with user: User, at index: Int) {
+    func configure(with user: Users, at index: Int) {
         numberLabel.text = "\(index)"
-        userImageView.image = user.image
         nameLabel.text = user.name
-        scoreLabel.text = "\(user.score)" // Преобразуем Int в String
+        ratingLabel.text = user.rating
+        userImageView.loadImage(from: user.avatar)
+    }
+}
+
+extension UIImageView {
+    func loadImage(from url: URL) {
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let data = data, error == nil {
+                DispatchQueue.main.async {
+                    self.image = UIImage(data: data)
+                }
+            }
+            // Обработать ошибки и плейсхолдеры для изображений (при необходимости)
+        }.resume()
     }
 }
