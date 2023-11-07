@@ -1,3 +1,4 @@
+import ProgressHUD
 import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -16,5 +17,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let mainTabBarController = TabBarController(servicesAssembly: servicesAssembly)
         window?.rootViewController = mainTabBarController
         window?.makeKeyAndVisible()
+        
+        ProgressHUD.animationType = .circleSpinFade
+        ProgressHUD.colorBackground = .placeholderBackground
+        ProgressHUD.colorAnimation = .yaGray
     }
 }

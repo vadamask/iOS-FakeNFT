@@ -13,6 +13,8 @@ internal enum L10n {
   internal enum Cart {
     /// К оплате
     internal static let buyNFT = L10n.tr("Localizable", "Cart.buyNFT", fallback: "К оплате")
+    /// Корзина пуста
+    internal static let emptyState = L10n.tr("Localizable", "Cart.emptyState", fallback: "Корзина пуста")
     /// Цена
     internal static let price = L10n.tr("Localizable", "Cart.price", fallback: "Цена")
   }

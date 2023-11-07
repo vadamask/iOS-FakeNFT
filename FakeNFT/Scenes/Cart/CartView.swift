@@ -9,11 +9,13 @@ import SnapKit
 import UIKit
 
 final class CartView: UIView {
-    private let bottomView = UIView()
-    private let countLabel = UILabel()
-    private let priceLabel = UILabel()
-    private let buyButton = ActionButton(title: L10n.Cart.buyNFT, type: .primary)
+    let countLabel = UILabel()
+    let priceLabel = UILabel()
     let tableView = UITableView()
+    let emptyStateLabel = UILabel()
+    let bottomView = UIView()
+    
+    private let buyButton = ActionButton(title: L10n.Cart.buyNFT, type: .primary)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,8 +36,6 @@ final class CartView: UIView {
             .layerMaxXMinYCorner
         ]
 
-        countLabel.text = "3 NFT"
-        priceLabel.text = "5.34 ETH"
         countLabel.font = .bodyRegular15
         priceLabel.font = .bodyBold17
         countLabel.textColor = .textPrimary
@@ -44,11 +44,17 @@ final class CartView: UIView {
         tableView.register(CartCell.self)
         tableView.backgroundColor = .screenBackground
         tableView.separatorStyle = .none
+        
+        emptyStateLabel.text = L10n.Cart.emptyState
+        emptyStateLabel.font = .bodyBold17
+        emptyStateLabel.textColor = .textPrimary
+        emptyStateLabel.isHidden = true        
     }
 
     private func setupLayout() {
         addSubview(bottomView)
         addSubview(tableView)
+        addSubview(emptyStateLabel)
         bottomView.addSubview(countLabel)
         bottomView.addSubview(priceLabel)
         bottomView.addSubview(buyButton)
@@ -79,7 +85,9 @@ final class CartView: UIView {
             make.trailing.equalTo(-16)
             make.size.equalTo(CGSize(width: 240, height: 44))
         }
+        
+        emptyStateLabel.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
     }
 }
-
-

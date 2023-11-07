@@ -31,15 +31,14 @@ final class TabBarController: UITabBarController {
         let catalogController = TestCatalogViewController(
             servicesAssembly: servicesAssembly
         )
-        catalogController.tabBarItem = catalogTabBarItem
 
-        let cartViewController = UINavigationController(
+        let cartController = UINavigationController(
             rootViewController: CartViewController(servicesAssembly: servicesAssembly)
         )
-        cartViewController.tabBarItem = cartTabBarItem
+        
+        catalogController.tabBarItem = catalogTabBarItem
+        cartController.tabBarItem = cartTabBarItem
 
-        viewControllers = [catalogController, cartViewController]
-
-        view.backgroundColor = .screenBackground
+        viewControllers = [catalogController, cartController]
     }
 }

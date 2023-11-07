@@ -37,11 +37,11 @@ final class CartCell: UITableViewCell, ReuseIdentifying {
         }
     }
 
-    func setup(with model: CartCellModel) {
-        nftImageView.image = model.image
+    func setup(with model: Nft) {
+        nftImageView.kf.setImage(with: model.images[0])
         nameLabel.text = model.name
         priceName.text = L10n.Cart.price
-        priceAndCurrency.text = "\(model.price) \(model.currency)"
+        priceAndCurrency.text = "\(model.price) ETH"
 
         for i in 0 ..< model.rating {
             if let imageView = rating.arrangedSubviews[i] as? UIImageView {
