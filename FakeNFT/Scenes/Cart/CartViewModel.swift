@@ -40,7 +40,7 @@ final class CartViewModel {
         
         ids.forEach { id in
             group.enter()
-            DispatchQueue.main.async(group: group) { [weak self] in
+            DispatchQueue.global().async(group: group) { [weak self] in
                 self?.servicesAssembly.nftService.loadNft(id: id) { result in
                     switch result {
                     case .success(let nft):
