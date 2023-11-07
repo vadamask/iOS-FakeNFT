@@ -7,3 +7,4 @@
 "Error.title" = "Error";
 "Cart.buyNFT" = "Buy";
 "Cart.price" = "Price";
+"Cart.emptyState" = "Cart is empty";

@@ -7,3 +7,4 @@
 "Error.title" = "Ошибка";
 "Cart.buyNFT" = "К оплате";
 "Cart.price" = "Цена";
+"Cart.emptyState" = "Корзина пуста";
