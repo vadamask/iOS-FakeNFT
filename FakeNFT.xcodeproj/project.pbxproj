@@ -38,7 +38,6 @@
 		3F6806D529CBBEC700B4F915 /* NetworkTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6806D429CBBEC700B4F915 /* NetworkTask.swift */; };
 		3F6806D729CBC50A00B4F915 /* CellsReusingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6806D629CBC50A00B4F915 /* CellsReusingUtils.swift */; };
 		3FC8C38B29D242E90081F015 /* ProductDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C38A29D242E90081F015 /* ProductDetailsTableViewCell.swift */; };
-		3FC8C39129D2453B0081F015 /* ExampleRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C39029D2453B0081F015 /* ExampleRequest.swift */; };
 		AB30F7CB2AF528B6001F8A26 /* SwiftGen_SwiftGenCLI.bundle in Resources */ = {isa = PBXBuildFile; fileRef = AB30F7C62AF528B6001F8A26 /* SwiftGen_SwiftGenCLI.bundle */; };
 		AB30F7CC2AF528B6001F8A26 /* swiftgen in Resources */ = {isa = PBXBuildFile; fileRef = AB30F7C72AF528B6001F8A26 /* swiftgen */; };
 		AB30F7CD2AF528B6001F8A26 /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = AB30F7C82AF528B6001F8A26 /* CHANGELOG.md */; };
@@ -106,7 +105,6 @@
 		3F6806D429CBBEC700B4F915 /* NetworkTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTask.swift; sourceTree = "<group>"; };
 		3F6806D629CBC50A00B4F915 /* CellsReusingUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellsReusingUtils.swift; sourceTree = "<group>"; };
 		3FC8C38A29D242E90081F015 /* ProductDetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsTableViewCell.swift; sourceTree = "<group>"; };
-		3FC8C39029D2453B0081F015 /* ExampleRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleRequest.swift; sourceTree = "<group>"; };
 		AB30F7C62AF528B6001F8A26 /* SwiftGen_SwiftGenCLI.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SwiftGen_SwiftGenCLI.bundle; sourceTree = "<group>"; };
 		AB30F7C72AF528B6001F8A26 /* swiftgen */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = swiftgen; sourceTree = "<group>"; };
 		AB30F7C82AF528B6001F8A26 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
@@ -346,7 +344,6 @@
 		3FC8C38F29D245250081F015 /* Requests */ = {
 			isa = PBXGroup;
 			children = (
-				3FC8C39029D2453B0081F015 /* ExampleRequest.swift */,
 				DDCDBA292AFAA04B00F87214 /* NftRequest.swift */,
 				0C79EE622A76DD1900EE90EA /* RequestConstants.swift */,
 			);
@@ -636,7 +633,6 @@
 				0C79EE6C2A76DE2E00EE90EA /* ServicesAssemly.swift in Sources */,
 				0CFCB74E2A7817DC0009A829 /* NftStorage.swift in Sources */,
 				AB30F7F42AF993B2001F8A26 /* NftCollection.swift in Sources */,
-				3FC8C39129D2453B0081F015 /* ExampleRequest.swift in Sources */,
 				0CFCB7462A78064B0009A829 /* NftDetailCellModel.swift in Sources */,
 				0CFCB74B2A780EA80009A829 /* UIView+Constraints.swift in Sources */,
 				3F6806D729CBC50A00B4F915 /* CellsReusingUtils.swift in Sources */,
