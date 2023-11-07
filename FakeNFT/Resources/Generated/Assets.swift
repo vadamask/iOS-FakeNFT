@@ -27,6 +27,7 @@ internal enum Asset {
   internal static let accentColor = ColorAsset(name: "AccentColor")
   internal static let backButton = ImageAsset(name: "backButton")
   internal static let closeButton = ImageAsset(name: "closeButton")
+  internal static let deleteFromCartButton = ImageAsset(name: "deleteFromCartButton")
   internal static let editButton = ImageAsset(name: "editButton")
   internal static let sortButton = ImageAsset(name: "sortButton")
   internal static let beigeApril = ImageAsset(name: "BeigeApril")
@@ -135,6 +136,8 @@ internal enum Asset {
   internal static let yellowPumpkin = ImageAsset(name: "YellowPumpkin")
   internal static let yellowWillow = ImageAsset(name: "YellowWillow")
   internal static let yellowWinnie = ImageAsset(name: "YellowWinnie")
+  internal static let ratingActive = ImageAsset(name: "ratingActive")
+  internal static let ratingInactive = ImageAsset(name: "ratingInactive")
   internal static let catalog = ImageAsset(name: "Catalog")
   internal static let logo = ImageAsset(name: "logo")
 }
