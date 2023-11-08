@@ -51,6 +51,7 @@
 		AB30F7EC2AF82D4E001F8A26 /* CatalogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB30F7EB2AF82D4E001F8A26 /* CatalogViewModel.swift */; };
 		AB30F7EF2AF83489001F8A26 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB30F7EE2AF83489001F8A26 /* Observable.swift */; };
 		AB30F7F42AF993B2001F8A26 /* NftCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB30F7F32AF993B2001F8A26 /* NftCollection.swift */; };
+		ABFA0E402AFAF54700451A6A /* NftCollectionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFA0E3F2AFAF54700451A6A /* NftCollectionRequest.swift */; };
 		DD2B80C42AF62BC400D71619 /* Strings+Localizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2B80C32AF62BC400D71619 /* Strings+Localizable.swift */; };
 		DD2B80C62AF62C1C00D71619 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DD2B80C82AF62C1C00D71619 /* Localizable.strings */; };
 		DD8923012AF419D8001DB539 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = DD8923002AF419D8001DB539 /* SnapKit */; };
@@ -126,6 +127,7 @@
 		AB30F7EB2AF82D4E001F8A26 /* CatalogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewModel.swift; sourceTree = "<group>"; };
 		AB30F7EE2AF83489001F8A26 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		AB30F7F32AF993B2001F8A26 /* NftCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftCollection.swift; sourceTree = "<group>"; };
+		ABFA0E3F2AFAF54700451A6A /* NftCollectionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftCollectionRequest.swift; sourceTree = "<group>"; };
 		DD2B80C32AF62BC400D71619 /* Strings+Localizable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Strings+Localizable.swift"; sourceTree = "<group>"; };
 		DD2B80C72AF62C1C00D71619 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DD2B80C92AF62C2E00D71619 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -360,6 +362,7 @@
 			children = (
 				DDCDBA292AFAA04B00F87214 /* NftRequest.swift */,
 				0C79EE622A76DD1900EE90EA /* RequestConstants.swift */,
+				ABFA0E3F2AFAF54700451A6A /* NftCollectionRequest.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -671,6 +674,7 @@
 				0CFCB7402A78002A0009A829 /* NftService.swift in Sources */,
 				3F6806D529CBBEC700B4F915 /* NetworkTask.swift in Sources */,
 				0CF2C2DB2A783C1B00FDC837 /* LoadingView.swift in Sources */,
+				ABFA0E402AFAF54700451A6A /* NftCollectionRequest.swift in Sources */,
 				AB30F7EA2AF82B10001F8A26 /* CatalogCellViewModel.swift in Sources */,
 				3F68069729CBBAF100B4F915 /* AppDelegate.swift in Sources */,
 				3F68069929CBBAF100B4F915 /* SceneDelegate.swift in Sources */,

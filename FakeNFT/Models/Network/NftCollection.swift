@@ -14,5 +14,5 @@ struct NftCollection: Decodable {
     let author: String
     let description: String
     let nfts: [String]
-    let createdAt: Date
+    let createdAt: String
 }

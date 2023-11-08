@@ -8,6 +8,7 @@
 import UIKit
 
 struct CatalogCellViewModel {
-    let image: UIImage
-    let labelText: String
+    let name: String
+    let coverUrl: URL
+    let nftCount: Int
 }

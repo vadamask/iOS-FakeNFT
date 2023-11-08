@@ -7,12 +7,12 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 final class CatalogCell: UITableViewCell, ReuseIdentifying {
     var viewModel: CatalogCellViewModel? {
         didSet {
-            image.image = viewModel?.image
-            label.text = viewModel?.labelText
+            update()
         }
     }
 
@@ -23,10 +23,11 @@ final class CatalogCell: UITableViewCell, ReuseIdentifying {
         return stackView
     }()
 
-    private let image = {
+    private let coverImage = {
         let imageView = UIImageView()
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 12
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
 
@@ -47,9 +48,15 @@ final class CatalogCell: UITableViewCell, ReuseIdentifying {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setupViews() {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        label.text = nil
+        coverImage.image = nil
+    }
+
+    private func setupViews() {
         contentView.backgroundColor = .screenBackground
-        stackView.addArrangedSubview(image)
+        stackView.addArrangedSubview(coverImage)
         stackView.addArrangedSubview(label)
         contentView.addSubview(stackView)
     }
@@ -58,11 +65,17 @@ final class CatalogCell: UITableViewCell, ReuseIdentifying {
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(UIEdgeInsets(top: 8, left: 16, bottom: 13, right: 16))
         }
-        image.snp.makeConstraints { make in
+        coverImage.snp.makeConstraints { make in
             make.height.equalTo(140)
         }
         label.snp.makeConstraints { make in
             make.height.equalTo(22)
         }
+    }
+
+    private func update() {
+        guard let viewModel else { return }
+        label.text = "\(viewModel.name) (\(viewModel.nftCount))"
+        coverImage.kf.setImage(with: viewModel.coverUrl)
     }
 }
