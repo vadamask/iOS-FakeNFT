@@ -26,11 +26,9 @@ class RatingViewModel {
     // MARK: - Data Fetching
     // Получаем пользователей из сети
     func fetchUsers() {
-        // TODO: Прописать URL в Services\Requests
-        let urlString = "\(RequestConstants.baseURL)/api/v1/users"
-        guard let url = URL(string: urlString) else { return }
+        guard let url = UsersRequest().endpoint else { return }
 
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        URLSession.shared.dataTask(with: url) { data, _, error in
             if let error = error {
                 print("Error fetching users: \(error.localizedDescription)")
                 return

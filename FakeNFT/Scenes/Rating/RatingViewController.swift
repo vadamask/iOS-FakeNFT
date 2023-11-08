@@ -9,8 +9,7 @@ import UIKit
 import SnapKit
 
 final class RatingViewController: UIViewController {
-    // TODO: Реализовать безопасный анврап
-    private var viewModel: RatingViewModel!
+    private var viewModel = RatingViewModel()
 
     // MARK: UI elements
     private var sortButton: UIBarButtonItem?
@@ -51,19 +50,19 @@ final class RatingViewController: UIViewController {
 
     @objc private func sortButtonTapped() {
         // TODO: Локализовать
-        let alertController = UIAlertController(title: nil, message: "Сортировка", preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: nil, message: L10n.Sort.title, preferredStyle: .actionSheet)
 
-        let sortByNameAction = UIAlertAction(title: "По имени", style: .default) { _ in
+        let sortByNameAction = UIAlertAction(title: L10n.Sort.byName, style: .default) { _ in
             self.viewModel.sortByName()
         }
         alertController.addAction(sortByNameAction)
 
-        let sortByRatingAction = UIAlertAction(title: "По рейтингу", style: .default) { _ in
+        let sortByRatingAction = UIAlertAction(title: L10n.Sort.byRating, style: .default) { _ in
             self.viewModel.sortByRating()
         }
         alertController.addAction(sortByRatingAction)
 
-        let cancelAction = UIAlertAction(title: "Закрыть", style: .cancel) { _ in
+        let cancelAction = UIAlertAction(title: L10n.Sort.close, style: .cancel) { _ in
             self.dismiss(animated: true)
         }
         alertController.addAction(cancelAction)
@@ -75,7 +74,7 @@ final class RatingViewController: UIViewController {
         view.addSubview(tableView)
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(RatingTableViewCell.self, forCellReuseIdentifier: "RatingTableViewCell")
+        tableView.register(RatingCell.self)
 
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
@@ -96,7 +95,7 @@ extension RatingViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "RatingTableViewCell", for: indexPath) as! RatingTableViewCell
+        let cell: RatingCell = tableView.dequeueReusableCell()
 
         let user = viewModel.getUser(at: indexPath)
         cell.configure(with: user, at: indexPath.row + 1)

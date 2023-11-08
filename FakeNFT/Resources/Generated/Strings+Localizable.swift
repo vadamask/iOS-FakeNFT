@@ -24,9 +24,21 @@ internal enum L10n {
     /// Произошла неизвестная ошибка
     internal static let unknown = L10n.tr("Localizable", "Error.unknown", fallback: "Произошла неизвестная ошибка")
   }
+  internal enum Sort {
+    /// По имени
+    internal static let byName = L10n.tr("Localizable", "Sort.byName", fallback: "По имени")
+    /// По рейтингу
+    internal static let byRating = L10n.tr("Localizable", "Sort.byRating", fallback: "По рейтингу")
+    /// Закрыть
+    internal static let close = L10n.tr("Localizable", "Sort.close", fallback: "Закрыть")
+    /// Сортировка
+    internal static let title = L10n.tr("Localizable", "Sort.title", fallback: "Сортировка")
+  }
   internal enum Tab {
     /// Каталог
     internal static let catalog = L10n.tr("Localizable", "Tab.catalog", fallback: "Каталог")
+    /// Статистика
+    internal static let statistics = L10n.tr("Localizable", "Tab.statistics", fallback: "Статистика")
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class RatingTableViewCell: UITableViewCell {
+final class RatingCell: UITableViewCell, ReuseIdentifying {
     private let contentContainer = UIView()
     private let numberLabel = UILabel()
     private let userImageView = UIImageView()
@@ -85,7 +85,7 @@ final class RatingTableViewCell: UITableViewCell {
 
 extension UIImageView {
     func loadImage(from url: URL) {
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        URLSession.shared.dataTask(with: url) { data, _, error in
             if let data = data, error == nil {
                 DispatchQueue.main.async {
                     self.image = UIImage(data: data)

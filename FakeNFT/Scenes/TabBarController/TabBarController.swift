@@ -10,7 +10,7 @@ final class TabBarController: UITabBarController {
     )
 
     private let statisticsTabBarItem = UITabBarItem(
-        title: "Статистика",
+        title: L10n.Tab.statistics,
         image: Asset.statistics.image,
         tag: 1
     )
