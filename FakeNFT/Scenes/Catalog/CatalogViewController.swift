@@ -56,23 +56,23 @@ final class CatalogViewController: UITableViewController, LoadingView {
     }
 
     private func showSortingMenu() {
-        let title = "Сортировка"
+        let title = L10n.Catalog.sorting
         let alert = UIAlertController(
             title: title,
             message: nil,
             preferredStyle: .actionSheet
         )
         let sortByNameAction = UIAlertAction(
-            title: "По названию",
+            title: L10n.Catalog.sortByName,
             style: UIAlertAction.Style.default) { [weak self] _ in
                 self?.viewModel.changeSorting(to: .byNameAsc)
         }
         let sortByNftCountAction = UIAlertAction(
-            title: "По количеству NFT",
+            title: L10n.Catalog.sortByNftCount,
             style: UIAlertAction.Style.default) { [weak self] _ in
                 self?.viewModel.changeSorting(to: .byNftCountDesc)
         }
-        let closeAction = UIAlertAction(title: "Закрыть", style: .cancel)
+        let closeAction = UIAlertAction(title: L10n.close, style: .cancel)
         alert.addAction(sortByNameAction)
         alert.addAction(sortByNftCountAction)
         alert.addAction(closeAction)

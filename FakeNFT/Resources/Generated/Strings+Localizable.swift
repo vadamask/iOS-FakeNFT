@@ -10,9 +10,17 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 internal enum L10n {
+  /// Закрыть
+  internal static let close = L10n.tr("Localizable", "close", fallback: "Закрыть")
   internal enum Catalog {
     /// Открыть Nft
     internal static let openNft = L10n.tr("Localizable", "Catalog.openNft", fallback: "Открыть Nft")
+    /// По названию
+    internal static let sortByName = L10n.tr("Localizable", "Catalog.sortByName", fallback: "По названию")
+    /// По количеству NFT
+    internal static let sortByNftCount = L10n.tr("Localizable", "Catalog.sortByNftCount", fallback: "По количеству NFT")
+    /// Сортировка
+    internal static let sorting = L10n.tr("Localizable", "Catalog.sorting", fallback: "Сортировка")
   }
   internal enum Error {
     /// Произошла ошибка сети

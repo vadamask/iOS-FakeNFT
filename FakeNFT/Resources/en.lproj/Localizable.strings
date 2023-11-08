@@ -4,3 +4,11 @@
 "Error.unknown" = "An unknown error has occurred";
 "Error.repeat" = "Repeat";
 "Error.title" = "Error";
+
+// Catalog
+"Catalog.sorting" = "Sorting";
+"Catalog.sortByName" = "By name";
+"Catalog.sortByNftCount" = "By NFT count";
+
+// Общие
+"close" = "Close";
