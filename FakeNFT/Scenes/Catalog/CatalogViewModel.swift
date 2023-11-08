@@ -8,11 +8,11 @@
 import Foundation
 
 enum CatalogViewState {
-    case initial, loading, failed(Error), loaded
+    case initial, loading, failed(Error), ready, sorting
 }
 
 enum CatalogViewSortingType {
-    case byName, byNftCount
+    case byNameAsc, byNameDesc, byNftCountAsc, byNftCountDesc
 }
 
 final class CatalogViewModel {
@@ -24,7 +24,7 @@ final class CatalogViewModel {
     init(service: NftService) {
         self.service = service
         state = .initial
-        sortingType = .byName
+        sortingType = .byNameAsc
     }
 
     func viewDidLoaded() {
@@ -36,21 +36,41 @@ final class CatalogViewModel {
         service.loadNftCollections { [weak self] result in
             switch result {
             case .success(let nftCollections):
-                self?.cellViewModels = self?.convertToCellViewModels(nftCollections)
-                self?.state = .loaded
+                self?.convertToCellViewModels(nftCollections)
+                self?.sorting()
             case .failure(let error):
                 self?.state = .failed(error)
             }
         }
     }
 
-    private func convertToCellViewModels(_ nftCollections: [NftCollection]) -> [CatalogCellViewModel] {
-        return nftCollections.map { nftCollection in
+    private func convertToCellViewModels(_ nftCollections: [NftCollection]) {
+        cellViewModels = nftCollections.map { nftCollection in
             CatalogCellViewModel(
                 name: nftCollection.name,
                 coverUrl: nftCollection.cover,
                 nftCount: nftCollection.nfts.count
             )
         }
+    }
+
+    private func sorting() {
+        state = .sorting
+        switch sortingType {
+        case .byNameAsc:
+            cellViewModels?.sort { $0.name.caseInsensitiveCompare($1.name) == .orderedAscending }
+        case .byNameDesc:
+            cellViewModels?.sort { $0.name.caseInsensitiveCompare($1.name) == .orderedDescending }
+        case .byNftCountAsc:
+            cellViewModels?.sort { $0.nftCount < $1.nftCount }
+        case .byNftCountDesc:
+            cellViewModels?.sort { $0.nftCount > $1.nftCount }
+        }
+        state = .ready
+    }
+
+    func changeSorting(to sortingType: CatalogViewSortingType) {
+        self.sortingType = sortingType
+        sorting()
     }
 }

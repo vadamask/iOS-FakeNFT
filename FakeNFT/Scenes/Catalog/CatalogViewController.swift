@@ -3,9 +3,7 @@ import SnapKit
 
 final class CatalogViewController: UITableViewController, LoadingView {
     internal lazy var activityIndicator = UIActivityIndicatorView()
-
     private let viewModel: CatalogViewModel
-    // let testNftButton = UIButton()
 
     init(servicesAssembly: ServicesAssembly) {
         self.viewModel = CatalogViewModel(service: servicesAssembly.nftService)
@@ -45,12 +43,12 @@ final class CatalogViewController: UITableViewController, LoadingView {
     func bind() {
         viewModel.$state.bind { [weak self] newState in
             switch newState {
-            case .initial: break
+            case .initial, .sorting: break
             case .loading:
                 self?.showLoading()
             case .failed:
                 self?.hideLoading()
-            case .loaded:
+            case .ready:
                 self?.hideLoading()
                 self?.tableView.reloadData()
             }
@@ -64,9 +62,15 @@ final class CatalogViewController: UITableViewController, LoadingView {
             message: nil,
             preferredStyle: .actionSheet
         )
-        let sortByNameAction = UIAlertAction(title: "По названию", style: UIAlertAction.Style.default) {_ in
+        let sortByNameAction = UIAlertAction(
+            title: "По названию",
+            style: UIAlertAction.Style.default) { [weak self] _ in
+                self?.viewModel.changeSorting(to: .byNameAsc)
         }
-        let sortByNftCountAction = UIAlertAction(title: "По количеству NFT", style: UIAlertAction.Style.default) {_ in
+        let sortByNftCountAction = UIAlertAction(
+            title: "По количеству NFT",
+            style: UIAlertAction.Style.default) { [weak self] _ in
+                self?.viewModel.changeSorting(to: .byNftCountDesc)
         }
         let closeAction = UIAlertAction(title: "Закрыть", style: .cancel)
         alert.addAction(sortByNameAction)
@@ -78,19 +82,7 @@ final class CatalogViewController: UITableViewController, LoadingView {
     @objc func sortButtonTapped() {
         showSortingMenu()
     }
-
-    @objc func showNft() {
-//        let assembly = NftDetailAssembly(servicesAssembler: servicesAssembly)
-//        let nftInput = NftDetailInput(id: Constants.testNftId)
-//        let nftViewController = assembly.build(with: nftInput)
-//        present(nftViewController, animated: true)
-    }
 }
-
-//private enum Constants {
-//    static let openNftTitle = L10n.Catalog.openNft
-//    static let testNftId = "22"
-//}
 
 extension CatalogViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
