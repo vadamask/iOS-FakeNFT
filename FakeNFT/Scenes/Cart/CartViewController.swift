@@ -40,7 +40,7 @@ final class CartViewController: UIViewController {
             image: Asset.sortButton.image,
             style: .plain,
             target: self,
-            action: #selector(sortNFT)
+            action: #selector(pickSortOption)
         )
         rightBarItem.tintColor = .textPrimaryInvert
         navigationItem.rightBarButtonItem = rightBarItem
@@ -100,42 +100,36 @@ final class CartViewController: UIViewController {
         .store(in: &cancellables)
     }
 
-    @objc private func sortNFT() {
+    @objc private func pickSortOption() {
         let actionSheet = UIAlertController(
             title: nil,
-            message: L10n.Cart.AlertController.title,
+            message: L10n.Cart.MainScreen.AlertController.title,
             preferredStyle: .actionSheet
         )
         
         let priceSort = UIAlertAction(
-            title: L10n.Cart.Sort.price,
-            style: .default,
-            handler: { [weak self] _ in
-                guard let self = self else { return }
-                self.viewModel.nfts = self.viewModel.nfts.sorted { $0.price < $1.price }
-            }
-        )
+            title: L10n.Cart.MainScreen.SortOption.price,
+            style: .default
+        ) { [weak self] _ in
+            self?.viewModel.setSortOption(.price)
+        }
         
         let ratingSort = UIAlertAction(
-            title: L10n.Cart.Sort.rating,
-            style: .default,
-            handler: { [weak self] _ in
-                guard let self = self else { return }
-                self.viewModel.nfts = self.viewModel.nfts.sorted { $0.rating > $1.rating }
-            }
-        )
+            title: L10n.Cart.MainScreen.SortOption.rating,
+            style: .default
+        ) { [weak self] _ in
+            self?.viewModel.setSortOption(.rating)
+        }
         
         let nameSort = UIAlertAction(
-            title: L10n.Cart.Sort.name,
-            style: .default,
-            handler: { [weak self] _ in
-                guard let self = self else { return }
-                self.viewModel.nfts = self.viewModel.nfts.sorted { $0.name < $1.name }
-            }
-        )
+            title: L10n.Cart.MainScreen.SortOption.name,
+            style: .default
+        ) { [weak self] _ in
+            self?.viewModel.setSortOption(.name)
+        }
         
         let closeAction = UIAlertAction(
-            title: L10n.Cart.AlertController.close,
+            title: L10n.Cart.MainScreen.AlertController.close,
             style: .cancel
         )
         

@@ -7,15 +7,34 @@
 import Combine
 import Foundation
 
+enum SortOption: Int {
+    case name
+    case price
+    case rating
+}
+
+private enum Constants {
+    static let sortCartKey = "sortCartKey"
+}
+
 final class CartViewModel {
     @Published var nfts: [Nft] = []
     @Published var error: Error?
     @Published var emptyState: Bool?
     
+    private var sortOption = SortOption.name
     private let servicesAssembly: ServicesAssembly
+    private let userDefaults = UserDefaults.standard
     
     init(servicesAssembly: ServicesAssembly) {
         self.servicesAssembly = servicesAssembly
+        getSortOption()
+    }
+    
+    func setSortOption(_ option: SortOption) {
+        sortOption = option
+        userDefaults.set(option.rawValue, forKey: Constants.sortCartKey)
+        nfts = sort(nfts)
     }
     
     func loadOrder() {
@@ -31,6 +50,17 @@ final class CartViewModel {
             case .failure(let error):
                 self?.error = error
             }
+        }
+    }
+    
+    private func sort(_ nfts: [Nft]) -> [Nft] {
+        switch sortOption {
+        case .name:
+            return nfts.sorted { $0.name < $1.name }
+        case .price:
+            return nfts.sorted { $0.price < $1.price }
+        case .rating:
+            return nfts.sorted { $0.rating > $1.rating }
         }
     }
     
@@ -54,7 +84,15 @@ final class CartViewModel {
         }
         
         group.notify(queue: DispatchQueue.main) { [weak self] in
-            self?.nfts = nfts
+            guard let self = self else { return }
+            self.nfts = sort(nfts)
+        }
+    }
+    
+    private func getSortOption() {
+        let rawValue = userDefaults.integer(forKey: Constants.sortCartKey)
+        if let sortOption = SortOption(rawValue: rawValue) {
+            self.sortOption = sortOption
         }
     }
 }

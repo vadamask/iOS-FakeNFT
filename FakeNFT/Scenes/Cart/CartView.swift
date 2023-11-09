@@ -15,7 +15,7 @@ final class CartView: UIView {
     let emptyStateLabel = UILabel()
     let bottomView = UIView()
     
-    private let buyButton = ActionButton(title: L10n.Cart.buyNFT, type: .primary)
+    private let buyButton = ActionButton(title: L10n.Cart.MainScreen.buyNft, type: .primary)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -45,7 +45,7 @@ final class CartView: UIView {
         tableView.backgroundColor = .screenBackground
         tableView.separatorStyle = .none
         
-        emptyStateLabel.text = L10n.Cart.emptyState
+        emptyStateLabel.text = L10n.Cart.MainScreen.emptyState
         emptyStateLabel.font = .bodyBold17
         emptyStateLabel.textColor = .textPrimary
         emptyStateLabel.isHidden = true
