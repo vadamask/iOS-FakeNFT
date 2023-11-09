@@ -21,6 +21,7 @@ final class CartViewModel {
     @Published var nfts: [Nft] = []
     @Published var error: Error?
     @Published var emptyState: Bool?
+    @Published var isLoading: Bool?
     
     private var sortOption = SortOption.name
     private let servicesAssembly: ServicesAssembly
@@ -38,17 +39,21 @@ final class CartViewModel {
     }
     
     func loadOrder() {
+        isLoading = true
+        
         servicesAssembly.nftService.loadOrder(id: "1") { [weak self] result in
             switch result {
             case .success(let order):
                 if order.nfts.isEmpty {
                     self?.emptyState = true
+                    self?.isLoading = false
                 } else {
                     self?.emptyState = false
                     self?.loadNfts(order.nfts)
                 }
             case .failure(let error):
                 self?.error = error
+                self?.isLoading = false
             }
         }
     }
@@ -85,6 +90,7 @@ final class CartViewModel {
         
         group.notify(queue: DispatchQueue.main) { [weak self] in
             guard let self = self else { return }
+            self.isLoading = false
             self.nfts = sort(nfts)
         }
     }

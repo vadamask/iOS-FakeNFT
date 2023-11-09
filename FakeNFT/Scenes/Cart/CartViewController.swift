@@ -32,7 +32,6 @@ final class CartViewController: UIViewController {
         setupUI()
         bind()
         viewModel.loadOrder()
-        showLoading()
     }
     
     private func setupUI() {
@@ -52,7 +51,6 @@ final class CartViewController: UIViewController {
     private func bind() {
         viewModel.$nfts.sink { [weak self] nfts in
             guard let self = self else { return }
-            hideLoading()
             
             DispatchQueue.main.async { [weak self] in
                 self?.cartView.tableView.reloadData()
@@ -72,8 +70,6 @@ final class CartViewController: UIViewController {
         .store(in: &cancellables)
         
         viewModel.$error.sink { [weak self] error in
-            self?.hideLoading()
-            
             if let error = error {
                 let model = ErrorModel(
                     message: L10n.Error.network,
@@ -92,10 +88,17 @@ final class CartViewController: UIViewController {
             if emptyState {
                 cartView.emptyStateLabel.isHidden = false
                 rightBarItem?.tintColor = .textPrimaryInvert
-                hideLoading()
             } else {
                 cartView.emptyStateLabel.isHidden = true
             }
+        }
+        .store(in: &cancellables)
+        
+        viewModel.$isLoading.sink { [weak self] isLoading in
+            guard
+                let self = self,
+                let isLoading = isLoading else { return }
+            isLoading ? showLoading() : hideLoading()
         }
         .store(in: &cancellables)
     }
