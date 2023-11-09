@@ -38,7 +38,6 @@ final class CatalogViewModel: CatalogViewModelProtocol {
     }
 
     func loadCollections() {
-        state = .loading
         service.loadNftCollections { [weak self] result in
             switch result {
             case .success(let nftCollections):

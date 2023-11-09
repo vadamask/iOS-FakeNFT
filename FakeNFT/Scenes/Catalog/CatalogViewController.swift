@@ -18,12 +18,13 @@ final class CatalogViewController: UITableViewController, LoadingView, ErrorView
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        navigationController?.navigationBar.tintColor = .segmentActive
-        navigationItem.backButtonTitle = ""
         view.backgroundColor = .screenBackground
 
-        // Configuring sort button item right side
+        // MARK: Theme of nav bar
+        navigationController?.navigationBar.tintColor = .segmentActive
+        navigationItem.backButtonTitle = ""
+
+        // MARK: Configuring sort button item right side
         let sortButtonItem = UIBarButtonItem(
             image: Asset.sortButton.image,
             style: .done,
@@ -32,13 +33,19 @@ final class CatalogViewController: UITableViewController, LoadingView, ErrorView
         )
         navigationItem.rightBarButtonItem = sortButtonItem
 
-        // Configuring tableView
+        // MARK: Configuring tableView
+        refreshControl = UIRefreshControl()
         tableView.backgroundView = activityIndicator
         tableView.separatorStyle = .none
         tableView.contentInset = .init(top: 12, left: 0, bottom: 0, right: 0)
         tableView.register(CatalogCell.self)
 
+        refreshControl?.addTarget(self, action: #selector(refreshCatalog), for: .valueChanged)
+
+        // MARK: Bindings MVVM
         bind()
+
+        // MARK: View loaded and ready to load colections
         viewModel.loadCollections()
     }
 
@@ -59,10 +66,15 @@ final class CatalogViewController: UITableViewController, LoadingView, ErrorView
                 }))
             case .ready:
                 self?.hideLoading()
+                self?.refreshControl?.endRefreshing()
                 self?.tableView.reloadData()
             }
         }
         .store(in: &subscriptions)
+    }
+
+    @objc private func refreshCatalog() {
+        viewModel.loadCollections()
     }
 
     private func showSortingMenu() {
