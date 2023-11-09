@@ -7,8 +7,8 @@ final class CatalogViewController: UITableViewController, LoadingView, ErrorView
     private let viewModel: CatalogViewModelProtocol
     private var subscriptions = Set<AnyCancellable>()
 
-    init(servicesAssembly: ServicesAssembly) {
-        self.viewModel = CatalogViewModel(service: servicesAssembly.nftService)
+    init(viewModel: CatalogViewModelProtocol) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 

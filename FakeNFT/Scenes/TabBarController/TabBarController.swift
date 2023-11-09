@@ -23,8 +23,9 @@ final class TabBarController: UITabBarController {
         tabBar.tintColor = .tabActive
 
         // Catalog
+        let catalogViewModel = CatalogViewModel(service: servicesAssembly.nftService)
         let catalogViewController = CatalogViewController(
-            servicesAssembly: servicesAssembly
+            viewModel: catalogViewModel
         )
         catalogViewController.tabBarItem = catalogTabBarItem
         let catalogNavigationController = UINavigationController(rootViewController: catalogViewController)
