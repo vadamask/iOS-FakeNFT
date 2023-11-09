@@ -14,8 +14,8 @@ final class CartViewController: UIViewController {
     private var cancellables: Set<AnyCancellable> = []
     private var rightBarItem: UIBarButtonItem?
     
-    init(servicesAssembly: ServicesAssembly) {
-        viewModel = CartViewModel(servicesAssembly: servicesAssembly)
+    init(viewModel: CartViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
