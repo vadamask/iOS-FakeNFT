@@ -16,6 +16,8 @@ final class RatingViewModel {
         }
     }
     var reloadTableViewClosure: (() -> Void)?
+    var showLoading: (() -> Void)?
+    var hideLoading: (() -> Void)?
 
     // MARK: - Initialization
     init(networkClient: NetworkClient) {
@@ -24,11 +26,15 @@ final class RatingViewModel {
 
     // MARK: - Data Fetching
     func fetchUsers() {
+        showLoading?()
+
         let request = UsersRequest()
         networkClient.send(request: request, type: [Users].self) { [weak self] result in
             // Лучше все действия с UI производить в контроллере, в том числе и DispatchQueue.main.async { }
             // TODO: Изучить варианты
             DispatchQueue.main.async {
+                self?.hideLoading?()
+
                 switch result {
                 case .success(let decodedUsers):
                     self?.users = decodedUsers

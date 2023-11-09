@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import ProgressHUD
 
 final class RatingViewController: UIViewController {
     private var viewModel = RatingViewModel(networkClient: DefaultNetworkClient())
@@ -32,6 +33,15 @@ final class RatingViewController: UIViewController {
                 self?.tableView.reloadData()
             }
         }
+
+        viewModel.showLoading = {
+            ProgressHUD.show()
+        }
+
+        viewModel.hideLoading = {
+            ProgressHUD.dismiss()
+        }
+
         setupUI()
         viewModel.fetchUsers()
     }
