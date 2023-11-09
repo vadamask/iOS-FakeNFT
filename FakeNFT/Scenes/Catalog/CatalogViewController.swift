@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-final class CatalogViewController: UITableViewController, LoadingView {
+final class CatalogViewController: UITableViewController, LoadingView, ErrorView {
     internal lazy var activityIndicator = UIActivityIndicatorView()
     private let viewModel: CatalogViewModelProtocol
 
@@ -37,7 +37,7 @@ final class CatalogViewController: UITableViewController, LoadingView {
         tableView.register(CatalogCell.self)
 
         bind()
-        viewModel.viewDidLoaded()
+        viewModel.loadCollections()
     }
 
     @objc func sortButtonTapped() {
@@ -52,6 +52,9 @@ final class CatalogViewController: UITableViewController, LoadingView {
                 self?.showLoading()
             case .failed:
                 self?.hideLoading()
+                self?.showError(ErrorModel(message: L10n.Error.unableToLoad, actionText: L10n.Error.repeat, action: {
+                    self?.viewModel.loadCollections()
+                }))
             case .ready:
                 self?.hideLoading()
                 self?.tableView.reloadData()

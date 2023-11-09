@@ -19,7 +19,7 @@ protocol CatalogViewModelProtocol {
     var state: CatalogViewState { get }
     var publishedState: Observable<CatalogViewState> { get }
     var cellViewModels: [CatalogCellViewModel]? { get }
-    func viewDidLoaded()
+    func loadCollections()
     func changeSorting(to sortingType: CatalogViewSortingType)
 }
 
@@ -37,17 +37,7 @@ final class CatalogViewModel: CatalogViewModelProtocol {
         sortingType = userDefaults.sortingType
     }
 
-    func viewDidLoaded() {
-        loadCollections()
-    }
-
-    func changeSorting(to sortingType: CatalogViewSortingType) {
-        self.sortingType = sortingType
-        userDefaults.sortingType = self.sortingType
-        sorting()
-    }
-
-    private func loadCollections() {
+    func loadCollections() {
         state = .loading
         service.loadNftCollections { [weak self] result in
             switch result {
@@ -58,6 +48,12 @@ final class CatalogViewModel: CatalogViewModelProtocol {
                 self?.state = .failed(error)
             }
         }
+    }
+
+    func changeSorting(to sortingType: CatalogViewSortingType) {
+        self.sortingType = sortingType
+        userDefaults.sortingType = self.sortingType
+        sorting()
     }
 
     private func convertToCellViewModels(_ nftCollections: [NftCollection]) {

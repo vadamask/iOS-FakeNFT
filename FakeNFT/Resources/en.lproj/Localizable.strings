@@ -4,6 +4,7 @@
 "Error.unknown" = "An unknown error has occurred";
 "Error.repeat" = "Repeat";
 "Error.title" = "Error";
+"Error.unableToLoad" = "Unable to load";
 
 // Catalog
 "Catalog.sorting" = "Sorting";

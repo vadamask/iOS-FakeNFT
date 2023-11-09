@@ -29,6 +29,8 @@ internal enum L10n {
     internal static let `repeat` = L10n.tr("Localizable", "Error.repeat", fallback: "Повторить")
     /// Ошибка
     internal static let title = L10n.tr("Localizable", "Error.title", fallback: "Ошибка")
+    /// Не удалось загрузить данные
+    internal static let unableToLoad = L10n.tr("Localizable", "Error.unableToLoad", fallback: "Не удалось загрузить данные")
     /// Произошла неизвестная ошибка
     internal static let unknown = L10n.tr("Localizable", "Error.unknown", fallback: "Произошла неизвестная ошибка")
   }
