@@ -11,12 +11,13 @@ enum CatalogViewState {
     case initial, loading, failed(Error), ready, sorting
 }
 
-enum CatalogViewSortingType {
+enum CatalogViewSortingType: Int {
     case byNameAsc, byNameDesc, byNftCountAsc, byNftCountDesc
 }
 
 final class CatalogViewModel {
     private let service: NftService
+    private let userDefaults = UserDefaults.standard
     private(set) var cellViewModels: [CatalogCellViewModel]?
     @Observable private(set) var state: CatalogViewState
     private var sortingType: CatalogViewSortingType
@@ -24,7 +25,7 @@ final class CatalogViewModel {
     init(service: NftService) {
         self.service = service
         state = .initial
-        sortingType = .byNameAsc
+        sortingType = userDefaults.sortingType
     }
 
     func viewDidLoaded() {
@@ -71,6 +72,7 @@ final class CatalogViewModel {
 
     func changeSorting(to sortingType: CatalogViewSortingType) {
         self.sortingType = sortingType
+        userDefaults.sortingType = self.sortingType
         sorting()
     }
 }
