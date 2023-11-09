@@ -18,6 +18,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = mainTabBarController
         window?.makeKeyAndVisible()
         
+        setupHUD()
+    }
+    
+    private func setupHUD() {
         ProgressHUD.animationType = .circleSpinFade
         ProgressHUD.colorBackground = .placeholderBackground
         ProgressHUD.colorAnimation = .yaGray
