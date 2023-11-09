@@ -3,7 +3,7 @@ import SnapKit
 
 final class CatalogViewController: UITableViewController, LoadingView {
     internal lazy var activityIndicator = UIActivityIndicatorView()
-    private let viewModel: CatalogViewModel
+    private let viewModel: CatalogViewModelProtocol
 
     init(servicesAssembly: ServicesAssembly) {
         self.viewModel = CatalogViewModel(service: servicesAssembly.nftService)
@@ -40,8 +40,12 @@ final class CatalogViewController: UITableViewController, LoadingView {
         viewModel.viewDidLoaded()
     }
 
+    @objc func sortButtonTapped() {
+        showSortingMenu()
+    }
+
     func bind() {
-        viewModel.$state.bind { [weak self] newState in
+        viewModel.publishedState.bind { [weak self] newState in
             switch newState {
             case .initial, .sorting: break
             case .loading:
@@ -77,10 +81,6 @@ final class CatalogViewController: UITableViewController, LoadingView {
         alert.addAction(sortByNftCountAction)
         alert.addAction(closeAction)
         present(alert, animated: true)
-    }
-
-    @objc func sortButtonTapped() {
-        showSortingMenu()
     }
 }
 

@@ -15,11 +15,20 @@ enum CatalogViewSortingType: Int {
     case byNameAsc, byNameDesc, byNftCountAsc, byNftCountDesc
 }
 
-final class CatalogViewModel {
+protocol CatalogViewModelProtocol {
+    var state: CatalogViewState { get }
+    var publishedState: Observable<CatalogViewState> { get }
+    var cellViewModels: [CatalogCellViewModel]? { get }
+    func viewDidLoaded()
+    func changeSorting(to sortingType: CatalogViewSortingType)
+}
+
+final class CatalogViewModel: CatalogViewModelProtocol {
+    @Observable private(set) var state: CatalogViewState
+    var publishedState: Observable<CatalogViewState> { $state }
+    private(set) var cellViewModels: [CatalogCellViewModel]?
     private let service: NftService
     private let userDefaults = UserDefaults.standard
-    private(set) var cellViewModels: [CatalogCellViewModel]?
-    @Observable private(set) var state: CatalogViewState
     private var sortingType: CatalogViewSortingType
 
     init(service: NftService) {
@@ -30,6 +39,12 @@ final class CatalogViewModel {
 
     func viewDidLoaded() {
         loadCollections()
+    }
+
+    func changeSorting(to sortingType: CatalogViewSortingType) {
+        self.sortingType = sortingType
+        userDefaults.sortingType = self.sortingType
+        sorting()
     }
 
     private func loadCollections() {
@@ -68,11 +83,5 @@ final class CatalogViewModel {
             cellViewModels?.sort { $0.nftCount > $1.nftCount }
         }
         state = .ready
-    }
-
-    func changeSorting(to sortingType: CatalogViewSortingType) {
-        self.sortingType = sortingType
-        userDefaults.sortingType = self.sortingType
-        sorting()
     }
 }
