@@ -6,34 +6,34 @@
 //
 
 import Foundation
+import Combine
 
-enum CatalogViewState {
-    case initial, loading, failed(Error), ready, sorting
+enum CatalogViewModelState {
+    case loading, failed(Error), ready, sorting
 }
 
-enum CatalogViewSortingType: Int {
+enum CatalogViewModelSortingType: Int {
     case byNameAsc, byNameDesc, byNftCountAsc, byNftCountDesc
 }
 
 protocol CatalogViewModelProtocol {
-    var state: CatalogViewState { get }
-    var publishedState: Observable<CatalogViewState> { get }
+    var state: CatalogViewModelState { get }
+    var statePublisher: Published<CatalogViewModelState>.Publisher { get }
     var cellViewModels: [CatalogCellViewModel]? { get }
     func loadCollections()
-    func changeSorting(to sortingType: CatalogViewSortingType)
+    func changeSorting(to sortingType: CatalogViewModelSortingType)
 }
 
 final class CatalogViewModel: CatalogViewModelProtocol {
-    @Observable private(set) var state: CatalogViewState
-    var publishedState: Observable<CatalogViewState> { $state }
+    @Published private(set) var state: CatalogViewModelState = .loading
+    var statePublisher: Published<CatalogViewModelState>.Publisher { $state }
     private(set) var cellViewModels: [CatalogCellViewModel]?
     private let service: NftService
     private let userDefaults = UserDefaults.standard
-    private var sortingType: CatalogViewSortingType
+    private var sortingType: CatalogViewModelSortingType
 
     init(service: NftService) {
         self.service = service
-        state = .initial
         sortingType = userDefaults.sortingType
     }
 
@@ -50,7 +50,7 @@ final class CatalogViewModel: CatalogViewModelProtocol {
         }
     }
 
-    func changeSorting(to sortingType: CatalogViewSortingType) {
+    func changeSorting(to sortingType: CatalogViewModelSortingType) {
         self.sortingType = sortingType
         userDefaults.sortingType = self.sortingType
         sorting()

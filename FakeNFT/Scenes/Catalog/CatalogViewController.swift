@@ -1,9 +1,11 @@
 import UIKit
 import SnapKit
+import Combine
 
 final class CatalogViewController: UITableViewController, LoadingView, ErrorView {
     internal lazy var activityIndicator = UIActivityIndicatorView()
     private let viewModel: CatalogViewModelProtocol
+    private var subscriptions = Set<AnyCancellable>()
 
     init(servicesAssembly: ServicesAssembly) {
         self.viewModel = CatalogViewModel(service: servicesAssembly.nftService)
@@ -45,9 +47,9 @@ final class CatalogViewController: UITableViewController, LoadingView, ErrorView
     }
 
     func bind() {
-        viewModel.publishedState.bind { [weak self] newState in
+        viewModel.statePublisher.sink { [weak self] newState in
             switch newState {
-            case .initial, .sorting: break
+            case .sorting: break
             case .loading:
                 self?.showLoading()
             case .failed:
@@ -60,6 +62,7 @@ final class CatalogViewController: UITableViewController, LoadingView, ErrorView
                 self?.tableView.reloadData()
             }
         }
+        .store(in: &subscriptions)
     }
 
     private func showSortingMenu() {

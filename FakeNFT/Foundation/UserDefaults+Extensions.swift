@@ -11,10 +11,10 @@ extension UserDefaults {
     private enum Keys {
         static let sortingKey = "sortingKey"
     }
-    var sortingType: CatalogViewSortingType {
+    var sortingType: CatalogViewModelSortingType {
         get {
             let rawValue = integer(forKey: Keys.sortingKey)
-            return CatalogViewSortingType(rawValue: rawValue) ?? .byNameAsc
+            return CatalogViewModelSortingType(rawValue: rawValue) ?? .byNameAsc
         }
         set {
             set(newValue.rawValue, forKey: Keys.sortingKey)
