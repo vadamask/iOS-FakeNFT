@@ -59,7 +59,6 @@ final class RatingCell: UITableViewCell, ReuseIdentifying {
     func setupViews() {
         selectionStyle = .none
         contentView.backgroundColor = .clear
-
         contentView.addSubview(contentContainer)
         contentView.addSubview(numberLabel)
         contentContainer.addSubview(userImageView)
