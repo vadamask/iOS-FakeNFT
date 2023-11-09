@@ -9,6 +9,12 @@ final class TabBarController: UITabBarController {
         tag: 0
     )
 
+    private let cartTabBarItem = UITabBarItem(
+        title: L10n.Tab.cart,
+        image: Asset.cart.image,
+        tag: 1
+    )
+
     init(servicesAssembly: ServicesAssembly) {
         self.servicesAssembly = servicesAssembly
         super.init(nibName: nil, bundle: nil)
@@ -25,10 +31,15 @@ final class TabBarController: UITabBarController {
         let catalogController = TestCatalogViewController(
             servicesAssembly: servicesAssembly
         )
+
+        let cartViewModel = CartViewModel(servicesAssembly: servicesAssembly)
+        let cartController = UINavigationController(
+            rootViewController: CartViewController(viewModel: cartViewModel)
+        )
+        
         catalogController.tabBarItem = catalogTabBarItem
+        cartController.tabBarItem = cartTabBarItem
 
-        viewControllers = [catalogController]
-
-        view.backgroundColor = .screenBackground
+        viewControllers = [catalogController, cartController]
     }
 }

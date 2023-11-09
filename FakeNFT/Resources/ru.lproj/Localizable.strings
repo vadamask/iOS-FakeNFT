@@ -1,6 +1,17 @@
 "Tab.catalog" = "Каталог";
+"Tab.cart" = "Корзина";
 "Catalog.openNft" = "Открыть Nft";
 "Error.network" = "Произошла ошибка сети";
 "Error.unknown" = "Произошла неизвестная ошибка";
 "Error.repeat" = "Повторить";
 "Error.title" = "Ошибка";
+
+"cart.main_screen.buyNft" = "К оплате";
+"cart.main_screen.price" = "Цена";
+"cart.main_screen.empty_state" = "Корзина пуста";
+"cart.main_screen.alert_controller.title" = "Сортировка";
+"cart.main_screen.alert_controller.close" = "Закрыть";
+"cart.main_screen.sort_option.price" = "По цене";
+"cart.main_screen.sort_option.rating" = "По рейтингу";
+"cart.main_screen.sort_option.name" = "По названию";
+

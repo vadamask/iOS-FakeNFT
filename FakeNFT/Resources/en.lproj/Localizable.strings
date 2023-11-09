@@ -1,6 +1,15 @@
 "Tab.catalog" = "Catalog";
+"Tab.cart" = "Cart";
 "Catalog.openNft" = "Open Nft";
 "Error.network" = "A network error has occurred";
 "Error.unknown" = "An unknown error has occurred";
 "Error.repeat" = "Repeat";
 "Error.title" = "Error";
+"Cart.buyNFT" = "Buy";
+"Cart.price" = "Price";
+"Cart.emptyState" = "Cart is empty";
+"Cart.alertController.title" = "Sorting";
+"Cart.alertController.close" = "Close";
+"Cart.sort.price" = "By price";
+"Cart.sort.rating" = "By rating";
+"Cart.sort.name" = "By name";
