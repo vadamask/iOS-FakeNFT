@@ -7,91 +7,101 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
+// MARK: - UI elements
 final class RatingCell: UITableViewCell, ReuseIdentifying {
-    private let contentContainer = UIView()
-    private let numberLabel = UILabel()
-    private let userImageView = UIImageView()
-    private let nameLabel = UILabel()
-    private let ratingLabel = UILabel()
+    private let contentContainer: UIView = {
+        let contentContainer = UIView()
+        contentContainer.backgroundColor = .placeholderBackground
+        contentContainer.layer.cornerRadius = 8
+        return contentContainer
+    }()
 
+    private let numberLabel: UILabel = {
+        let numberLabel = UILabel()
+        numberLabel.font = UIFont.bodyRegular15
+        return numberLabel
+    }()
+
+    private let userImageView: UIImageView = {
+        let userImageView = UIImageView()
+        userImageView.layer.cornerRadius = 14
+        userImageView.clipsToBounds = true
+        return userImageView
+    }()
+
+    private let nameLabel: UILabel = {
+        let nameLabel = UILabel()
+        nameLabel.font = UIFont.headline22
+        return nameLabel
+    }()
+
+    private let ratingLabel: UILabel = {
+        let ratingLabel = UILabel()
+        ratingLabel.font = UIFont.headline22
+        return ratingLabel
+    }()
+
+// MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        setupUI()
+        setupViews()
+        setupConstraints()
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupUI() {
+// MARK: - Setup UI
+    func setupViews() {
         selectionStyle = .none
+        contentView.backgroundColor = .clear
 
         contentView.addSubview(contentContainer)
         contentView.addSubview(numberLabel)
         contentContainer.addSubview(userImageView)
         contentContainer.addSubview(nameLabel)
         contentContainer.addSubview(ratingLabel)
+    }
 
-        contentView.backgroundColor = .clear
-
-        contentContainer.backgroundColor = .placeholderBackground
-        contentContainer.layer.cornerRadius = 8
-
-        userImageView.layer.cornerRadius = 16
-        userImageView.clipsToBounds = true
-
-        numberLabel.font = UIFont.bodyRegular15
-        nameLabel.font = UIFont.headline22
-        ratingLabel.font = UIFont.headline22
-
+    private func setupConstraints() {
         contentContainer.snp.makeConstraints { make in
             make.top.equalToSuperview()
-            make.left.equalToSuperview().offset(35)
+            make.leading.equalToSuperview().offset(35)
             make.bottom.equalToSuperview().offset(-8)
-            make.right.equalToSuperview()
+            make.trailing.equalToSuperview()
         }
 
         numberLabel.snp.makeConstraints { make in
-            make.right.lessThanOrEqualTo(contentContainer.snp.left).offset(-16)
+            make.trailing.lessThanOrEqualTo(contentContainer.snp.leading).offset(-16)
             make.centerY.equalToSuperview()
         }
 
         userImageView.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(16)
+            make.leading.equalToSuperview().offset(16)
             make.centerY.equalToSuperview()
             make.height.width.equalTo(28)
         }
 
         nameLabel.snp.makeConstraints { make in
-            make.left.equalTo(userImageView.snp.right).offset(8)
+            make.leading.equalTo(userImageView.snp.trailing).offset(8)
             make.centerY.equalToSuperview()
         }
 
         ratingLabel.snp.makeConstraints { make in
-            make.right.equalToSuperview().offset(-16)
+            make.trailing.equalToSuperview().offset(-16)
             make.centerY.equalToSuperview()
         }
     }
 
+    // MARK: - Configure Cell
     func configure(with user: Users, at index: Int) {
         numberLabel.text = "\(index)"
         nameLabel.text = user.name
         ratingLabel.text = user.rating
-        userImageView.loadImage(from: user.avatar)
-    }
-}
-
-extension UIImageView {
-    func loadImage(from url: URL) {
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            if let data = data, error == nil {
-                DispatchQueue.main.async {
-                    self.image = UIImage(data: data)
-                }
-            }
-            // Обработать ошибки и плейсхолдеры для изображений (при необходимости)
-        }.resume()
+        userImageView.kf.setImage(with: user.avatar)
     }
 }

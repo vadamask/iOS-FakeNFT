@@ -9,23 +9,24 @@ import UIKit
 import SnapKit
 
 final class RatingViewController: UIViewController {
-    private var viewModel = RatingViewModel()
+    private var viewModel = RatingViewModel(networkClient: DefaultNetworkClient())
 
-    // MARK: UI elements
+    // MARK: - UI elements
     private var sortButton: UIBarButtonItem?
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.separatorStyle = .singleLine
         tableView.layer.cornerRadius = 16
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = .clear
         return tableView
     }()
 
-    // MARK: Lifecycle
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        viewModel = RatingViewModel()
         viewModel.reloadTableViewClosure = { [weak self] () in
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
@@ -35,6 +36,7 @@ final class RatingViewController: UIViewController {
         viewModel.fetchUsers()
     }
 
+    // MARK: - Setup UI
     private func setupUI() {
         view.backgroundColor = .screenBackground
         setupNavigationBar()
@@ -42,12 +44,28 @@ final class RatingViewController: UIViewController {
     }
 
     private func setupNavigationBar() {
-        sortButton = UIBarButtonItem(image: UIImage(asset: Asset.sortButton), style: .plain, target: self, action: #selector(sortButtonTapped))
+        let image = UIImage(asset: Asset.sortButton)
+        sortButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(sortButtonTapped))
         sortButton?.tintColor = .yaBlack
         guard let sortButton = sortButton else { return }
         navigationItem.rightBarButtonItem = sortButton
     }
 
+    private func setupTableView() {
+        view.addSubview(tableView)
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(RatingCell.self)
+
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.bottom.equalToSuperview()
+        }
+    }
+
+    // MARK: - Actions
     @objc private func sortButtonTapped() {
         // TODO: Локализовать
         let alertController = UIAlertController(title: nil, message: L10n.Sort.title, preferredStyle: .actionSheet)
@@ -69,26 +87,9 @@ final class RatingViewController: UIViewController {
 
         self.present(alertController, animated: true)
     }
-
-    private func setupTableView() {
-        view.addSubview(tableView)
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.register(RatingCell.self)
-
-        tableView.separatorStyle = .none
-        tableView.backgroundColor = .clear
-
-        tableView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
-            make.left.equalToSuperview().offset(16)
-            make.right.equalToSuperview().offset(-16)
-            make.bottom.equalToSuperview()
-        }
-    }
 }
 
-// MARK: UITableViewDataSource
+// MARK: - UITableViewDataSource
 extension RatingViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.getNumberOfRows()
@@ -104,7 +105,7 @@ extension RatingViewController: UITableViewDataSource {
     }
 }
 
-// MARK: UITableViewDelegate
+// MARK: - UITableViewDelegate
 extension RatingViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80

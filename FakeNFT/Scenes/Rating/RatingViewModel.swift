@@ -7,54 +7,38 @@
 
 import Foundation
 
-class RatingViewModel {
+final class RatingViewModel {
     // MARK: - Properties
-    // Массив с пользователями
+    private var networkClient: NetworkClient
     private var users: [Users] = [] {
-        // При изменении свойства обновляем UI
         didSet {
             self.reloadTableViewClosure?()
         }
     }
-    // Замыкание, которое вызываем для обновления UI после получения данных
     var reloadTableViewClosure: (() -> Void)?
 
     // MARK: - Initialization
-    init() {
+    init(networkClient: NetworkClient) {
+        self.networkClient = networkClient
     }
 
     // MARK: - Data Fetching
-    // Получаем пользователей из сети
     func fetchUsers() {
-        guard let url = UsersRequest().endpoint else { return }
-
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            if let error = error {
-                print("Error fetching users: \(error.localizedDescription)")
-                return
-            }
-            // Проверка наличия данных
-            guard let data = data else {
-                print("No data received.")
-                return
-            }
-            // Вытаскиваем данные
-            do {
-                // Декодирование полученных данных в массив структур Users
-                let decodedUsers = try JSONDecoder().decode([Users].self, from: data)
-                // Сохраняем декодированные данные в свойство users
-                self.users = decodedUsers
-                // Сортируем пользователей по рейтингу
-                self.sortByRating()
-                // Обновляем UI в главном потоке
-                DispatchQueue.main.async {
-                    self.reloadTableViewClosure?()
+        let request = UsersRequest()
+        networkClient.send(request: request, type: [Users].self) { [weak self] result in
+            // Лучше все действия с UI производить в контроллере, в том числе и DispatchQueue.main.async { }
+            // TODO: Изучить варианты
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let decodedUsers):
+                    self?.users = decodedUsers
+                    self?.sortByRating()
+                    self?.reloadTableViewClosure?()
+                case .failure(let error):
+                    print("Error fetching users: \(error.localizedDescription)")
                 }
-            } catch {
-                // Обрабатываем ошибки
-                print("Error decoding users: \(error.localizedDescription)")
             }
-        }.resume()
+        }
     }
 
     // MARK: - Methods for TableView

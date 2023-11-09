@@ -300,7 +300,6 @@
 			isa = PBXGroup;
 			children = (
 				8A6ECA462AFA7CAF00F4B0DA /* Rating */,
-				8A6ECA3A2AFA79D300F4B0DA /* New Group */,
 				E1A1B9D82AA01C9700C3AFBC /* TabBarController */,
 				0CF2C2D92A783C1600FDC837 /* Common */,
 				0CFCB7472A7808870009A829 /* Catalog */,
@@ -368,13 +367,6 @@
 				8A381B4C2AFB6440007842FE /* UsersRequest.swift */,
 			);
 			path = Requests;
-			sourceTree = "<group>";
-		};
-		8A6ECA3A2AFA79D300F4B0DA /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "New Group";
 			sourceTree = "<group>";
 		};
 		8A6ECA462AFA7CAF00F4B0DA /* Rating */ = {
