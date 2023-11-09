@@ -15,3 +15,6 @@
 "cart.main_screen.sort_option.rating" = "По рейтингу";
 "cart.main_screen.sort_option.name" = "По названию";
 
+"cart.payment_screen.top_bar_title" = "Выберите способ оплаты";
+"cart.payment_screen.pay_button" = "Оплатить";
+"cart.payment_screen.terms" = "Совершая покупку, вы соглашаетесь с условиями\nПользовательского соглашения";

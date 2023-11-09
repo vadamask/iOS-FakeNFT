@@ -46,6 +46,11 @@ final class CartViewController: UIViewController {
         self.rightBarItem = rightBarItem
         
         cartView.tableView.dataSource = self
+        
+        cartView.completion = { [weak self] controller in
+            controller.modalPresentationStyle = .overFullScreen
+            self?.present(controller, animated: true)
+        }
     }
     
     private func bind() {
