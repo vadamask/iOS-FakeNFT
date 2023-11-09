@@ -9,13 +9,52 @@ import SnapKit
 import UIKit
 
 final class CartView: UIView {
-    let countLabel = UILabel()
-    let priceLabel = UILabel()
-    let tableView = UITableView()
-    let emptyStateLabel = UILabel()
-    let bottomView = UIView()
+    lazy var countLabel: UILabel = {
+        let label = UILabel()
+        label.font = .bodyRegular15
+        label.textColor = .textPrimary
+        return label
+    }()
     
-    private let buyButton = ActionButton(title: L10n.Cart.MainScreen.buyNft, type: .primary)
+    lazy var priceLabel: UILabel = {
+        let label = UILabel()
+        label.font = .bodyBold17
+        label.textColor = .yaGreen
+        return label
+    }()
+    
+    lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.register(CartCell.self)
+        tableView.backgroundColor = .screenBackground
+        tableView.separatorStyle = .none
+        return tableView
+    }()
+    
+    lazy var emptyStateLabel: UILabel = {
+        let label = UILabel()
+        label.text = L10n.Cart.MainScreen.emptyState
+        label.font = .bodyBold17
+        label.textColor = .textPrimary
+        label.isHidden = true
+        return label
+    }()
+    
+    lazy var bottomView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .placeholderBackground
+        view.layer.cornerRadius = 12
+        view.layer.maskedCorners = [
+            .layerMinXMinYCorner,
+            .layerMaxXMinYCorner
+        ]
+        return view
+    }()
+    
+    private let buyButton = ActionButton(
+        title: L10n.Cart.MainScreen.buyNft,
+        type: .primary
+    )
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -29,26 +68,6 @@ final class CartView: UIView {
 
     private func setupUI() {
         backgroundColor = .screenBackground
-        bottomView.backgroundColor = .placeholderBackground
-        bottomView.layer.cornerRadius = 12
-        bottomView.layer.maskedCorners = [
-            .layerMinXMinYCorner,
-            .layerMaxXMinYCorner
-        ]
-
-        countLabel.font = .bodyRegular15
-        priceLabel.font = .bodyBold17
-        countLabel.textColor = .textPrimary
-        priceLabel.textColor = .yaGreen
-        
-        tableView.register(CartCell.self)
-        tableView.backgroundColor = .screenBackground
-        tableView.separatorStyle = .none
-        
-        emptyStateLabel.text = L10n.Cart.MainScreen.emptyState
-        emptyStateLabel.font = .bodyBold17
-        emptyStateLabel.textColor = .textPrimary
-        emptyStateLabel.isHidden = true
     }
 
     private func setupLayout() {
