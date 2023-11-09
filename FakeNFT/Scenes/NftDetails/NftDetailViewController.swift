@@ -1,4 +1,5 @@
 import UIKit
+import SnapKit
 import Kingfisher
 
 protocol NftDetailView: AnyObject, ErrorView, LoadingView {
@@ -61,10 +62,14 @@ final class NftDetailViewController: UIViewController {
 
     private func setupLayout() {
         collectionView.addSubview(activityIndicator)
-        activityIndicator.constraintCenters(to: collectionView)
+        activityIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
 
         view.addSubview(collectionView)
-        collectionView.constraintEdges(to: view)
+        collectionView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
 
         view.addSubview(pageControl)
         pageControl.translatesAutoresizingMaskIntoConstraints = false
