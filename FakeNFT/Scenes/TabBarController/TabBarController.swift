@@ -9,6 +9,12 @@ final class TabBarController: UITabBarController {
         tag: 0
     )
 
+    private let statisticsTabBarItem = UITabBarItem(
+        title: L10n.Tab.statistics,
+        image: Asset.statistics.image,
+        tag: 1
+    )
+
     init(servicesAssembly: ServicesAssembly) {
         self.servicesAssembly = servicesAssembly
         super.init(nibName: nil, bundle: nil)
@@ -27,7 +33,11 @@ final class TabBarController: UITabBarController {
         )
         catalogController.tabBarItem = catalogTabBarItem
 
-        viewControllers = [catalogController]
+        let statisticsController = RatingViewController()
+        statisticsController.tabBarItem = statisticsTabBarItem
+        let statisticsNavController = UINavigationController(rootViewController: statisticsController)
+
+        viewControllers = [catalogController, statisticsNavController]
 
         view.backgroundColor = .screenBackground
     }
