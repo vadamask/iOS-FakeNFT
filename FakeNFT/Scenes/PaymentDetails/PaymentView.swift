@@ -8,6 +8,8 @@ import SnapKit
 import UIKit
 
 final class PaymentView: UIView {
+    var completion: (() -> Void)?
+    
     private lazy var bottomView = BottomView()
     private lazy var payButton = ActionButton(
         title: L10n.Cart.PaymentScreen.payButton,
@@ -25,6 +27,11 @@ final class PaymentView: UIView {
         let button = UIButton(type: .system)
         button.setImage(Asset.backButton.image, for: .normal)
         button.tintColor = .borderColor
+        button.addTarget(
+            self,
+            action: #selector(backButtonTapped),
+            for: .touchUpInside
+        )
         return button
     }()
     
@@ -93,5 +100,9 @@ final class PaymentView: UIView {
             make.leading.top.equalTo(16)
             make.trailing.equalTo(-16)
         }
+    }
+    
+    @objc private func backButtonTapped() {
+        completion?()
     }
 }

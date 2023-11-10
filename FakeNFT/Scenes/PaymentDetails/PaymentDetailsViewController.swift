@@ -13,4 +13,11 @@ final class PaymentDetailsViewController: UIViewController {
     override func loadView() {
         self.view = paymentView
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        paymentView.completion = { [unowned self] in
+            dismiss(animated: true)
+        }
+    }
 }
