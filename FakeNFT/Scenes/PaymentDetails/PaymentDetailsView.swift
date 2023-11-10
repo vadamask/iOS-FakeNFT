@@ -7,7 +7,7 @@
 import SnapKit
 import UIKit
 
-final class PaymentView: UIView {
+final class PaymentDetailsView: UIView {
     var completion: (() -> Void)?
     
     lazy var collectionView: UICollectionView = {

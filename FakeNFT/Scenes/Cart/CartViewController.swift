@@ -47,9 +47,12 @@ final class CartViewController: UIViewController {
         
         cartView.tableView.dataSource = self
         
-        cartView.completion = { [weak self] controller in
+        cartView.completion = { [weak self] in
+            guard let self else { return }
+            let viewModel = PaymentDetailsViewModel(serviceAssembly: self.viewModel.servicesAssembly)
+            let controller = PaymentDetailsViewController(viewModel: viewModel)
             controller.modalPresentationStyle = .overFullScreen
-            self?.present(controller, animated: true)
+            self.present(controller, animated: true)
         }
     }
     

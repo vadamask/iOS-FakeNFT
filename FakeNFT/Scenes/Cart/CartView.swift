@@ -9,7 +9,7 @@ import SnapKit
 import UIKit
 
 final class CartView: UIView {
-    var completion: ((PaymentDetailsViewController) -> Void)?
+    var completion: (() -> Void)?
     
     lazy var countLabel: UILabel = {
         let label = UILabel()
@@ -62,9 +62,7 @@ final class CartView: UIView {
     private func setupUI() {
         backgroundColor = .screenBackground
         buyButton.action = { [weak self] _ in
-            let viewModel = PaymentViewModel()
-            let controller = PaymentDetailsViewController(viewModel: viewModel)
-            self?.completion?(controller)
+            self?.completion?()
         }
     }
 

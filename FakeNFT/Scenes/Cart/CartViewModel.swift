@@ -22,9 +22,9 @@ final class CartViewModel {
     @Published var error: Error?
     @Published var emptyState: Bool?
     @Published var isLoading: Bool?
+    let servicesAssembly: ServicesAssembly
     
     private var sortOption = SortOption.name
-    private let servicesAssembly: ServicesAssembly
     private let userDefaults = UserDefaults.standard
     
     init(servicesAssembly: ServicesAssembly) {
