@@ -8,16 +8,17 @@ import Combine
 import UIKit
 
 private enum Section: Hashable {
-    case all
+    case main
 }
 
 final class PaymentDetailsViewController: UIViewController {
-    let paymentView = PaymentView()
+    let paymentView = PaymentDetailsView()
+    
     private lazy var dataSource = configureDataSource()
-    private let viewModel: PaymentViewModel
+    private let viewModel: PaymentDetailsViewModel
     private var cancellables: Set<AnyCancellable> = []
     
-    init(viewModel: PaymentViewModel) {
+    init(viewModel: PaymentDetailsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -34,11 +35,12 @@ final class PaymentDetailsViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         bind()
+        viewModel.loadCurrencies()
     }
     
     private func bind() {
-        viewModel.$currencies.sink { [weak self] _ in
-            self?.updateSnapshot()
+        viewModel.currencies.sink { [weak self] currencies in
+            self?.applySnapshot(animate: false, values: currencies)
         }
         .store(in: &cancellables)
     }
@@ -67,7 +69,7 @@ extension PaymentDetailsViewController {
                 withReuseIdentifier: CurrencyCell.defaultReuseIdentifier,
                 for: indexPath
             ) as? CurrencyCell {
-                cell.configure(with: self.viewModel.currencies[indexPath.row])
+                cell.configure(with: viewModel.currencies.value[indexPath.row])
                 return cell
             } else {
                 return UICollectionViewCell()
@@ -76,11 +78,11 @@ extension PaymentDetailsViewController {
         return dataSource
     }
     
-    private func updateSnapshot() {
+    private func applySnapshot(animate: Bool, values: [Currency]) {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Currency>()
-        snapshot.appendSections([.all])
-        snapshot.appendItems(viewModel.currencies, toSection: .all)
-        dataSource.apply(snapshot)
+        snapshot.appendSections([.main])
+        snapshot.appendItems(values, toSection: .main)
+        dataSource.apply(snapshot, animatingDifferences: animate)
     }
 }
 
