@@ -100,10 +100,12 @@ final class CartViewController: UIViewController {
         .store(in: &cancellables)
         
         viewModel.$isLoading.sink { [weak self] isLoading in
-            guard
-                let self = self,
-                let isLoading = isLoading else { return }
-            isLoading ? showLoading() : hideLoading()
+            guard let self, let isLoading else { return }
+            if isLoading {
+                showLoading()
+            } else {
+                hideLoading()
+            }
         }
         .store(in: &cancellables)
     }
@@ -149,6 +151,8 @@ final class CartViewController: UIViewController {
         present(actionSheet, animated: true)
     }
 }
+
+// MARK: - UITableViewDataSource
 
 extension CartViewController: UITableViewDataSource {
     func tableView(
