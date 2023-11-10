@@ -62,7 +62,8 @@ final class CartView: UIView {
     private func setupUI() {
         backgroundColor = .screenBackground
         buyButton.action = { [weak self] _ in
-            let controller = PaymentDetailsViewController()
+            let viewModel = PaymentViewModel()
+            let controller = PaymentDetailsViewController(viewModel: viewModel)
             self?.completion?(controller)
         }
     }

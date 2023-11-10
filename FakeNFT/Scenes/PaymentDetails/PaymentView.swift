@@ -10,18 +10,20 @@ import UIKit
 final class PaymentView: UIView {
     var completion: (() -> Void)?
     
+    lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(CurrencyCell.self)
+        collectionView.contentInset = UIEdgeInsets(top: 20, left: 16, bottom: 20, right: 16)
+        collectionView.backgroundColor = .screenBackground
+        return collectionView
+    }()
+
     private lazy var bottomView = BottomView()
     private lazy var payButton = ActionButton(
         title: L10n.Cart.PaymentScreen.payButton,
         type: .primary
     )
-    
-    private lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView()
-        collectionView.collectionViewLayout = UICollectionViewFlowLayout()
-        collectionView.register(CurrencyCell.self)
-        return collectionView
-    }()
     
     private lazy var backButton: UIButton = {
         let button = UIButton(type: .system)
@@ -67,9 +69,11 @@ final class PaymentView: UIView {
     }
     
     private func setupLayout() {
+        addSubview(collectionView)
         addSubview(bottomView)
         addSubview(backButton)
         addSubview(topLabel)
+    
         bottomView.addSubview(payButton)
         bottomView.addSubview(linkLabel)
         
@@ -80,7 +84,7 @@ final class PaymentView: UIView {
         }
         
         topLabel.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide).offset(12)
+            make.centerY.equalTo(backButton)
             make.centerX.equalToSuperview()
         }
         
@@ -99,6 +103,11 @@ final class PaymentView: UIView {
         linkLabel.snp.makeConstraints { make in
             make.leading.top.equalTo(16)
             make.trailing.equalTo(-16)
+        }
+        
+        collectionView.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(topLabel.snp.bottom).offset(10)
         }
     }
     
