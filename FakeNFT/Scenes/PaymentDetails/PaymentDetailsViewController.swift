@@ -13,7 +13,7 @@ private enum Section: Hashable {
 
 final class PaymentDetailsViewController: UIViewController {
     let paymentView = PaymentDetailsView()
-    
+    var onSuccess: (() -> Void)?
     private lazy var dataSource = configureDataSource()
     private let viewModel: PaymentDetailsViewModel
     private var cancellables: Set<AnyCancellable> = []
@@ -49,22 +49,12 @@ final class PaymentDetailsViewController: UIViewController {
         }
         .store(in: &cancellables)
         
-        viewModel.$error.sink { [weak self] error in
-            guard let error else { return }
-            
-            let model = switch error {
-            case OrderErrors.insufficientFunds:
-                ErrorModel(
-                    message: L10n.Error.insufficientFunds,
-                    actionText: L10n.Error.ok
-                ) {}
-            default:
-                ErrorModel(
-                    message: L10n.Error.network,
-                    actionText: L10n.Error.repeat
-                ) { [weak self] in
-                    self?.viewModel.loadCurrencies()
-                }
+        viewModel.$error.sink { [weak self] _ in
+            let model = ErrorModel(
+                message: L10n.Error.network,
+                actionText: L10n.Error.repeat
+            ) { [weak self] in
+                self?.viewModel.loadCurrencies()
             }
             self?.showError(model)
         }
@@ -92,6 +82,42 @@ final class PaymentDetailsViewController: UIViewController {
             }
         }
         .store(in: &cancellables)
+        
+        viewModel.$isPaymentSuccess.sink { [weak self] isSuccess in
+            guard let self, let isSuccess else { return }
+            
+            if isSuccess {
+                onSuccess?()
+                let controller = SuccessfulPayment()
+                controller.modalPresentationStyle = .overFullScreen
+                present(controller, animated: true)
+            } else {
+                showAlert()
+            }
+        }
+        .store(in: &cancellables)
+    }
+    
+    private func showAlert() {
+        let alertController = UIAlertController(
+            title: L10n.Error.insufficientFunds,
+            message: nil,
+            preferredStyle: .alert
+        )
+        let repeatAction = UIAlertAction(
+            title: L10n.Error.repeat,
+            style: .default
+        ) { [weak self] _ in
+            self?.viewModel.verifyPayment()
+        }
+        let cancelAction = UIAlertAction(
+            title: L10n.Error.cancel,
+            style: .cancel
+        )
+        
+        alertController.addAction(repeatAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true)
     }
     
     private func setupUI() {

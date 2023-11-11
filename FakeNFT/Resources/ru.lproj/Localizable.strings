@@ -5,7 +5,8 @@
 "Error.unknown" = "Произошла неизвестная ошибка";
 "Error.repeat" = "Повторить";
 "Error.title" = "Ошибка";
-"Error.insufficientFunds" = "Недостаточно средств";
+"Error.insufficientFunds" = "Не удалось произвести оплату";
+"Error.cancel" = "Отменить";
 "Error.ok" = "Ок";
 
 "cart.main_screen.buyNft" = "К оплате";
@@ -20,3 +21,6 @@
 "cart.payment_screen.top_bar_title" = "Выберите способ оплаты";
 "cart.payment_screen.pay_button" = "Оплатить";
 "cart.payment_screen.terms" = "Совершая покупку, вы соглашаетесь с условиями\nПользовательского соглашения";
+
+"cart.successful_payment.backToCatatlog" = "Вернуться в каталог";
+"cart.successful_payment.label" = "Успех! Оплата прошла, поздравляем с покупкой!";

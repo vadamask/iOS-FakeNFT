@@ -5,7 +5,8 @@
 "Error.unknown" = "An unknown error has occurred";
 "Error.repeat" = "Repeat";
 "Error.title" = "Error";
-"Error.insufficientFunds" = "Insufficient funds";
+"Error.insufficientFunds" = "Failed to make payment";
+"Error.cancel" = "Cancel";
 "Error.ok" = "Ok";
 
 "cart.main_screen.buyNft" = "To pay";
@@ -20,3 +21,6 @@
 "cart.payment_screen.top_bar_title" = "Select a payment method";
 "cart.payment_screen.pay_button" = "Pay";
 "cart.payment_screen.terms" = "By making a purchase, you agree to the\nTerms of use";
+
+"cart.successful_payment.backToCatatlog" = "Return to the catalog";
+"cart.successful_payment.label" = "Success! The payment has passed, congratulations on your purchase!";

@@ -58,6 +58,18 @@ final class CartViewModel {
         }
     }
     
+    func deleteNfts() {
+        let dto = NftDto(id: "1", nfts: [])
+        servicesAssembly.nftService.deleteNfts(dto) { [weak self] result in
+            switch result {
+            case .success(let _):
+                self?.nfts = []
+            case .failure(let error):
+                print("not deleted")
+            }
+        }
+    }
+    
     private func sort(_ nfts: [Nft]) -> [Nft] {
         switch sortOption {
         case .name:
@@ -90,7 +102,6 @@ final class CartViewModel {
         
         group.notify(queue: DispatchQueue.main) { [weak self] in
             guard let self = self else { return }
-            self.isLoading = false
             self.nfts = sort(nfts)
         }
     }

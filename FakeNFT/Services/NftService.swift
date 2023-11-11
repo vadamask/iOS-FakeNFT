@@ -4,12 +4,14 @@ typealias NftCompletion = (Result<Nft, Error>) -> Void
 typealias OrderCompletion = (Result<Order, Error>) -> Void
 typealias CurrencyCompletion = (Result<[Currency], Error>) -> Void
 typealias PaymentCompletion = (Result<OrderPayment, Error>) -> Void
+typealias DeleteCompletion = (Result<Void, Error>) -> Void
 
 protocol NftService {
     func loadNft(id: String, completion: @escaping NftCompletion)
     func loadOrder(id: String, completion: @escaping OrderCompletion)
     func loadCurrencies(completion: @escaping CurrencyCompletion)
     func verifyPayment(with currencyID: String, completion: @escaping PaymentCompletion)
+    func deleteNfts(_ dto: NftDto, completion: @escaping DeleteCompletion)
 }
 
 final class NftServiceImpl: NftService {
@@ -70,6 +72,20 @@ final class NftServiceImpl: NftService {
             case .success(let orderPayment):
                 completion(.success(orderPayment))
             case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func deleteNfts(_ dto: NftDto, completion: @escaping DeleteCompletion) {
+        storage.clearStorage()
+        
+        let request = DeleteNftsRequest(dto: dto)
+        networkClient.send(request: request) { result in
+            switch result {
+            case .success(_):
+                completion(.success(Void()))
+            case.failure(let error):
                 completion(.failure(error))
             }
         }

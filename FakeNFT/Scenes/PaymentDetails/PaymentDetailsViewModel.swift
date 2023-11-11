@@ -7,14 +7,11 @@
 import Combine
 import Foundation
 
-enum OrderErrors: Error {
-    case insufficientFunds
-}
-
 final class PaymentDetailsViewModel {
     @Published var isLoading: Bool?
     @Published var error: Error?
     @Published var selectedCurrencyID: String?
+    @Published var isPaymentSuccess: Bool?
     
     var currencies = CurrentValueSubject<[Currency], Never>([])
     private let serviceAssembly: ServicesAssembly
@@ -43,11 +40,7 @@ final class PaymentDetailsViewModel {
         serviceAssembly.nftService.verifyPayment(with: selectedCurrencyID) { [weak self] result in
             switch result {
             case .success(let orderPayment):
-                if orderPayment.success {
-                    print("payment successful")
-                } else {
-                    self?.error = OrderErrors.insufficientFunds
-                }
+                self?.isPaymentSuccess = orderPayment.success
             case .failure(let error):
                 self?.error = error
             }

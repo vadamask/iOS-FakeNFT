@@ -12,7 +12,7 @@ protocol PaymentDetailsViewDelegate: AnyObject {
     func payButtonTapped()
 }
 
-final class PaymentDetailsView: UIView {   
+final class PaymentDetailsView: UIView {
     weak var delegate: PaymentDetailsViewDelegate?
 
     lazy var collectionView: UICollectionView = {

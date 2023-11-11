@@ -31,6 +31,10 @@ final class CartViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         bind()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         viewModel.loadOrder(isPullToRefresh: false)
     }
     
@@ -57,6 +61,9 @@ final class CartViewController: UIViewController {
             guard let self else { return }
             let viewModel = PaymentDetailsViewModel(serviceAssembly: self.viewModel.servicesAssembly)
             let controller = PaymentDetailsViewController(viewModel: viewModel)
+            controller.onSuccess = { [weak self] in
+                self?.viewModel.deleteNfts()
+            }
             controller.modalPresentationStyle = .overFullScreen
             self.present(controller, animated: true)
         }
@@ -79,8 +86,8 @@ final class CartViewController: UIViewController {
                 : .borderColor
                 
                 self?.cartView.bottomView.isHidden = nfts.isEmpty ? true : false
+                self?.cartView.tableView.refreshControl?.endRefreshing()
             }
-            cartView.tableView.refreshControl?.endRefreshing()
         }
         .store(in: &cancellables)
         
@@ -115,6 +122,7 @@ final class CartViewController: UIViewController {
                 showLoading()
             } else {
                 hideLoading()
+                self.cartView.tableView.refreshControl?.endRefreshing()
             }
         }
         .store(in: &cancellables)
