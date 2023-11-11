@@ -38,8 +38,8 @@ final class CartViewModel {
         nfts = sort(nfts)
     }
     
-    func loadOrder() {
-        isLoading = true
+    func loadOrder(isPullToRefresh: Bool) {
+        isLoading = !isPullToRefresh
         
         servicesAssembly.nftService.loadOrder(id: "1") { [weak self] result in
             switch result {

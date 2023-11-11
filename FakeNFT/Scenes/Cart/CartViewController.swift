@@ -31,7 +31,7 @@ final class CartViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         bind()
-        viewModel.loadOrder()
+        viewModel.loadOrder(isPullToRefresh: false)
     }
     
     private func setupUI() {
@@ -46,6 +46,12 @@ final class CartViewController: UIViewController {
         self.rightBarItem = rightBarItem
         
         cartView.tableView.dataSource = self
+        cartView.tableView.refreshControl = UIRefreshControl()
+        cartView.tableView.refreshControl?.addTarget(
+            self,
+            action: #selector(refreshTableView),
+            for: .valueChanged
+        )
         
         cartView.completion = { [weak self] in
             guard let self else { return }
@@ -74,6 +80,7 @@ final class CartViewController: UIViewController {
                 
                 self?.cartView.bottomView.isHidden = nfts.isEmpty ? true : false
             }
+            cartView.tableView.refreshControl?.endRefreshing()
         }
         .store(in: &cancellables)
         
@@ -83,7 +90,7 @@ final class CartViewController: UIViewController {
                     message: L10n.Error.network,
                     actionText: L10n.Error.repeat
                 ) { [weak self] in
-                    self?.viewModel.loadOrder()
+                    self?.viewModel.loadOrder(isPullToRefresh: false)
                 }
                 self?.showError(model)
                 print(error.localizedDescription)
@@ -152,6 +159,10 @@ final class CartViewController: UIViewController {
         actionSheet.addAction(closeAction)
         
         present(actionSheet, animated: true)
+    }
+    
+    @objc private func refreshTableView() {
+        viewModel.loadOrder(isPullToRefresh: true)
     }
 }
 
