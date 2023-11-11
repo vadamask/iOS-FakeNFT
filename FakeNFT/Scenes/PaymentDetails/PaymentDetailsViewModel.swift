@@ -8,9 +8,10 @@ import Combine
 import Foundation
 
 final class PaymentDetailsViewModel {
-    var currencies = CurrentValueSubject<[Currency], Never>([])
     @Published var isLoading: Bool?
     @Published var error: Error?
+    var currencies = CurrentValueSubject<[Currency], Never>([])
+    var selectedCurrency: Int?
     private let serviceAssembly: ServicesAssembly
     
     init(serviceAssembly: ServicesAssembly) {

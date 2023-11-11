@@ -10,6 +10,11 @@ import UIKit
 
 final class CurrencyCell: UICollectionViewCell, ReuseIdentifying {
     static var defaultReuseIdentifier: String = "CurrencyCell"
+    var isSelect = false {
+        didSet {
+            contentView.layer.borderWidth = isSelect ? 1 : 0
+        }
+    }
     
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
@@ -51,8 +56,9 @@ final class CurrencyCell: UICollectionViewCell, ReuseIdentifying {
     }
     
     private func setupUI() {
-        backgroundColor = .placeholderBackground
-        layer.cornerRadius = 12
+        contentView.backgroundColor = .placeholderBackground
+        contentView.layer.cornerRadius = 12
+        contentView.layer.borderColor = UIColor.borderColor.cgColor
     }
     
     private func setupLayout() {

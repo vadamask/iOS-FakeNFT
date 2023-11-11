@@ -48,7 +48,7 @@ final class PaymentDetailsViewController: UIViewController {
         }
         .store(in: &cancellables)
         
-        viewModel.$error.sink { [weak self] error in
+        viewModel.$error.sink { [weak self] _ in
             let model = ErrorModel(
                 message: L10n.Error.network,
                 actionText: L10n.Error.repeat
@@ -56,7 +56,6 @@ final class PaymentDetailsViewController: UIViewController {
                 self?.viewModel.loadCurrencies()
             }
             self?.showError(model)
-            print(error?.localizedDescription)
         }
         .store(in: &cancellables)
         
@@ -115,18 +114,45 @@ extension PaymentDetailsViewController {
 // MARK: - UICollectionViewDelegateFlowLayout
 
 extension PaymentDetailsViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
         let screenWidth = view.bounds.width
         let cellWidth = (screenWidth - 32 - 7) / 2
         return CGSize(width: cellWidth, height: 46)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumLineSpacingForSectionAt section: Int
+    ) -> CGFloat {
         7
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumInteritemSpacingForSectionAt section: Int
+    ) -> CGFloat {
         7
+    }
+}
+
+// MARK: - CollectionViewDelegate
+
+extension PaymentDetailsViewController {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        collectionView.indexPathsForVisibleItems.forEach { current in
+            let cell = collectionView.cellForItem(at: current) as? CurrencyCell
+            cell?.isSelect = indexPath == current
+        }
+        viewModel.selectedCurrency = indexPath.row
     }
 }
 
