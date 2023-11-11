@@ -102,6 +102,7 @@ final class CartViewModel {
         
         group.notify(queue: DispatchQueue.main) { [weak self] in
             guard let self = self else { return }
+            isLoading = false
             self.nfts = sort(nfts)
         }
     }
