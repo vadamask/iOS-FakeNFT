@@ -5,6 +5,8 @@
 "Error.unknown" = "An unknown error has occurred";
 "Error.repeat" = "Repeat";
 "Error.title" = "Error";
+"Error.insufficientFunds" = "Insufficient funds";
+"Error.ok" = "Ok";
 
 "cart.main_screen.buyNft" = "To pay";
 "cart.main_screen.price" = "Price";

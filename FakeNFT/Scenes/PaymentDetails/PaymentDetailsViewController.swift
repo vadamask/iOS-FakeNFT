@@ -21,6 +21,7 @@ final class PaymentDetailsViewController: UIViewController {
     init(viewModel: PaymentDetailsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        paymentView.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -48,12 +49,22 @@ final class PaymentDetailsViewController: UIViewController {
         }
         .store(in: &cancellables)
         
-        viewModel.$error.sink { [weak self] _ in
-            let model = ErrorModel(
-                message: L10n.Error.network,
-                actionText: L10n.Error.repeat
-            ) { [weak self] in
-                self?.viewModel.loadCurrencies()
+        viewModel.$error.sink { [weak self] error in
+            guard let error else { return }
+            
+            let model = switch error {
+            case OrderErrors.insufficientFunds:
+                ErrorModel(
+                    message: L10n.Error.insufficientFunds,
+                    actionText: L10n.Error.ok
+                ) {}
+            default:
+                ErrorModel(
+                    message: L10n.Error.network,
+                    actionText: L10n.Error.repeat
+                ) { [weak self] in
+                    self?.viewModel.loadCurrencies()
+                }
             }
             self?.showError(model)
         }
@@ -68,16 +79,25 @@ final class PaymentDetailsViewController: UIViewController {
             }
         }
         .store(in: &cancellables)
+        
+        viewModel.$selectedCurrencyID.sink { [weak self] id in
+            guard let self else { return }
+            
+            if id != nil {
+                self.paymentView.payButton.isEnabled = true
+                self.paymentView.payButton.backgroundColor = .buttonBackground
+            } else {
+                self.paymentView.payButton.isEnabled = false
+                self.paymentView.payButton.backgroundColor = .yaGray
+            }
+        }
+        .store(in: &cancellables)
     }
     
     private func setupUI() {
         view.backgroundColor = .screenBackground
         paymentView.collectionView.dataSource = dataSource
         paymentView.collectionView.delegate = self
-        
-        paymentView.completion = { [unowned self] in
-            dismiss(animated: true)
-        }
     }
 }
 
@@ -152,7 +172,17 @@ extension PaymentDetailsViewController {
             let cell = collectionView.cellForItem(at: current) as? CurrencyCell
             cell?.isSelect = indexPath == current
         }
-        viewModel.selectedCurrency = indexPath.row
+        viewModel.currencyDidTapped(at: indexPath)
+    }
+}
+
+extension PaymentDetailsViewController: PaymentDetailsViewDelegate {
+    func backButtonTapped() {
+        dismiss(animated: true)
+    }
+    
+    func payButtonTapped() {
+        viewModel.verifyPayment()
     }
 }
 

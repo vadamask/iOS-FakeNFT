@@ -5,6 +5,8 @@
 "Error.unknown" = "Произошла неизвестная ошибка";
 "Error.repeat" = "Повторить";
 "Error.title" = "Ошибка";
+"Error.insufficientFunds" = "Недостаточно средств";
+"Error.ok" = "Ок";
 
 "cart.main_screen.buyNft" = "К оплате";
 "cart.main_screen.price" = "Цена";

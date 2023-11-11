@@ -7,9 +7,14 @@
 import SnapKit
 import UIKit
 
-final class PaymentDetailsView: UIView {
-    var completion: (() -> Void)?
-    
+protocol PaymentDetailsViewDelegate: AnyObject {
+    func backButtonTapped()
+    func payButtonTapped()
+}
+
+final class PaymentDetailsView: UIView {   
+    weak var delegate: PaymentDetailsViewDelegate?
+
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -19,8 +24,7 @@ final class PaymentDetailsView: UIView {
         return collectionView
     }()
 
-    private lazy var bottomView = BottomView()
-    private lazy var payButton = ActionButton(
+    lazy var payButton = ActionButton(
         title: L10n.Cart.PaymentScreen.payButton,
         type: .primary
     )
@@ -54,8 +58,10 @@ final class PaymentDetailsView: UIView {
         return label
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    private lazy var bottomView = BottomView()
+    
+    init() {
+        super.init(frame: .zero)
         setupUI()
         setupLayout()
     }
@@ -66,6 +72,9 @@ final class PaymentDetailsView: UIView {
     
     private func setupUI() {
         backgroundColor = .screenBackground
+        payButton.action = { [weak self] _ in
+            self?.payButtonTapped()
+        }
     }
     
     private func setupLayout() {
@@ -112,6 +121,10 @@ final class PaymentDetailsView: UIView {
     }
     
     @objc private func backButtonTapped() {
-        completion?()
+        delegate?.backButtonTapped()
+    }
+    
+    @objc private func payButtonTapped() {
+        delegate?.payButtonTapped()
     }
 }
