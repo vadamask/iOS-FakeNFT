@@ -18,13 +18,15 @@ final class PaymentDetailsViewModel {
     }
     
     func loadCurrencies() {
-        serviceAssembly.nftService.loadCurrencies { result in
+        isLoading = true
+        serviceAssembly.nftService.loadCurrencies { [weak self] result in
             switch result {
             case .success(let currencies):
-                self.currencies.send(currencies)
+                self?.currencies.send(currencies)
             case .failure(let error):
-                self.error = error
+                self?.error = error
             }
+            self?.isLoading = false
         }
     }
 }

@@ -35,12 +35,38 @@ final class PaymentDetailsViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         bind()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         viewModel.loadCurrencies()
     }
     
     private func bind() {
         viewModel.currencies.sink { [weak self] currencies in
             self?.applySnapshot(animate: false, values: currencies)
+        }
+        .store(in: &cancellables)
+        
+        viewModel.$error.sink { [weak self] error in
+            let model = ErrorModel(
+                message: L10n.Error.network,
+                actionText: L10n.Error.repeat
+            ) { [weak self] in
+                self?.viewModel.loadCurrencies()
+            }
+            self?.showError(model)
+            print(error?.localizedDescription)
+        }
+        .store(in: &cancellables)
+        
+        viewModel.$isLoading.sink { [weak self] isLoading in
+            guard let isLoading else { return }
+            if isLoading {
+                self?.showLoading()
+            } else {
+                self?.hideLoading()
+            }
         }
         .store(in: &cancellables)
     }
@@ -103,3 +129,6 @@ extension PaymentDetailsViewController: UICollectionViewDelegateFlowLayout {
         7
     }
 }
+
+extension PaymentDetailsViewController: LoadingView {}
+extension PaymentDetailsViewController: ErrorView {}
