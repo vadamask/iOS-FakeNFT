@@ -21,7 +21,6 @@ final class PaymentDetailsViewController: UIViewController {
     init(viewModel: PaymentDetailsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        paymentView.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -35,6 +34,7 @@ final class PaymentDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setDelegates()
         bind()
     }
     
@@ -122,8 +122,12 @@ final class PaymentDetailsViewController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .screenBackground
+    }
+    
+    private func setDelegates() {
         paymentView.collectionView.dataSource = dataSource
         paymentView.collectionView.delegate = self
+        paymentView.delegate = self
     }
 }
 
@@ -201,6 +205,8 @@ extension PaymentDetailsViewController {
         viewModel.currencyDidTapped(at: indexPath)
     }
 }
+
+// MARK: - PaymentDetailsViewDelegate
 
 extension PaymentDetailsViewController: PaymentDetailsViewDelegate {
     func backButtonTapped() {

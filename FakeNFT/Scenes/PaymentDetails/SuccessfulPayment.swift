@@ -24,7 +24,10 @@ final class SuccessfulPayment: UIViewController {
         return label
     }()
     
-    private let buton = ActionButton(title: L10n.Cart.SuccessfulPayment.backToCatatlog, type: .primary)
+    private let buton = ActionButton(
+        title: L10n.Cart.SuccessfulPayment.backToCatatlog,
+        type: .primary
+    )
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -141,6 +141,7 @@ internal enum Asset {
   internal static let cart = ImageAsset(name: "Cart")
   internal static let catalog = ImageAsset(name: "Catalog")
   internal static let logo = ImageAsset(name: "logo")
+  internal static let successfulPayment = ImageAsset(name: "successfulPayment")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 

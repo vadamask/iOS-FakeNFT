@@ -13,10 +13,6 @@ enum SortOption: Int {
     case rating
 }
 
-private enum Constants {
-    static let sortCartKey = "sortCartKey"
-}
-
 final class CartViewModel {
     @Published var nfts: [Nft] = []
     @Published var error: Error?
@@ -34,7 +30,7 @@ final class CartViewModel {
     
     func setSortOption(_ option: SortOption) {
         sortOption = option
-        userDefaults.set(option.rawValue, forKey: Constants.sortCartKey)
+        userDefaults.set(option.rawValue, forKey: UserDefaultsKeys.sortCartKey)
         nfts = sort(nfts)
     }
     
@@ -65,7 +61,7 @@ final class CartViewModel {
             case .success(let _):
                 self?.nfts = []
             case .failure(let error):
-                print("not deleted")
+                self?.error = error
             }
         }
     }
@@ -101,14 +97,14 @@ final class CartViewModel {
         }
         
         group.notify(queue: DispatchQueue.main) { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             isLoading = false
             self.nfts = sort(nfts)
         }
     }
     
     private func getSortOption() {
-        let rawValue = userDefaults.integer(forKey: Constants.sortCartKey)
+        let rawValue = userDefaults.integer(forKey: UserDefaultsKeys.sortCartKey)
         if let sortOption = SortOption(rawValue: rawValue) {
             self.sortOption = sortOption
         }

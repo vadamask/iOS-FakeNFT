@@ -71,7 +71,7 @@ final class CartViewController: UIViewController {
     
     private func bind() {
         viewModel.$nfts.sink { [weak self] nfts in
-            guard let self = self else { return }
+            guard let self else { return }
             
             DispatchQueue.main.async { [weak self] in
                 self?.cartView.tableView.reloadData()
@@ -92,7 +92,7 @@ final class CartViewController: UIViewController {
         .store(in: &cancellables)
         
         viewModel.$error.sink { [weak self] error in
-            if let error = error {
+            if let error {
                 let model = ErrorModel(
                     message: L10n.Error.network,
                     actionText: L10n.Error.repeat
@@ -106,7 +106,7 @@ final class CartViewController: UIViewController {
         .store(in: &cancellables)
         
         viewModel.$emptyState.sink { [weak self] emptyState in
-            guard let self = self, let emptyState = emptyState else { return }
+            guard let self, let emptyState else { return }
             if emptyState {
                 cartView.emptyStateLabel.isHidden = false
                 rightBarItem?.tintColor = .textPrimaryInvert
