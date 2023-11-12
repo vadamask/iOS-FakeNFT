@@ -27,6 +27,8 @@ internal enum L10n {
   internal enum Tab {
     /// Каталог
     internal static let catalog = L10n.tr("Localizable", "Tab.catalog", fallback: "Каталог")
+    /// Профиль
+    internal static let profile = L10n.tr("Localizable", "Tab.profile", fallback: "Профиль")
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

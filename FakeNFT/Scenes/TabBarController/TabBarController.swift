@@ -10,7 +10,8 @@ final class TabBarController: UITabBarController {
     )
     
     private let profileTabBarItem = UITabBarItem(
-        title: "Профиль", // проверить почему постоянно вываливается ошибка если использовать Asset.image
+        title: L10n.Tab.profile,
+        //title: "Профиль", // проверить почему постоянно вываливается ошибка если использовать Asset.image
         image: Asset.profile.image,
         tag: 1
     )
