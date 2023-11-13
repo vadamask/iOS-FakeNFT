@@ -45,7 +45,7 @@ final class ProfileViewController: UIViewController {
     }
     
     func setupView() {
-        self.view = ProfileView()
+       // self.view = ProfileView() 
         setupNavBar()
     }
     
@@ -55,7 +55,6 @@ final class ProfileViewController: UIViewController {
         guard let editButton = editButton else {return}
         navigationItem.rightBarButtonItem = editButton
     }
-    
     
     func setupNavBar() {
         navigationController?.navigationBar.tintColor = .yaBlack

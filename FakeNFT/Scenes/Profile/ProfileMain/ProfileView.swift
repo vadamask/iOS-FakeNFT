@@ -5,9 +5,11 @@
 //  Created by Ann Goncharova on 05.11.2023.
 //
 
+import Kingfisher
 import UIKit
 
 final class ProfileView: UIView {
+    private var viewController: ProfileViewController?
     
     //MARK: - Layout view
     private lazy var profileImage: UIImageView = {
@@ -24,7 +26,7 @@ final class ProfileView: UIView {
         let label = UILabel()
         label.text = ""
         label.font = .headline22
-        label.textColor = .yaBlack
+        label.textColor = .textPrimary // black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -32,7 +34,7 @@ final class ProfileView: UIView {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .caption13
-        label.textColor = .yaBlack
+        label.textColor = .textPrimary // black
         label.numberOfLines = .zero
         let paragraphStyle = NSMutableParagraphStyle() // переменная настройки стиля параграфа
         label.attributedText = NSAttributedString(
@@ -49,7 +51,7 @@ final class ProfileView: UIView {
         label.text = ""
         label.textColor = .blue // убрать?
         let websiteDidTap = UITapGestureRecognizer(target: self, action: #selector(websiteDidTap))
-        //label.attributedText = NSAttributedString(string: websiteLabel.text ?? "", attributes: [.kern: 0.24])
+        label.attributedText = NSAttributedString(string: websiteLabel.text ?? "", attributes: [.kern: 0.24])
         label.isUserInteractionEnabled = true
         label.addGestureRecognizer(websiteDidTap)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -67,9 +69,10 @@ final class ProfileView: UIView {
         return tableView
     }()
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, viewController: ProfileViewController) {
         super.init(frame: .zero)
-        self.backgroundColor = .yaWhite
+        self.viewController = viewController
+        self.backgroundColor = .screenBackground
         addProfileImage()
         addUsernameLabel()
         addDescriptionLabel()
@@ -88,8 +91,6 @@ final class ProfileView: UIView {
     }
     
     //MARK: - Layout constraints
-    
-    
     func addProfileImage() {
         addSubview(profileImage)
         NSLayoutConstraint.activate([
@@ -200,6 +201,7 @@ extension ProfileView: UITableViewDataSource {
                 cell.textInSection.text = ""
                 cell.valueInSection.text = ""
         }
+        cell.selectionStyle = .none
         return cell
     }
     
@@ -210,5 +212,16 @@ extension ProfileView: UITableViewDataSource {
 }
 
 extension ProfileView: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.row {
+        case 0:
+            print("Мои NFT")
+        case 1:
+            print("Избранные NFT")
+        case 2:
+            print("О разработчике")
+        default:
+            return
+        }
+    }
 }
