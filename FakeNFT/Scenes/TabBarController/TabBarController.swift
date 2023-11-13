@@ -32,9 +32,8 @@ final class TabBarController: UITabBarController {
             servicesAssembly: servicesAssembly
         )
         catalogController.tabBarItem = catalogTabBarItem
-        
-        // TODO: После верстки Юзера поменять обратно на = RatingViewController()
-        let statisticsController = UserViewController()
+
+        let statisticsController = RatingViewController()
         statisticsController.tabBarItem = statisticsTabBarItem
         let statisticsNavController = UINavigationController(rootViewController: statisticsController)
 

@@ -40,6 +40,12 @@ internal enum L10n {
     /// Статистика
     internal static let statistics = L10n.tr("Localizable", "Tab.statistics", fallback: "Статистика")
   }
+  internal enum User {
+    /// Коллекция NFT
+    internal static let nftCollection = L10n.tr("Localizable", "User.nftCollection", fallback: "Коллекция NFT")
+    /// Перейти на сайт пользователя
+    internal static let visitWebSite = L10n.tr("Localizable", "User.visitWebSite", fallback: "Перейти на сайт пользователя")
+  }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:enable nesting type_body_length type_name vertical_whitespace_opening_braces

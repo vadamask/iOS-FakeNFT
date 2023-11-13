@@ -5,27 +5,31 @@
 //  Created by Artem Adiev on 09.11.2023.
 //
 
-import Foundation
 import UIKit
 import SnapKit
+import Kingfisher
+import ProgressHUD
 
 final class UserViewController: UIViewController {
+    private var viewModel: UserViewModel?
+    private var user: User?
+    private var nftCount = 0
+    private var userWebSiteUrl = URL(string: "")
 
     // MARK: - UI elements
     private let userImageView: UIImageView = {
         let userImageView = UIImageView()
         userImageView.layer.cornerRadius = 35
         userImageView.clipsToBounds = true
-        userImageView.image = UIImage(asset: Asset.beigeGus)
+        userImageView.isHidden = true
         return userImageView
     }()
 
-    // TODO: Локализовать
     private let nameLabel: UILabel = {
         let nameLabel = UILabel()
         nameLabel.font = UIFont.headline22
         nameLabel.textColor = .textPrimary
-        nameLabel.text = "Joaquin Phoenix"
+        nameLabel.isHidden = true
         return nameLabel
     }()
 
@@ -33,18 +37,20 @@ final class UserViewController: UIViewController {
         let descriptionLabel = UILabel()
         descriptionLabel.font = UIFont.caption13
         descriptionLabel.numberOfLines = 4
-        descriptionLabel.text = "Дизайнер из Казани, люблю цифровое искусство и бейглы. В моей коллекции уже 100+ NFT, и еще больше — на моём сайте. Открыт к коллаборациям."
+        descriptionLabel.isHidden = true
         return descriptionLabel
     }()
 
-    private let websiteButton: UIButton = {
+    private lazy var websiteButton: UIButton = {
         let websiteButton = UIButton()
         websiteButton.layer.cornerRadius = 16
         websiteButton.layer.borderColor = UIColor.borderColor.cgColor
         websiteButton.layer.borderWidth = 1.0
         websiteButton.titleLabel?.font = UIFont.caption15
         websiteButton.setTitleColor(.textPrimary, for: .normal)
-        websiteButton.setTitle("Перейти на сайт пользователя", for: .normal)
+        websiteButton.setTitle(NSLocalizedString(L10n.User.visitWebSite, comment: ""), for: .normal)
+        websiteButton.addTarget(self, action: #selector(websiteButtonTapped), for: .touchUpInside)
+        websiteButton.isHidden = true
         return websiteButton
     }()
 
@@ -52,15 +58,56 @@ final class UserViewController: UIViewController {
         let tableView = UITableView()
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
+        tableView.isHidden = true
         return tableView
     }()
+
+    // MARK: - Init
+    init(userId: String) {
+        super.init(nibName: nil, bundle: nil)
+        self.viewModel = UserViewModel(networkClient: DefaultNetworkClient(), userId: userId)
+        viewModel?.userDetailsUpdated = { [weak self] user in
+            DispatchQueue.main.async {
+                self?.user = user
+                self?.userImageView.kf.setImage(with: user.avatar)
+                self?.nameLabel.text = user.name
+                self?.nftCount = user.nfts.count
+                self?.descriptionLabel.text = user.description
+                self?.userWebSiteUrl = user.website
+                self?.tableView.reloadData()
+                self?.makeVisible()
+            }
+        }
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        viewModel?.showLoading = {
+            ProgressHUD.show()
+        }
+
+        viewModel?.hideLoading = {
+            ProgressHUD.dismiss()
+        }
+
+        viewModel?.fetchUserDetails()
         setupViews()
         setupConstraints()
+    }
+
+    @objc func websiteButtonTapped() {
+        guard let url = userWebSiteUrl else {
+            print("Неверный URL")
+            return
+        }
+        let userWebViewController = UserWebViewController(url: url)
+        present(userWebViewController, animated: true)
     }
 
     // MARK: - Setup UI
@@ -108,8 +155,16 @@ final class UserViewController: UIViewController {
             make.top.equalTo(websiteButton.snp.bottom).offset(40)
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
-            make.bottom.lessThanOrEqualTo(view.safeAreaLayoutGuide.snp.bottom).offset(380)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
+    }
+
+    private func makeVisible() {
+        userImageView.isHidden = false
+        nameLabel.isHidden = false
+        descriptionLabel.isHidden = false
+        websiteButton.isHidden = false
+        tableView.isHidden = false
     }
 }
 
@@ -121,10 +176,13 @@ extension UserViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: CollectionCountCell = tableView.dequeueReusableCell()
+
+        cell.set(count: nftCount)
+        print("nftCount: \(nftCount)")
         return cell
     }
 }
 // MARK: - UITableViewDelegate
 extension UserViewController: UITableViewDelegate {
-    // Тут будет вызов WebView
+    // Тут будет вызов экрана коллекции NFT
 }

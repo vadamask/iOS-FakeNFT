@@ -10,7 +10,7 @@ import Foundation
 final class RatingViewModel {
     // MARK: - Properties
     private var networkClient: NetworkClient
-    private var users: [Users] = [] {
+    private var users: [User] = [] {
         didSet {
             self.reloadTableViewClosure?()
         }
@@ -29,7 +29,7 @@ final class RatingViewModel {
         showLoading?()
 
         let request = UsersRequest()
-        networkClient.send(request: request, type: [Users].self) { [weak self] result in
+        networkClient.send(request: request, type: [User].self) { [weak self] result in
             // Лучше все действия с UI производить в контроллере, в том числе и DispatchQueue.main.async { }
             // TODO: Изучить варианты
             DispatchQueue.main.async {
@@ -52,7 +52,7 @@ final class RatingViewModel {
         return users.count
     }
 
-    func getUser(at indexPath: IndexPath) -> Users {
+    func getUser(at indexPath: IndexPath) -> User {
         return users[indexPath.row]
     }
 

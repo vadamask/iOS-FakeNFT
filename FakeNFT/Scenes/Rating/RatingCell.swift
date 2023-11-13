@@ -97,7 +97,7 @@ final class RatingCell: UITableViewCell, ReuseIdentifying {
     }
 
     // MARK: - Configure Cell
-    func configure(with user: Users, at index: Int) {
+    func configure(with user: User, at index: Int) {
         numberLabel.text = "\(index)"
         nameLabel.text = user.name
         ratingLabel.text = user.rating

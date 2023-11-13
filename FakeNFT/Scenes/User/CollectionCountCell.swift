@@ -5,19 +5,16 @@
 //  Created by Artem Adiev on 09.11.2023.
 //
 
-import Foundation
 import UIKit
 import SnapKit
 
 final class CollectionCountCell: UITableViewCell, ReuseIdentifying {
-
     // MARK: - UI elements
-    // TODO: Локализовать
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.bodyBold17
         label.textColor = .textPrimary
-        label.text = "Коллекция NFT"
+        label.text = NSLocalizedString(L10n.User.nftCollection, comment: "")
         return label
     }()
 
@@ -71,6 +68,6 @@ final class CollectionCountCell: UITableViewCell, ReuseIdentifying {
 
     // MARK: - Configure Cell
     func set(count: Int) {
-        countLabel.text = "\(count)"
+        countLabel.text = "(\(count))"
     }
 }
