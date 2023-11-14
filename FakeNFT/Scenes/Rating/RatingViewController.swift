@@ -55,7 +55,7 @@ final class RatingViewController: UIViewController {
 
     private func setupNavigationBar() {
         navigationController?.navigationBar.tintColor = .yaBlack
-        let image = UIImage(asset: Asset.sortButton)
+        let image = Asset.sortButton.image
         sortButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(sortButtonTapped))
         guard let sortButton = sortButton else { return }
         navigationItem.rightBarButtonItem = sortButton

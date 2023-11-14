@@ -48,7 +48,7 @@ final class UserViewController: UIViewController {
         websiteButton.layer.borderWidth = 1.0
         websiteButton.titleLabel?.font = UIFont.caption15
         websiteButton.setTitleColor(.textPrimary, for: .normal)
-        websiteButton.setTitle(NSLocalizedString(L10n.User.visitWebSite, comment: ""), for: .normal)
+        websiteButton.setTitle(L10n.User.visitWebSite, for: .normal)
         websiteButton.addTarget(self, action: #selector(websiteButtonTapped), for: .touchUpInside)
         websiteButton.isHidden = true
         return websiteButton
@@ -65,19 +65,7 @@ final class UserViewController: UIViewController {
     // MARK: - Init
     init(userId: String) {
         super.init(nibName: nil, bundle: nil)
-        self.viewModel = UserViewModel(networkClient: DefaultNetworkClient(), userId: userId)
-        viewModel?.userDetailsUpdated = { [weak self] user in
-            DispatchQueue.main.async {
-                self?.user = user
-                self?.userImageView.kf.setImage(with: user.avatar)
-                self?.nameLabel.text = user.name
-                self?.nftCount = user.nfts.count
-                self?.descriptionLabel.text = user.description
-                self?.userWebSiteUrl = user.website
-                self?.tableView.reloadData()
-                self?.makeVisible()
-            }
-        }
+        configureViewModel(with: userId)
     }
 
     required init?(coder: NSCoder) {
@@ -111,6 +99,16 @@ final class UserViewController: UIViewController {
     }
 
     // MARK: - Setup UI
+    private func configureViewModel(with userId: String) {
+        let viewModel = UserViewModel(networkClient: DefaultNetworkClient(), userId: userId)
+        viewModel.userDetailsUpdated = { [weak self] user in
+            DispatchQueue.main.async {
+                self?.updateUI(with: user)
+            }
+        }
+        self.viewModel = viewModel
+    }
+
     private func setupViews() {
         tableView.dataSource = self
         tableView.delegate = self
@@ -165,6 +163,16 @@ final class UserViewController: UIViewController {
         descriptionLabel.isHidden = false
         websiteButton.isHidden = false
         tableView.isHidden = false
+    }
+
+    private func updateUI(with user: User) {
+        userImageView.kf.setImage(with: user.avatar)
+        nameLabel.text = user.name
+        nftCount = user.nfts.count
+        descriptionLabel.text = user.description
+        userWebSiteUrl = user.website
+        tableView.reloadData()
+        makeVisible()
     }
 }
 

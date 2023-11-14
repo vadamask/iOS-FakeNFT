@@ -14,7 +14,7 @@ final class CollectionCountCell: UITableViewCell, ReuseIdentifying {
         let label = UILabel()
         label.font = UIFont.bodyBold17
         label.textColor = .textPrimary
-        label.text = NSLocalizedString(L10n.User.nftCollection, comment: "")
+        label.text = L10n.User.nftCollection
         return label
     }()
 
@@ -27,7 +27,8 @@ final class CollectionCountCell: UITableViewCell, ReuseIdentifying {
     }()
 
     let customDisclosureIndicator: UIImageView = {
-        let imageView = UIImageView(image: UIImage(systemName: "chevron.right"))
+        let image = UIImage(systemName: "chevron.right")
+        let imageView = UIImageView(image: image)
         imageView.tintColor = .yaBlack
         return imageView
     }()
@@ -55,9 +56,9 @@ final class CollectionCountCell: UITableViewCell, ReuseIdentifying {
 
     private func setupConstraints() {
         titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.leading.equalToSuperview().offset(16)
-            make.centerY.equalTo(contentView.snp.centerY)
+            make.top.equalTo(16) // = make.top.equalToSuperview().offset(16)
+            make.leading.equalTo(16)
+            make.centerY.equalTo(contentView) // = make.centerY.equalTo(contentView.snp.centerY)
         }
 
         countLabel.snp.makeConstraints { make in

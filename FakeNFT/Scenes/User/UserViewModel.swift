@@ -29,15 +29,16 @@ final class UserViewModel {
 
         let request = UserByIdRequest(id: userId)
         networkClient.send(request: request, type: User.self) { [weak self] result in
-            self?.hideLoading?()
+            guard let self = self else { return }
+            self.hideLoading?()
 
             switch result {
             case .success(let userDetails):
-                self?.user = userDetails
-                self?.userDetailsUpdated?(userDetails)
+                self.user = userDetails
+                self.userDetailsUpdated?(userDetails)
             case .failure(let error):
                 print("Error fetching user details: \(error.localizedDescription)")
-                self?.userDetailsFetchFailed?(error)
+                self.userDetailsFetchFailed?(error)
             }
         }
     }
