@@ -33,14 +33,11 @@ final class ProfileView: UIView {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .caption13
-        label.text = ""
         label.textColor = .textPrimary // black
         label.numberOfLines = 0
         let paragraphStyle = NSMutableParagraphStyle() // переменная настройки стиля параграфа
-        label.attributedText = NSAttributedString(
-            string: descriptionLabel.text ?? "",
-            attributes: [.kern: 0.08, // расстояние между символами
-                         NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        paragraphStyle.minimumLineHeight = 18
+        label.attributedText = NSAttributedString(string: "", attributes: [.kern: 0.08,NSAttributedString.Key.paragraphStyle: paragraphStyle])
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -48,10 +45,9 @@ final class ProfileView: UIView {
     private lazy var websiteLabel: UILabel = {
         let label = UILabel()
         label.font = .caption15
-        label.text = ""
-        label.textColor = .blue // убрать?
+        label.textColor = .blue
         let tapAction = UITapGestureRecognizer(target: self, action: #selector(websiteDidTap))
-        label.attributedText = NSAttributedString(string: websiteLabel.text ?? "", attributes: [.kern: 0.24])
+        label.attributedText = NSAttributedString(string: "", attributes: [.kern: 0.24])
         label.isUserInteractionEnabled = true
         label.addGestureRecognizer(tapAction)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -62,7 +58,7 @@ final class ProfileView: UIView {
         let tableView = UITableView()
         tableView.separatorStyle = .none
         tableView.allowsMultipleSelection = false
-        tableView.dataSource = self // добавить датасорс
+        tableView.dataSource = self
         tableView.delegate = self
         tableView.register(ProfileCell.self, forCellReuseIdentifier: "ProfileCell") // регистрация ячейки
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -78,7 +74,6 @@ final class ProfileView: UIView {
         addDescriptionLabel()
         addWebsiteLabel()
         addcategoryTableView()
-        //dataForProfile()
     }
     
     required init?(coder: NSCoder) {
@@ -137,30 +132,27 @@ final class ProfileView: UIView {
     }
     
     func updateViews(
-        userImageURL: URL?,
+        avatarURL: URL?,
         userName: String?,
         description: String?,
         website: String?,
         nftCount: String?,
-        likesCount: String?) {
-            func dataForProfile() {
-                profileImage.kf.setImage(
-                    with: userImageURL,
-                    placeholder: UIImage(named: "Profile"),
-                    options: [.processor(RoundCornerImageProcessor(cornerRadius: 35))])
-                
-                usernameLabel.text = userName
-                descriptionLabel.text = description
-                websiteLabel.text = website
-                let nftsCountLabel = categoryTableView.cellForRow(at: [0,0]) as? ProfileCell
-                nftsCountLabel?.textInSection.text = nftCount
-                let likesCountLabel = categoryTableView.cellForRow(at: [0,1]) as? ProfileCell
-                likesCountLabel?.valueInSection.text = likesCount
-            }
-        }
+        likesCount: String?
+    ) {
+        profileImage.kf.setImage(
+            with: avatarURL,
+            placeholder: UIImage(named: "Profile"),
+            options: [.processor(RoundCornerImageProcessor(cornerRadius: 35))])
+        usernameLabel.text = userName
+        descriptionLabel.text = description
+        websiteLabel.text = website
+        
+        let nftsCountLabel = categoryTableView.cellForRow(at: [0,0]) as? ProfileCell
+        nftsCountLabel?.textInSection.text = nftCount
+        let likesCountLabel = categoryTableView.cellForRow(at: [0,1]) as? ProfileCell
+        likesCountLabel?.valueInSection.text = likesCount
+    }
 }
-
-
 
 //MARK: - Extensions
 // возвращаем кол-во строк в таблице
@@ -199,14 +191,14 @@ extension ProfileView: UITableViewDataSource {
 extension ProfileView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
-        case 0:
-            print("Мои NFT")
-        case 1:
-            print("Избранные NFT")
-        case 2:
-            print("О разработчике")
-        default:
-            return
+            case 0:
+                print("Мои NFT")
+            case 1:
+                print("Избранные NFT")
+            case 2:
+                print("О разработчике")
+            default:
+                return
         }
     }
 }

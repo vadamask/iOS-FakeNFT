@@ -10,24 +10,20 @@ import UIKit
 final class ProfileViewController: UIViewController {
     
     private var editButton = UIBarButtonItem(
-        image: Asset.profile.image,
+        image: Asset.editButton.image,
         style: .plain,
         target: self,
         action: #selector(didTapEditButton)
     )
     
-    // private var editButton: UIBarButtonItem?
-    
     private var viewModel: ProfileViewModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         viewModel = ProfileViewModel(viewController: self)
         bind()
-        //setupNavigationBar()
-        // viewModel?.viewDidLoad()
         setupView()
+        setupNavBar()
     }
     
     @objc
@@ -42,7 +38,7 @@ final class ProfileViewController: UIViewController {
             viewModel.onChange = { [weak self] in
                 let view = self?.view as? ProfileView
                 view?.updateViews(
-                    userImageURL: viewModel.userImageURL,
+                    avatarURL: viewModel.userImageURL,
                     userName: viewModel.userName,
                     description: viewModel.description,
                     website: viewModel.website,
@@ -57,15 +53,6 @@ final class ProfileViewController: UIViewController {
         self.view = ProfileView(frame: .zero, viewController: self)
         setupNavBar()
     }
-    
-    /*
-     func setupNavigationBar() {
-     editButton = UIBarButtonItem(image: UIImage(named: "editButton"), style: .plain, target: self, action: #selector(didTapEditButton))
-     editButton?.tintColor = .yaBlack
-     guard let editButton = editButton else {return}
-     navigationItem.rightBarButtonItem = editButton
-     }
-     */
     
     func setupNavBar() {
         navigationController?.navigationBar.tintColor = .yaBlack
