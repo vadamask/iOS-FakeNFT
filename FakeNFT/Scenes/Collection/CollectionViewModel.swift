@@ -29,6 +29,12 @@ final class CollectionViewModel: CollectionViewModelProtocol {
     @Published private(set) var state: CollectionViewState = .loading
     var statePublisher: Published<CollectionViewState>.Publisher { $state }
 
+    deinit {
+        for subscription in subscriptions {
+            subscription.cancel()
+        }
+    }
+
     init(collectionId: String, service: NftService) {
         self.collectionId = collectionId
         self.service = service
@@ -75,11 +81,5 @@ final class CollectionViewModel: CollectionViewModelProtocol {
                 self?.state = .loaded
             }
             .store(in: &subscriptions)
-    }
-
-    deinit {
-        for subscription in subscriptions {
-            subscription.cancel()
-        }
     }
 }

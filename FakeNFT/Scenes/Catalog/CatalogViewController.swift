@@ -7,16 +7,21 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
         case main
     }
     internal lazy var activityIndicator = UIActivityIndicatorView()
-    private let viewModel: CatalogViewModelProtocol
-    private var subscriptions = Set<AnyCancellable>()
-
     typealias DataSource = UICollectionViewDiffableDataSource<Section, CatalogCellViewModel>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, CatalogCellViewModel>
+    private var subscriptions = Set<AnyCancellable>()
     private lazy var dataSource = makeDataSource()
+    private let viewModel: CatalogViewModelProtocol
 
     init(viewModel: CatalogViewModelProtocol, layout: UICollectionViewLayout) {
         self.viewModel = viewModel
         super.init(collectionViewLayout: layout)
+    }
+
+    deinit {
+        for subscription in subscriptions {
+            subscription.cancel()
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -26,10 +31,11 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // MARK: Setup navbar appearance
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .screenBackground
-        navigationItem.standardAppearance = appearance
+        navigationController?.navigationBar.standardAppearance = appearance
 
         // MARK: Theme of nav bar
         navigationController?.navigationBar.tintColor = .segmentActive
@@ -50,6 +56,7 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
         collectionView.backgroundView = activityIndicator
         collectionView.register(CatalogCell.self)
 
+        // MARK: add action for refresh control
         collectionView.refreshControl?.addTarget(self, action: #selector(refreshCatalog), for: .valueChanged)
 
         // MARK: Bindings MVVM
@@ -130,12 +137,6 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
         alert.addAction(sortByNftCountAction)
         alert.addAction(closeAction)
         present(alert, animated: true)
-    }
-
-    deinit {
-        for subscription in subscriptions {
-            subscription.cancel()
-        }
     }
 }
 

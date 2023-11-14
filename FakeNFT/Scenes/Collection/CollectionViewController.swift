@@ -16,10 +16,16 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
     internal lazy var activityIndicator = UIActivityIndicatorView()
     typealias DataSource = UICollectionViewDiffableDataSource<Section, CollectionCellViewModel>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, CollectionCellViewModel>
-    private lazy var dataSource = makeDataSource()
     private var subscriptions = Set<AnyCancellable>()
+    private lazy var dataSource = makeDataSource()
     private let viewModel: CollectionViewModelProtocol
 
+    deinit {
+        for subscription in subscriptions {
+            subscription.cancel()
+        }
+    }
+    
     init(viewModel: CollectionViewModelProtocol, layout: UICollectionViewLayout) {
         self.viewModel = viewModel
         super.init(collectionViewLayout: layout)
@@ -31,26 +37,42 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // MARK: Setup navbar appearance
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
-        navigationItem.standardAppearance = appearance
+        navigationController?.navigationBar.standardAppearance = appearance
 
+        // MARK: Theme of nav bar
+        navigationController?.navigationBar.tintColor = .segmentActive
+        navigationItem.backButtonTitle = ""
+
+        // MARK: Configure collectionView
         collectionView.refreshControl = UIRefreshControl()
         collectionView.backgroundColor = .screenBackground
         collectionView.backgroundView = activityIndicator
         collectionView.contentInsetAdjustmentBehavior = .never
+
+        // MARK: reuse registration
         collectionView.registerHeaderView(CollectionHeader.self)
         collectionView.register(CollectionCell.self)
+
+        setupConstraints()
+
+        // MARK: Bindings MVVM
+        bind()
+
+        // MARK: View loaded and ready to load colection
+        viewModel.loadCollection()
+    }
+
+    private func setupConstraints() {
         collectionView.snp.makeConstraints { make in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.top.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
-
-        bind()
-
-        viewModel.loadCollection()
     }
 
     private func bind() {
@@ -61,9 +83,9 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
             case .loaded:
                 self?.hideLoading()
                 self?.applySnapshot()
-            case .error(let error):
+            case .error:
                 self?.showError(
-                    ErrorModel(message: error.localizedDescription, actionText: "Повторить") {
+                    ErrorModel(message: L10n.Error.unableToLoad, actionText: L10n.Error.repeat) {
                         self?.viewModel.loadCollection()
                     }
                 )
@@ -98,18 +120,10 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
         guard
             viewModel.headerViewModel != nil,
             let cellViewModels = viewModel.cellViewModels
-        else {
-            return
-        }
+        else { return }
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(cellViewModels)
         dataSource.apply(snapshot, animatingDifferences: true)
-    }
-
-    deinit {
-        for subscription in subscriptions {
-            subscription.cancel()
-        }
     }
 }

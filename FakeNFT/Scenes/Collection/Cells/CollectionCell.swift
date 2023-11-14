@@ -103,13 +103,10 @@ final class CollectionCell: UICollectionViewCell, ReuseIdentifying {
         imageView.addSubview(likeButton)
         namePriceStackView.addArrangedSubview(nameLabel)
         namePriceStackView.addArrangedSubview(priceLabel)
-
         bottomStackView.addArrangedSubview(namePriceStackView)
         bottomStackView.addArrangedSubview(addToCartButton)
-
         infoStackView.addArrangedSubview(ratingStackView)
         infoStackView.addArrangedSubview(bottomStackView)
-
         mainStackView.addArrangedSubview(imageView)
         mainStackView.addArrangedSubview(infoStackView)
         contentView.addSubview(mainStackView)
@@ -138,16 +135,8 @@ final class CollectionCell: UICollectionViewCell, ReuseIdentifying {
         guard let viewModel = viewModel else { return }
         nameLabel.text = viewModel.name
         priceLabel.text = "\(viewModel.price) ETH"
-        if viewModel.inOrder {
-            addToCartButton.setImage(Asset.deleteFromCartButton.image, for: .normal)
-        } else {
-            addToCartButton.setImage(Asset.addToCartButton.image, for: .normal)
-        }
-        if viewModel.isLiked {
-            likeButton.setImage(Asset.liked.image, for: .normal)
-        } else {
-            likeButton.setImage(Asset.notLiked.image, for: .normal)
-        }
+        addToCartButton.setImage(viewModel.inOrder ? Asset.deleteCartButton.image : Asset.addCartButton.image, for: .normal)
+        likeButton.setImage(viewModel.isLiked ? Asset.liked.image : Asset.notLiked.image, for: .normal)
         imageView.kf.setImage(with: viewModel.imageUrls[0])
         for i in 1...5 {
             if i <= viewModel.rating {

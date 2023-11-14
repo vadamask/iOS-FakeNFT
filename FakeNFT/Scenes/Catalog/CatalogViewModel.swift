@@ -33,6 +33,12 @@ final class CatalogViewModel: CatalogViewModelProtocol {
     @Published private(set) var state: CatalogViewModelState = .loading
     var statePublisher: Published<CatalogViewModelState>.Publisher { $state }
 
+    deinit {
+        for subscription in subscriptions {
+            subscription.cancel()
+        }
+    }
+    
     init(service: NftService) {
         self.service = service
         sortingType = userDefaults.sortingType
@@ -81,11 +87,5 @@ final class CatalogViewModel: CatalogViewModelProtocol {
             cellViewModels?.sort { $0.nftCount > $1.nftCount }
         }
         state = .ready
-    }
-
-    deinit {
-        for subscription in subscriptions {
-            subscription.cancel()
-        }
     }
 }

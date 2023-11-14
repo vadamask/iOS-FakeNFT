@@ -28,6 +28,7 @@ final class WebViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .screenBackground
         setupView()
         setupConstraints()
 
