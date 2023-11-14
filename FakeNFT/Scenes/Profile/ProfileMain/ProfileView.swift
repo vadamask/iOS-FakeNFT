@@ -148,7 +148,7 @@ final class ProfileView: UIView {
         websiteLabel.text = website
         
         let nftsCountLabel = categoryTableView.cellForRow(at: [0,0]) as? ProfileCell
-        nftsCountLabel?.textInSection.text = nftCount
+        nftsCountLabel?.valueInSection.text = nftCount
         let likesCountLabel = categoryTableView.cellForRow(at: [0,1]) as? ProfileCell
         likesCountLabel?.valueInSection.text = likesCount
     }
