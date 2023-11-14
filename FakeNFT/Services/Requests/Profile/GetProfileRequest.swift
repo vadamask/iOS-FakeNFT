@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProfileRequest: NetworkRequest {
+struct GetProfileRequest: NetworkRequest {
     var endpoint: URL? {
         URL(string: "https://65450ba25a0b4b04436d87b8.mockapi.io/api/v1/profile/1")
     }

@@ -16,6 +16,7 @@ final class ProfileView: UIView {
         let imageView = UIImageView()
         imageView.image = Asset.profile.image
         imageView.layer.cornerRadius = 35
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -60,7 +61,7 @@ final class ProfileView: UIView {
         tableView.allowsMultipleSelection = false
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(ProfileCell.self, forCellReuseIdentifier: "ProfileCell") // регистрация ячейки
+        tableView.register(ProfileCell.self) // регистрация ячейки
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -83,6 +84,28 @@ final class ProfileView: UIView {
     @objc
     private func websiteDidTap(_ sender: UITapGestureRecognizer) {
         viewController?.present(WebsiteViewController(webView: nil, websiteURL: websiteLabel.text), animated: true)
+    }
+    
+    func updateViews(
+        avatarURL: URL?,
+        userName: String?,
+        description: String?,
+        website: String?,
+        nftCount: String?,
+        likesCount: String?
+    ) {
+        profileImage.kf.setImage(
+            with: avatarURL,
+            placeholder: UIImage(named: "Profile"),
+            options: [.processor(RoundCornerImageProcessor(cornerRadius: 35))])
+        usernameLabel.text = userName
+        descriptionLabel.text = description
+        websiteLabel.text = website
+        
+        let nftsCountLabel = categoryTableView.cellForRow(at: [0,0]) as? ProfileCell
+        nftsCountLabel?.valueInSection.text = nftCount
+        let likesCountLabel = categoryTableView.cellForRow(at: [0,1]) as? ProfileCell
+        likesCountLabel?.valueInSection.text = likesCount
     }
     
     //MARK: - Layout constraints
@@ -117,7 +140,7 @@ final class ProfileView: UIView {
         NSLayoutConstraint.activate([
             websiteLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 8),
             websiteLabel.leadingAnchor.constraint(equalTo: descriptionLabel.leadingAnchor),
-            websiteLabel.trailingAnchor.constraint(equalTo: descriptionLabel.trailingAnchor)
+            //websiteLabel.trailingAnchor.constraint(equalTo: descriptionLabel.trailingAnchor)
         ])
     }
     
@@ -130,28 +153,6 @@ final class ProfileView: UIView {
             categoryTableView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])
     }
-    
-    func updateViews(
-        avatarURL: URL?,
-        userName: String?,
-        description: String?,
-        website: String?,
-        nftCount: String?,
-        likesCount: String?
-    ) {
-        profileImage.kf.setImage(
-            with: avatarURL,
-            placeholder: UIImage(named: "Profile"),
-            options: [.processor(RoundCornerImageProcessor(cornerRadius: 35))])
-        usernameLabel.text = userName
-        descriptionLabel.text = description
-        websiteLabel.text = website
-        
-        let nftsCountLabel = categoryTableView.cellForRow(at: [0,0]) as? ProfileCell
-        nftsCountLabel?.valueInSection.text = nftCount
-        let likesCountLabel = categoryTableView.cellForRow(at: [0,1]) as? ProfileCell
-        likesCountLabel?.valueInSection.text = likesCount
-    }
 }
 
 //MARK: - Extensions
@@ -163,7 +164,9 @@ extension ProfileView: UITableViewDataSource {
     
     // настройка ячейки строки таблицы
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileCell", for: indexPath as IndexPath) as? ProfileCell else { return ProfileCell() }
+        let cell: ProfileCell = tableView.dequeueReusableCell()
+        
+        cell.backgroundColor = .screenBackground
         switch indexPath.row {
             case 0:
                 cell.textInSection.text = "Мои NFT"

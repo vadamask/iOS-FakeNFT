@@ -72,3 +72,7 @@ final class ProfileCell: UITableViewCell {
         ])
     }
 }
+
+extension ProfileCell: ReuseIdentifying {
+    
+}

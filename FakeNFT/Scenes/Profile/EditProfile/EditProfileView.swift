@@ -33,17 +33,32 @@ final class EditProfileView: UIView {
         label.backgroundColor = .screenBackground.withAlphaComponent(0.6)
         label.text = L10n.Profile.changePhoto
         label.font = .caption10
-        label.textColor = .textPrimaryInvert // white
+        label.textColor = .textPrimary
         label.textAlignment = .center
         label.numberOfLines = 0
         label.layer.cornerRadius = 35
         label.layer.masksToBounds = true
-        let tapAction = UITapGestureRecognizer(target: self, action:#selector(profileImageDidChange(_:)))
+        let tapAction = UITapGestureRecognizer(target: self, action: #selector(profileImageDidChange(_:)))
         label.isUserInteractionEnabled = true
         label.addGestureRecognizer(tapAction)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    private lazy var loadProfileImage: UILabel = {
+        let label = UILabel()
+        label.font = .bodyRegular17
+        label.text = L10n.Profile.loadPicture
+        label.textColor = .textPrimaryInvert // white
+        label.textAlignment = .center
+        label.layer.cornerRadius = 16
+        label.layer.masksToBounds = true
+        label.backgroundColor = .screenBackground
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     // лейбл "Имя"
     private lazy var usernameLabel: UILabel = {
         let label = UILabel()
@@ -123,6 +138,7 @@ final class EditProfileView: UIView {
         self.backgroundColor = .screenBackground
         addSubview()
         setupConstraints()
+        getDataFromViewModel()
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tapGesture.cancelsTouchesInView = false
@@ -138,16 +154,52 @@ final class EditProfileView: UIView {
         endEditing(true)
     }
     
+    func getDataFromViewModel() {
+        guard let viewModel = viewController?.viewModel else { return }
+        profileImage.kf.setImage(
+            with: viewModel.avatarURL,
+            placeholder: Asset.profile.image,
+            options: [.processor(RoundCornerImageProcessor(cornerRadius: 35))])
+            usernameTextField.text = viewModel.name
+            descriptionTextView.text = viewModel.description
+            websiteTextField.text = viewModel.website
+    }
+    
     // кнопка закрыть нажата
     @objc
     func closeButtonDidTap(_ sender: UITapGestureRecognizer) {
+        guard let viewModel = viewController?.viewModel,
+              let name = usernameTextField.text, name != "",
+              let description = descriptionTextView.text, description != "",
+              let website = websiteTextField.text, website != "",
+              let likes = viewModel.likes else { return }
+        
+        viewModel.putProfileData(
+            name: name,
+            description: description,
+            website: website,
+            likes: likes
+        )
         viewController?.dismiss(animated: true)
     }
     
     // смена картинки профиля
     @objc
     func profileImageDidChange(_ sender: UITapGestureRecognizer) {
-        print("изменено")
+        loadProfileImage.isHidden = false
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first {
+            if touch.view != descriptionTextView &&
+                touch.view != usernameTextField &&
+                touch.view != websiteTextField {
+                descriptionTextView.resignFirstResponder()
+                usernameTextField.resignFirstResponder()
+                websiteTextField.resignFirstResponder()
+            }
+        }
+        super.touchesBegan(touches, with: event)
     }
     
     private func addSubview() {
@@ -160,6 +212,7 @@ final class EditProfileView: UIView {
         self.addSubview(descriptionTextView)
         self.addSubview(websiteLabel)
         self.addSubview(websiteTextField)
+        self.addSubview(loadProfileImage)
     }
     
     private func setupConstraints() {
@@ -182,6 +235,12 @@ final class EditProfileView: UIView {
             editProfileImageLabel.widthAnchor.constraint(equalToConstant: 70),
             editProfileImageLabel.topAnchor.constraint(equalTo: topAnchor, constant: 94),
             editProfileImageLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
+            
+            // лейбл "Загрузить изображение"
+            loadProfileImage.topAnchor.constraint(equalTo: editProfileImageLabel.bottomAnchor, constant: 4),
+            loadProfileImage.centerXAnchor.constraint(equalTo: centerXAnchor),
+            loadProfileImage.heightAnchor.constraint(equalToConstant: 44),
+            loadProfileImage.widthAnchor.constraint(equalToConstant: 250),
             
             // лейбл "Имя"
             usernameLabel.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 24),
@@ -224,7 +283,4 @@ extension EditProfileView: UITextFieldDelegate {
 }
 
 extension EditProfileView: UITextViewDelegate {
-    func textViewDidEndEditing(_ textView: UITextView) {
-        textView.resignFirstResponder()
     }
-}

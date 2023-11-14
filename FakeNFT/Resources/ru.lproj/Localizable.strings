@@ -6,3 +6,4 @@
 "Error.title" = "Ошибка";
 "Tab.profile" = "Профиль";
 "Profile.changePhoto" = "Сменить фото";
+"Profile.loadPicture" = "Загрузить изображение";

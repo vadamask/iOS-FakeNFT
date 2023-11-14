@@ -27,6 +27,8 @@ internal enum L10n {
   internal enum Profile {
     /// Сменить фото
     internal static let changePhoto = L10n.tr("Localizable", "Profile.changePhoto", fallback: "Сменить фото")
+    /// Загрузить изображение
+    internal static let loadPicture = L10n.tr("Localizable", "Profile.loadPicture", fallback: "Загрузить изображение")
   }
   internal enum Tab {
     /// Каталог

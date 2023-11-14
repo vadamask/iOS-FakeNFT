@@ -9,12 +9,15 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
-    private var editButton = UIBarButtonItem(
+    private var editButton: UIBarButtonItem!
+    /*
+    (
         image: Asset.editButton.image,
         style: .plain,
         target: self,
         action: #selector(didTapEditButton)
     )
+     */
     
     private var viewModel: ProfileViewModel?
     
@@ -29,6 +32,7 @@ final class ProfileViewController: UIViewController {
     @objc
     private func didTapEditButton() {
         let editProfileViewController = EditProfileViewController()
+        editProfileViewController.viewModel = viewModel
         editProfileViewController.modalPresentationStyle = .popover
         self.present(editProfileViewController, animated: true)
     }
@@ -38,8 +42,8 @@ final class ProfileViewController: UIViewController {
             viewModel.onChange = { [weak self] in
                 let view = self?.view as? ProfileView
                 view?.updateViews(
-                    avatarURL: viewModel.userImageURL,
-                    userName: viewModel.userName,
+                    avatarURL: viewModel.avatarURL,
+                    userName: viewModel.name,
                     description: viewModel.description,
                     website: viewModel.website,
                     nftCount: "(\(String(viewModel.nfts?.count ?? 0)))",
@@ -56,6 +60,13 @@ final class ProfileViewController: UIViewController {
     
     func setupNavBar() {
         navigationController?.navigationBar.tintColor = .yaBlack
+        editButton = UIBarButtonItem(
+                image: Asset.editButton.image,
+                style: .plain,
+                target: self,
+                action: #selector(didTapEditButton)
+            )
         navigationItem.rightBarButtonItem = editButton
+        
     }
 }

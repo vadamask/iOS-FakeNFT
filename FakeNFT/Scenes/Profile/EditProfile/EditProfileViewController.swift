@@ -9,6 +9,8 @@ import UIKit
 
 final class EditProfileViewController: UIViewController {
     
+    var viewModel: ProfileViewModel?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
