@@ -14,8 +14,7 @@ final class ProfileView: UIView {
     //MARK: - Layout view
     private lazy var profileImage: UIImageView = {
         let imageView = UIImageView()
-        //let placeholder = Asset.profile.image
-        imageView.image = UIImage(named: "Profile")
+        imageView.image = Asset.profile.image
         imageView.layer.cornerRadius = 35
         imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -34,11 +33,12 @@ final class ProfileView: UIView {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .caption13
+        label.text = ""
         label.textColor = .textPrimary // black
-        label.numberOfLines = .zero
+        label.numberOfLines = 0
         let paragraphStyle = NSMutableParagraphStyle() // переменная настройки стиля параграфа
         label.attributedText = NSAttributedString(
-            string: "",
+            string: descriptionLabel.text ?? "",
             attributes: [.kern: 0.08, // расстояние между символами
                          NSAttributedString.Key.paragraphStyle: paragraphStyle])
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -50,10 +50,10 @@ final class ProfileView: UIView {
         label.font = .caption15
         label.text = ""
         label.textColor = .blue // убрать?
-        let websiteDidTap = UITapGestureRecognizer(target: self, action: #selector(websiteDidTap))
+        let tapAction = UITapGestureRecognizer(target: self, action: #selector(websiteDidTap))
         label.attributedText = NSAttributedString(string: websiteLabel.text ?? "", attributes: [.kern: 0.24])
         label.isUserInteractionEnabled = true
-        label.addGestureRecognizer(websiteDidTap)
+        label.addGestureRecognizer(tapAction)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -78,7 +78,7 @@ final class ProfileView: UIView {
         addDescriptionLabel()
         addWebsiteLabel()
         addcategoryTableView()
-        mockDataForProfile()
+        //dataForProfile()
     }
     
     required init?(coder: NSCoder) {
@@ -87,7 +87,7 @@ final class ProfileView: UIView {
     
     @objc
     private func websiteDidTap(_ sender: UITapGestureRecognizer) {
-        print("тап по кнопке")
+        viewController?.present(WebsiteViewController(webView: nil, websiteURL: websiteLabel.text), animated: true)
     }
     
     //MARK: - Layout constraints
@@ -136,46 +136,31 @@ final class ProfileView: UIView {
         ])
     }
     
-    /*
-     profileImage.snp.makeConstraints { make in
-     make.height.equalTo(70)
-     make.width.equalTo(70)
-     make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(20)
-     make.leading.equalTo(snp.leading).offset(16)
-     }
-     
-     usernameLabel.snp.makeConstraints { make in
-     make.top.equalTo(profileImage.snp.top).offset(21)
-     make.leading.equalTo(profileImage.snp.trailing).offset(16)
-     }
-     
-     descriptionLabel.snp.makeConstraints { make in
-     make.top.equalTo(profileImage.snp.bottom).offset(20)
-     make.height.equalTo(72)
-     make.leading.equalTo(self.safeAreaLayoutGuide.snp.leading).offset(16)
-     make.trailing.equalTo(self.safeAreaLayoutGuide.snp.trailing).offset(-16)
-     }
-     
-     websiteLabel.snp.makeConstraints { make in
-     make.top.equalTo(descriptionLabel.snp.bottom).offset(8)
-     make.leading.equalTo(descriptionLabel.snp.leading)
-     }
-     
-     categoryTableView.snp.makeConstraints { make in
-     make.top.equalTo(websiteLabel.snp.bottom).offset(40)
-     make.height.equalTo(54 * 3)
-     make.leading.equalTo(self.snp.leading)
-     make.trailing.equalTo(self.snp.trailing)
-     }
-     */
-    
-    func mockDataForProfile() {
-        profileImage.image = UIImage(named: "Profile")
-        usernameLabel.text = "Ann Goncharova"
-        descriptionLabel.text = "Грызу гранит приложениестроительства, сейчас живу в Москве, люблю животных, от бейглов тоже не откажусь. В моей коллекции нет ни одного NFT, о чем ни капли не жалею."
-        websiteLabel.text = "https://thecode.media/oldskool/"
-    }
+    func updateViews(
+        userImageURL: URL?,
+        userName: String?,
+        description: String?,
+        website: String?,
+        nftCount: String?,
+        likesCount: String?) {
+            func dataForProfile() {
+                profileImage.kf.setImage(
+                    with: userImageURL,
+                    placeholder: UIImage(named: "Profile"),
+                    options: [.processor(RoundCornerImageProcessor(cornerRadius: 35))])
+                
+                usernameLabel.text = userName
+                descriptionLabel.text = description
+                websiteLabel.text = website
+                let nftsCountLabel = categoryTableView.cellForRow(at: [0,0]) as? ProfileCell
+                nftsCountLabel?.textInSection.text = nftCount
+                let likesCountLabel = categoryTableView.cellForRow(at: [0,1]) as? ProfileCell
+                likesCountLabel?.valueInSection.text = likesCount
+            }
+        }
 }
+
+
 
 //MARK: - Extensions
 // возвращаем кол-во строк в таблице

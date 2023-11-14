@@ -30,6 +30,7 @@ internal enum Asset {
   internal static let deleteFromCartButton = ImageAsset(name: "deleteFromCartButton")
   internal static let editButton = ImageAsset(name: "editButton")
   internal static let sortButton = ImageAsset(name: "sortButton")
+  internal static let userImageMock = ImageAsset(name: "userImageMock")
   internal static let beigeApril = ImageAsset(name: "BeigeApril")
   internal static let beigeAurora = ImageAsset(name: "BeigeAurora")
   internal static let beigeBimbo = ImageAsset(name: "BeigeBimbo")

@@ -5,6 +5,7 @@
 //  Created by Ann Goncharova on 13.11.2023.
 //
 
+import Kingfisher
 import UIKit
 
 final class EditProfileView: UIView {
@@ -29,7 +30,7 @@ final class EditProfileView: UIView {
     // надпись поверх фото "Сменить фото"
     private lazy var editProfileImageLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .yaBlack.withAlphaComponent(0.6)
+        label.backgroundColor = .screenBackground.withAlphaComponent(0.6)
         label.text = L10n.Profile.changePhoto
         label.font = .caption10
         label.textColor = .textPrimaryInvert // white
@@ -56,7 +57,7 @@ final class EditProfileView: UIView {
     private lazy var usernameTextField: UITextField = {
         let textField = UITextField()
         textField.font = .bodyRegular17
-        textField.textColor = .yaBlack
+        textField.textColor = .textPrimary
         textField.backgroundColor = .placeholderBackground
         textField.layer.masksToBounds = true
         textField.layer.cornerRadius = 12
@@ -119,7 +120,7 @@ final class EditProfileView: UIView {
     init(frame: CGRect, viewController: EditProfileViewController) {
         super.init(frame: .zero)
         self.viewController = viewController
-        self.backgroundColor = .placeholderBackground
+        self.backgroundColor = .screenBackground
         addSubview()
         setupConstraints()
         

@@ -13,7 +13,7 @@ final class ProfileCell: UITableViewCell {
     var openSection: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "chevron.forward")
-        imageView.tintColor = .yaBlack
+        imageView.tintColor = .textPrimary // black
         imageView.preferredSymbolConfiguration = UIImage.SymbolConfiguration(font: .bodyBold17)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -53,7 +53,6 @@ final class ProfileCell: UITableViewCell {
         NSLayoutConstraint.activate([
             textInSection.centerYAnchor.constraint(equalTo: centerYAnchor),
             textInSection.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            //textInSection.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
         ])
     }
     
@@ -72,27 +71,4 @@ final class ProfileCell: UITableViewCell {
             openSection.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
         ])
     }
-    
-    /*
-     private func setupCellConstraints() {
-     addSubview(openSection)
-     addSubview(textInSection)
-     addSubview(valueInSection)
-     
-     openSection.snp.makeConstraints { make in
-     make.centerY.equalTo(self.snp.centerY)
-     make.trailing.equalTo(self.snp.trailing).offset(-16)
-     }
-     
-     textInSection.snp.makeConstraints { make in
-     make.centerY.equalTo(self.snp.centerY)
-     make.leading.equalTo(self.snp.leading).offset(16)
-     }
-     
-     valueInSection.snp.makeConstraints { make in
-     make.centerY.equalTo(self.snp.centerY)
-     make.leading.equalTo(textInSection.snp.trailing).offset(8)
-     }
-     }
-     */
 }
