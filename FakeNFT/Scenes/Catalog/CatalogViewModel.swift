@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 enum CatalogViewModelState {
-    case loading, failed(Error), ready, sorting
+    case loading, error(Error), ready, sorting
 }
 
 enum CatalogViewModelSortingType: Int {
@@ -25,12 +25,13 @@ protocol CatalogViewModelProtocol {
 }
 
 final class CatalogViewModel: CatalogViewModelProtocol {
-    @Published private(set) var state: CatalogViewModelState = .loading
-    var statePublisher: Published<CatalogViewModelState>.Publisher { $state }
-    private(set) var cellViewModels: [CatalogCellViewModel]?
+    private var subscriptions = Set<AnyCancellable>()
     private let service: NftService
     private let userDefaults = UserDefaults.standard
     private var sortingType: CatalogViewModelSortingType
+    private(set) var cellViewModels: [CatalogCellViewModel]?
+    @Published private(set) var state: CatalogViewModelState = .loading
+    var statePublisher: Published<CatalogViewModelState>.Publisher { $state }
 
     init(service: NftService) {
         self.service = service
@@ -38,31 +39,33 @@ final class CatalogViewModel: CatalogViewModelProtocol {
     }
 
     func loadCollections() {
-        service.loadNftCollections { [weak self] result in
-            switch result {
-            case .success(let nftCollections):
-                self?.convertToCellViewModels(nftCollections)
-                self?.sorting()
-            case .failure(let error):
-                self?.state = .failed(error)
+        state = .loading
+        service.loadNftCollections()
+            .map { nftCollections in
+                nftCollections.map {
+                    CatalogCellViewModel(
+                        id: $0.id,
+                        name: $0.name,
+                        coverUrl: $0.cover,
+                        nftCount: $0.nfts.count
+                    )
+                }
             }
-        }
+            .sink { [weak self] completion in
+                if case let .failure(error) = completion {
+                    self?.state = .error(error)
+                }
+            } receiveValue: { [weak self] cellModels in
+                self?.cellViewModels = cellModels
+                self?.sorting()
+            }
+            .store(in: &subscriptions)
     }
 
     func changeSorting(to sortingType: CatalogViewModelSortingType) {
         self.sortingType = sortingType
         userDefaults.sortingType = self.sortingType
         sorting()
-    }
-
-    private func convertToCellViewModels(_ nftCollections: [NftCollection]) {
-        cellViewModels = nftCollections.map { nftCollection in
-            CatalogCellViewModel(
-                name: nftCollection.name,
-                coverUrl: nftCollection.cover,
-                nftCount: nftCollection.nfts.count
-            )
-        }
     }
 
     private func sorting() {
@@ -78,5 +81,11 @@ final class CatalogViewModel: CatalogViewModelProtocol {
             cellViewModels?.sort { $0.nftCount > $1.nftCount }
         }
         state = .ready
+    }
+
+    deinit {
+        for subscription in subscriptions {
+            subscription.cancel()
+        }
     }
 }
