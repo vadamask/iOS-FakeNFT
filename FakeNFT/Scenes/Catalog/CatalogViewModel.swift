@@ -41,7 +41,7 @@ final class CatalogViewModel: CatalogViewModelProtocol {
     
     init(service: NftService) {
         self.service = service
-        sortingType = userDefaults.sortingType
+        self.sortingType = userDefaults.sortingType
     }
 
     func loadCollections() {

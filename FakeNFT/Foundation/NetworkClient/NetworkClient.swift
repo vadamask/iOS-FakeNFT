@@ -137,7 +137,6 @@ class DefaultNetworkClient: NetworkClient {
                 return data
             }
             .decode(type: T.self, decoder: JSONDecoder())
-            .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
     }
 

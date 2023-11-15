@@ -34,10 +34,9 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         // MARK: Setup navbar appearance
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
@@ -46,6 +45,10 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
         // MARK: Theme of nav bar
         navigationController?.navigationBar.tintColor = .segmentActive
         navigationItem.backButtonTitle = ""
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
         // MARK: Configure collectionView
         collectionView.refreshControl = UIRefreshControl()
@@ -76,22 +79,27 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
     }
 
     private func bind() {
-        viewModel.statePublisher.sink { [weak self] state in
-            switch state {
-            case .loading:
-                self?.showLoading()
-            case .loaded:
-                self?.hideLoading()
-                self?.applySnapshot()
-            case .error:
-                self?.showError(
-                    ErrorModel(message: L10n.Error.unableToLoad, actionText: L10n.Error.repeat) {
-                        self?.viewModel.loadCollection()
-                    }
-                )
+        viewModel.statePublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] state in
+                switch state {
+                case .loading:
+                    self?.showLoading()
+                case .loaded:
+                    self?.hideLoading()
+                    self?.applySnapshot()
+                case .error:
+                    self?.showError(
+                        ErrorModel(
+                            message: L10n.Error.unableToLoad,
+                            actionText: L10n.Error.repeat
+                        ) {
+                            self?.viewModel.loadCollection()
+                        }
+                    )
+                }
             }
-        }
-        .store(in: &subscriptions)
+            .store(in: &subscriptions)
     }
 
     private func makeDataSource() -> DataSource {

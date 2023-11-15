@@ -42,7 +42,6 @@ final class CollectionViewModel: CollectionViewModelProtocol {
 
     func loadCollection() {
         service.loadCollection(by: collectionId)
-            .receive(on: RunLoop.main)
             .flatMap { [unowned self] collection in
                 let user = self.service.loadUser(by: collection.author)
                 let profile = self.service.loadProfile()

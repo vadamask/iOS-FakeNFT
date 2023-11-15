@@ -28,9 +28,8 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         // MARK: Setup navbar appearance
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
@@ -40,6 +39,10 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
         // MARK: Theme of nav bar
         navigationController?.navigationBar.tintColor = .segmentActive
         navigationItem.backButtonTitle = ""
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
         // MARK: Configuring sort button item right side
         let sortButtonItem = UIBarButtonItem(
@@ -71,23 +74,30 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
     }
 
     private func bind() {
-        viewModel.statePublisher.sink { [weak self] newState in
-            switch newState {
-            case .sorting: break
-            case .loading:
-                self?.showLoading()
-            case .error:
-                self?.hideLoading()
-                self?.showError(ErrorModel(message: L10n.Error.unableToLoad, actionText: L10n.Error.repeat, action: {
-                    self?.viewModel.loadCollections()
-                }))
-            case .ready:
-                self?.hideLoading()
-                self?.applySnapshot()
-                self?.collectionView.refreshControl?.endRefreshing()
+        viewModel.statePublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] newState in
+                switch newState {
+                case .sorting: break
+                case .loading:
+                    self?.showLoading()
+                case .error:
+                    self?.hideLoading()
+                    self?.showError(
+                        ErrorModel(
+                            message: L10n.Error.unableToLoad,
+                            actionText: L10n.Error.repeat
+                        ) {
+                            self?.viewModel.loadCollections()
+                        }
+                    )
+                case .ready:
+                    self?.hideLoading()
+                    self?.applySnapshot()
+                    self?.collectionView.refreshControl?.endRefreshing()
+                }
             }
-        }
-        .store(in: &subscriptions)
+            .store(in: &subscriptions)
     }
 
     @objc private func refreshCatalog() {
@@ -143,7 +153,8 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
 extension CatalogViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        guard let collectionId = viewModel.cellViewModels?[indexPath.row].id else {
+        let cell: CatalogCell = collectionView.getCell(indexPath: indexPath)
+        guard let collectionId = cell.viewModel?.id else {
             return
         }
         let viewModel = CollectionViewModel(
