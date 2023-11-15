@@ -9,7 +9,6 @@ import UIKit
 
 final class ProfileViewModel {
     var onChange: (() -> Void)?
-    //var onError: (() -> Void)?
     
     private weak var viewController: UIViewController?
     

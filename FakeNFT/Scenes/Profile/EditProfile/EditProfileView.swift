@@ -14,6 +14,7 @@ final class EditProfileView: UIView {
     private lazy var closeButton: UIButton = {
         let button = UIButton()
         button.setImage(Asset.closeButton.image, for: .normal)
+        button.tintColor = .textPrimary
         button.addTarget(self, action: #selector(closeButtonDidTap), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -22,6 +23,7 @@ final class EditProfileView: UIView {
     private lazy var profileImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = Asset.profile.image
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 35
         imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -79,11 +81,8 @@ final class EditProfileView: UIView {
         textField.clearButtonMode = .whileEditing
         textField.delegate = self
         let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: textField.frame.height))
-        textField.leftView = leftPaddingView // отступ для текста слева
+        textField.leftView = leftPaddingView
         textField.leftViewMode = .always
-        //let insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 41) // установка отступов слева в текст филд
-        //textField.textRect(forBounds: bounds.inset(by: insets))
-        //textField.editingRect(forBounds: bounds.inset(by: insets)) //TODO: - вынести в отдельный экстеншн
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -101,7 +100,7 @@ final class EditProfileView: UIView {
         let textView = UITextView()
         textView.font = .bodyRegular17
         textView.textColor = .textPrimary // black
-        textView.layoutMargins = UIEdgeInsets(top: 11, left: 19, bottom: 11, right: 16) //TODO: - вынести в экстеншн
+        textView.textContainerInset = UIEdgeInsets(top: 11, left: 5, bottom: 11, right: 16)
         textView.backgroundColor = .placeholderBackground
         textView.layer.cornerRadius = 12
         textView.layer.masksToBounds = true
@@ -123,14 +122,13 @@ final class EditProfileView: UIView {
         let textField = UITextField()
         textField.font = .bodyRegular17
         textField.textColor = .textPrimary // black
+        let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: textField.frame.height))
+        textField.leftView = leftPaddingView
+        textField.leftViewMode = .always
         textField.backgroundColor = .placeholderBackground
         textField.clearButtonMode = .whileEditing
         textField.layer.cornerRadius = 12
         textField.layer.masksToBounds = true
-        
-        //let insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 41) // установка отступов слева в текст филд
-        //textField.textRect(forBounds: bounds.inset(by: insets))
-        //textField.editingRect(forBounds: bounds.inset(by: insets))
         textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField

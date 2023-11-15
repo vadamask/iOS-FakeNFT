@@ -23,7 +23,7 @@ final class ProfileView: UIView {
         ProfileDevelopersViewController()
     ]
     
-    //MARK: - Layout view
+    // MARK: - Layout view
     private lazy var profileImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = Asset.profile.image
@@ -72,6 +72,7 @@ final class ProfileView: UIView {
         tableView.separatorStyle = .none
         tableView.allowsMultipleSelection = false
         tableView.dataSource = self
+        tableView.isScrollEnabled = false
         tableView.delegate = self
         tableView.register(ProfileCell.self) // регистрация ячейки
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -120,7 +121,7 @@ final class ProfileView: UIView {
         likesCountLabel?.valueInSection.text = likesCount
     }
     
-    //MARK: - Layout constraints
+    // MARK: - Layout constraints
     func addProfileImage() {
         addSubview(profileImage)
         NSLayoutConstraint.activate([
@@ -152,7 +153,6 @@ final class ProfileView: UIView {
         NSLayoutConstraint.activate([
             websiteLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 8),
             websiteLabel.leadingAnchor.constraint(equalTo: descriptionLabel.leadingAnchor),
-            //websiteLabel.trailingAnchor.constraint(equalTo: descriptionLabel.trailingAnchor)
         ])
     }
     
@@ -167,7 +167,7 @@ final class ProfileView: UIView {
     }
 }
 
-//MARK: - Extensions
+// MARK: - Extensions
 // возвращаем кол-во строк в таблице
 extension ProfileView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
