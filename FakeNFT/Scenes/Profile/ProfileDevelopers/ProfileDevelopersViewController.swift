@@ -29,8 +29,10 @@ final class ProfileDevelopersViewController: UIViewController, WKUIDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
+        addSubview()
         
-        guard let myURL = URL(string:"https://practicum.yandex.ru/ios-developer") else { return }
+        guard let myURL = URL(string: "https://practicum.yandex.ru/ios-developer") else { return }
         webView.load(URLRequest(url: myURL))
     }
     

@@ -27,6 +27,10 @@ internal enum L10n {
   internal enum Profile {
     /// Сменить фото
     internal static let changePhoto = L10n.tr("Localizable", "Profile.changePhoto", fallback: "Сменить фото")
+    /// У Вас ещё нет избранных NFT
+    internal static let emptyFavouriteNFTLabel = L10n.tr("Localizable", "Profile.emptyFavouriteNFTLabel", fallback: "У Вас ещё нет избранных NFT")
+    /// У вас ещё нет NFT
+    internal static let emptyNFTLabel = L10n.tr("Localizable", "Profile.emptyNFTLabel", fallback: "У вас ещё нет NFT")
     /// Загрузить изображение
     internal static let loadPicture = L10n.tr("Localizable", "Profile.loadPicture", fallback: "Загрузить изображение")
   }

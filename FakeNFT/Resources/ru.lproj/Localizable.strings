@@ -7,3 +7,5 @@
 "Tab.profile" = "Профиль";
 "Profile.changePhoto" = "Сменить фото";
 "Profile.loadPicture" = "Загрузить изображение";
+"Profile.emptyNFTLabel" = "У вас ещё нет NFT";
+"Profile.emptyFavouriteNFTLabel" = "У Вас ещё нет избранных NFT"; 

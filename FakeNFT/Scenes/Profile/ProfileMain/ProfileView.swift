@@ -18,8 +18,8 @@ final class ProfileView: UIView {
     ]
     
     private let assetViewController: [UIViewController] = [
-        
-        
+        ProfileMyNFTViewController(),
+        ProfileFavoritesViewController(),
         ProfileDevelopersViewController()
     ]
     
@@ -179,20 +179,8 @@ extension ProfileView: UITableViewDataSource {
         let cell: ProfileCell = tableView.dequeueReusableCell()
         
         cell.backgroundColor = .screenBackground
-        switch indexPath.row {
-            case 0:
-                cell.textInSection.text = "Мои NFT"
-                cell.valueInSection.text = "(0)"
-            case 1:
-                cell.textInSection.text = "Избранные NFT"
-                cell.valueInSection.text = "(0)"
-            case 2:
-                cell.textInSection.text = "О разработчике"
-                cell.valueInSection.text = ""
-            default:
-                cell.textInSection.text = ""
-                cell.valueInSection.text = ""
-        }
+        cell.textInSection.text = assetLabel[indexPath.row]
+        cell.valueInSection.text = ""
         cell.selectionStyle = .none
         return cell
     }
@@ -205,15 +193,6 @@ extension ProfileView: UITableViewDataSource {
 
 extension ProfileView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch indexPath.row {
-            case 0:
-                print("Мои NFT")
-            case 1:
-                print("Избранные NFT")
-            case 2:
-                print("О разработчике")
-            default:
-                return
-        }
+        viewController?.navigationController?.pushViewController(assetViewController[indexPath.row], animated: true)
     }
 }
