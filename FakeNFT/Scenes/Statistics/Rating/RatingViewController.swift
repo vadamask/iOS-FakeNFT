@@ -5,9 +5,8 @@
 //  Created by Artem Adiev on 05.11.2023.
 //
 
-import UIKit
 import SnapKit
-import ProgressHUD
+import UIKit
 
 final class RatingViewController: UIViewController {
     private var viewModel = RatingViewModel(networkClient: DefaultNetworkClient())
@@ -35,11 +34,11 @@ final class RatingViewController: UIViewController {
         }
 
         viewModel.showLoading = {
-            ProgressHUD.show()
+            self.showLoading()
         }
 
         viewModel.hideLoading = {
-            ProgressHUD.dismiss()
+            self.hideLoading()
         }
 
         setupUI()
@@ -54,11 +53,12 @@ final class RatingViewController: UIViewController {
     }
 
     private func setupNavigationBar() {
-        let image = UIImage(asset: Asset.sortButton)
+        navigationController?.navigationBar.tintColor = .yaBlack
+        let image = Asset.sortButton.image
         sortButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(sortButtonTapped))
-        sortButton?.tintColor = .yaBlack
         guard let sortButton = sortButton else { return }
         navigationItem.rightBarButtonItem = sortButton
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
 
     private func setupTableView() {
@@ -77,7 +77,6 @@ final class RatingViewController: UIViewController {
 
     // MARK: - Actions
     @objc private func sortButtonTapped() {
-        // TODO: Локализовать
         let alertController = UIAlertController(title: nil, message: L10n.Sort.title, preferredStyle: .actionSheet)
 
         let sortByNameAction = UIAlertAction(title: L10n.Sort.byName, style: .default) { _ in
@@ -120,4 +119,13 @@ extension RatingViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
     }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let user = viewModel.getUser(at: indexPath)
+        let userVC = UserViewController(userId: user.id)
+        navigationController?.pushViewController(userVC, animated: true)
+    }
 }
+
+// MARK: - Extensions
+extension RatingViewController: LoadingView {}

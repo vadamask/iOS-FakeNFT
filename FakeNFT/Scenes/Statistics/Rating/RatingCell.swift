@@ -5,9 +5,9 @@
 //  Created by Artem Adiev on 05.11.2023.
 //
 
-import UIKit
-import SnapKit
 import Kingfisher
+import SnapKit
+import UIKit
 
 // MARK: - UI elements
 final class RatingCell: UITableViewCell, ReuseIdentifying {
@@ -59,7 +59,6 @@ final class RatingCell: UITableViewCell, ReuseIdentifying {
     func setupViews() {
         selectionStyle = .none
         contentView.backgroundColor = .clear
-
         contentView.addSubview(contentContainer)
         contentView.addSubview(numberLabel)
         contentContainer.addSubview(userImageView)
@@ -98,7 +97,7 @@ final class RatingCell: UITableViewCell, ReuseIdentifying {
     }
 
     // MARK: - Configure Cell
-    func configure(with user: Users, at index: Int) {
+    func configure(with user: User, at index: Int) {
         numberLabel.text = "\(index)"
         nameLabel.text = user.name
         ratingLabel.text = user.rating
