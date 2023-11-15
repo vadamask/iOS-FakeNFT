@@ -30,12 +30,12 @@ final class EditProfileView: UIView {
     // надпись поверх фото "Сменить фото"
     private lazy var editProfileImageLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .screenBackground.withAlphaComponent(0.6)
         label.text = L10n.Profile.changePhoto
         label.font = .caption10
-        label.textColor = .textPrimary
+        label.textColor = .textPrimaryInvert
         label.textAlignment = .center
         label.numberOfLines = 0
+        label.contentMode = .scaleAspectFill
         label.layer.cornerRadius = 35
         label.layer.masksToBounds = true
         let tapAction = UITapGestureRecognizer(target: self, action: #selector(profileImageDidChange(_:)))
@@ -44,12 +44,12 @@ final class EditProfileView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+    // надпись под фото "Загрузить изображение"
     private lazy var loadProfileImage: UILabel = {
         let label = UILabel()
         label.font = .bodyRegular17
         label.text = L10n.Profile.loadPicture
-        label.textColor = .textPrimaryInvert // white
+        label.textColor = .textPrimary
         label.textAlignment = .center
         label.layer.cornerRadius = 16
         label.layer.masksToBounds = true
@@ -78,9 +78,12 @@ final class EditProfileView: UIView {
         textField.layer.cornerRadius = 12
         textField.clearButtonMode = .whileEditing
         textField.delegate = self
-        let insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 41) // установка отступов слева в текст филд
-        textField.textRect(forBounds: bounds.inset(by: insets))
-        textField.editingRect(forBounds: bounds.inset(by: insets))
+        let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: textField.frame.height))
+        textField.leftView = leftPaddingView // отступ для текста слева
+        textField.leftViewMode = .always
+        //let insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 41) // установка отступов слева в текст филд
+        //textField.textRect(forBounds: bounds.inset(by: insets))
+        //textField.editingRect(forBounds: bounds.inset(by: insets)) //TODO: - вынести в отдельный экстеншн
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -98,7 +101,7 @@ final class EditProfileView: UIView {
         let textView = UITextView()
         textView.font = .bodyRegular17
         textView.textColor = .textPrimary // black
-        textView.textContainerInset = UIEdgeInsets(top: 11, left: 16, bottom: 11, right: 16)
+        textView.layoutMargins = UIEdgeInsets(top: 11, left: 19, bottom: 11, right: 16) //TODO: - вынести в экстеншн
         textView.backgroundColor = .placeholderBackground
         textView.layer.cornerRadius = 12
         textView.layer.masksToBounds = true
@@ -124,9 +127,10 @@ final class EditProfileView: UIView {
         textField.clearButtonMode = .whileEditing
         textField.layer.cornerRadius = 12
         textField.layer.masksToBounds = true
-        let insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 41) // установка отступов слева в текст филд
-        textField.textRect(forBounds: bounds.inset(by: insets))
-        textField.editingRect(forBounds: bounds.inset(by: insets))
+        
+        //let insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 41) // установка отступов слева в текст филд
+        //textField.textRect(forBounds: bounds.inset(by: insets))
+        //textField.editingRect(forBounds: bounds.inset(by: insets))
         textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
