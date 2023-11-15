@@ -8,17 +8,7 @@
 import UIKit
 
 final class ProfileViewController: UIViewController {
-    
     private var editButton: UIBarButtonItem!
-    /*
-    (
-        image: Asset.editButton.image,
-        style: .plain,
-        target: self,
-        action: #selector(didTapEditButton)
-    )
-     */
-    
     private var viewModel: ProfileViewModel?
     
     override func viewDidLoad() {
@@ -29,8 +19,7 @@ final class ProfileViewController: UIViewController {
         setupNavBar()
     }
     
-    @objc
-    private func didTapEditButton() {
+    @objc private func didTapEditButton() {
         let editProfileViewController = EditProfileViewController()
         editProfileViewController.viewModel = viewModel
         editProfileViewController.modalPresentationStyle = .popover
@@ -67,6 +56,5 @@ final class ProfileViewController: UIViewController {
                 action: #selector(didTapEditButton)
             )
         navigationItem.rightBarButtonItem = editButton
-        
     }
 }

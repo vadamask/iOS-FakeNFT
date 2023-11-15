@@ -13,9 +13,9 @@ final class ProfileMyNFTViewController: UIViewController {
         image: Asset.backButton.image,
         style: .plain,
         target: self,
-        action: #selector(didTapBackButton) // добавить обработку нажатия
+        action: #selector(didTapBackButton)
     )
-    
+    // лейбл при отсутствии нфт
     private lazy var emptyLabel: UILabel = {
         let label = UILabel()
         label.text = L10n.Profile.emptyNFTLabel // У вас ещё нет NFT

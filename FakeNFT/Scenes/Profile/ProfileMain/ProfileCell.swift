@@ -13,7 +13,7 @@ final class ProfileCell: UITableViewCell {
     var openSection: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "chevron.forward")
-        imageView.tintColor = .textPrimary // black
+        imageView.tintColor = .textPrimary
         imageView.preferredSymbolConfiguration = UIImage.SymbolConfiguration(font: .bodyBold17)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -74,5 +74,4 @@ final class ProfileCell: UITableViewCell {
 }
 
 extension ProfileCell: ReuseIdentifying {
-    
 }

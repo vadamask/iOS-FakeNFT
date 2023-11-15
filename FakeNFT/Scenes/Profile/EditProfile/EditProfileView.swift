@@ -32,7 +32,7 @@ final class EditProfileView: UIView {
     // надпись поверх фото "Сменить фото"
     private lazy var editProfileImageLabel: UILabel = {
         let label = UILabel()
-        label.text = L10n.Profile.changePhoto
+        label.text = L10n.Profile.changePhoto // сменить фото
         label.font = .caption10
         label.textColor = .textPrimaryInvert
         label.textAlignment = .center
@@ -50,7 +50,7 @@ final class EditProfileView: UIView {
     private lazy var loadProfileImage: UILabel = {
         let label = UILabel()
         label.font = .bodyRegular17
-        label.text = L10n.Profile.loadPicture
+        label.text = L10n.Profile.loadPicture // загрузить изображение
         label.textColor = .textPrimary
         label.textAlignment = .center
         label.layer.cornerRadius = 16
@@ -65,8 +65,8 @@ final class EditProfileView: UIView {
     private lazy var usernameLabel: UILabel = {
         let label = UILabel()
         label.font = .headline22
-        label.textColor = .textPrimary // black
-        label.attributedText = NSAttributedString(string: "Имя", attributes: [.kern: 0.35])
+        label.textColor = .textPrimary
+        label.attributedText = NSAttributedString(string: L10n.Profile.username, attributes: [.kern: 0.35])
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -90,8 +90,8 @@ final class EditProfileView: UIView {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .headline22
-        label.textColor = .textPrimary // black
-        label.attributedText = NSAttributedString(string: "Описание", attributes: [.kern: 0.35])
+        label.textColor = .textPrimary
+        label.attributedText = NSAttributedString(string: L10n.Profile.description, attributes: [.kern: 0.35])
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -99,7 +99,7 @@ final class EditProfileView: UIView {
     private lazy var descriptionTextView: UITextView = {
         let textView = UITextView()
         textView.font = .bodyRegular17
-        textView.textColor = .textPrimary // black
+        textView.textColor = .textPrimary
         textView.textContainerInset = UIEdgeInsets(top: 11, left: 5, bottom: 11, right: 16)
         textView.backgroundColor = .placeholderBackground
         textView.layer.cornerRadius = 12
@@ -111,9 +111,9 @@ final class EditProfileView: UIView {
     // лейбл "Сайт"
     private lazy var websiteLabel: UILabel = {
         let label = UILabel()
-        label.attributedText = NSAttributedString(string: "Сайт", attributes: [.kern: 0.35])
+        label.attributedText = NSAttributedString(string: L10n.Profile.website, attributes: [.kern: 0.35])
         label.font = .headline22
-        label.textColor = .textPrimary // black
+        label.textColor = .textPrimary
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -121,7 +121,7 @@ final class EditProfileView: UIView {
     private lazy var websiteTextField: UITextField = {
         let textField = UITextField()
         textField.font = .bodyRegular17
-        textField.textColor = .textPrimary // black
+        textField.textColor = .textPrimary
         let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: textField.frame.height))
         textField.leftView = leftPaddingView
         textField.leftViewMode = .always
@@ -186,8 +186,7 @@ final class EditProfileView: UIView {
     }
     
     // смена картинки профиля
-    @objc
-    func profileImageDidChange(_ sender: UITapGestureRecognizer) {
+    @objc func profileImageDidChange(_ sender: UITapGestureRecognizer) {
         loadProfileImage.isHidden = false
     }
     
@@ -219,7 +218,6 @@ final class EditProfileView: UIView {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            
             // кнопка закрыть
             closeButton.heightAnchor.constraint(equalToConstant: 42),
             closeButton.widthAnchor.constraint(equalToConstant: 42),

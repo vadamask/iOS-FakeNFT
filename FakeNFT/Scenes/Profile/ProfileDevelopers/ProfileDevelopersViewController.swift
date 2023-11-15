@@ -14,7 +14,7 @@ final class ProfileDevelopersViewController: UIViewController, WKUIDelegate {
         image: Asset.backButton.image,
         style: .plain,
         target: self,
-        action: #selector(didTapBackButton) // добавить обработку нажатия
+        action: #selector(didTapBackButton)
     )
     
     private lazy var webView: WKWebView = {

@@ -12,9 +12,9 @@ final class ProfileView: UIView {
     private var viewController: ProfileViewController?
     
     private let assetLabel: [String] = [
-        "Мои NFT",
-        "Избранные NFT",
-        "О разработчике"
+        L10n.Profile.myNFT,
+        L10n.Profile.nftFavorites,
+        L10n.Profile.aboutDeveloper
     ]
     
     private let assetViewController: [UIViewController] = [
@@ -38,7 +38,7 @@ final class ProfileView: UIView {
         let label = UILabel()
         label.text = ""
         label.font = .headline22
-        label.textColor = .textPrimary // black
+        label.textColor = .textPrimary
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -46,9 +46,9 @@ final class ProfileView: UIView {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .caption13
-        label.textColor = .textPrimary // black
+        label.textColor = .textPrimary
         label.numberOfLines = 0
-        let paragraphStyle = NSMutableParagraphStyle() // переменная настройки стиля параграфа
+        let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = 18
         label.attributedText = NSAttributedString(string: "", attributes: [.kern: 0.08,NSAttributedString.Key.paragraphStyle: paragraphStyle])
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -66,7 +66,7 @@ final class ProfileView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+    // тейбл вью
     private lazy var categoryTableView: UITableView = {
         let tableView = UITableView()
         tableView.separatorStyle = .none
@@ -74,7 +74,7 @@ final class ProfileView: UIView {
         tableView.dataSource = self
         tableView.isScrollEnabled = false
         tableView.delegate = self
-        tableView.register(ProfileCell.self) // регистрация ячейки
+        tableView.register(ProfileCell.self)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -94,8 +94,7 @@ final class ProfileView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc
-    private func websiteDidTap(_ sender: UITapGestureRecognizer) {
+    @objc private func websiteDidTap(_ sender: UITapGestureRecognizer) {
         viewController?.present(WebsiteViewController(webView: nil, websiteURL: websiteLabel.text), animated: true)
     }
     
@@ -109,7 +108,7 @@ final class ProfileView: UIView {
     ) {
         profileImage.kf.setImage(
             with: avatarURL,
-            placeholder: UIImage(named: "Profile"),
+            placeholder: Asset.profile.image,
             options: [.processor(RoundCornerImageProcessor(cornerRadius: 35))])
         usernameLabel.text = userName
         descriptionLabel.text = description

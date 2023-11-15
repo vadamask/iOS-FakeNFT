@@ -8,4 +8,11 @@
 "Profile.changePhoto" = "Сменить фото";
 "Profile.loadPicture" = "Загрузить изображение";
 "Profile.emptyNFTLabel" = "У вас ещё нет NFT";
-"Profile.emptyFavouriteNFTLabel" = "У Вас ещё нет избранных NFT"; 
+"Profile.emptyFavouriteNFTLabel" = "У Вас ещё нет избранных NFT";
+"Profile.username" = "Имя";
+"Profile.description" = "Описание";
+"Profile.website" = "Сайт";
+"Profile.myNFT" = "Мои NFT";
+"Profile.NFTFavorites" = "Избранные NFT";
+"Profile.aboutDeveloper" = "О разработчике";
+
