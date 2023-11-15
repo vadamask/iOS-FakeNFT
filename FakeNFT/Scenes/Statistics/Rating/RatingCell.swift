@@ -5,9 +5,9 @@
 //  Created by Artem Adiev on 05.11.2023.
 //
 
-import UIKit
-import SnapKit
 import Kingfisher
+import SnapKit
+import UIKit
 
 // MARK: - UI elements
 final class RatingCell: UITableViewCell, ReuseIdentifying {

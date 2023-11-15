@@ -8,7 +8,7 @@
 import UIKit
 import WebKit
 
-class UserWebViewController: UIViewController {
+final class UserWebViewController: UIViewController {
     // MARK: - Properties
     private let webView: WKWebView
     private let url: URL

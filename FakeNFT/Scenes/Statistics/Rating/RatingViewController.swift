@@ -5,9 +5,8 @@
 //  Created by Artem Adiev on 05.11.2023.
 //
 
-import UIKit
 import SnapKit
-import ProgressHUD
+import UIKit
 
 final class RatingViewController: UIViewController {
     private var viewModel = RatingViewModel(networkClient: DefaultNetworkClient())
@@ -35,11 +34,11 @@ final class RatingViewController: UIViewController {
         }
 
         viewModel.showLoading = {
-            ProgressHUD.show()
+            self.showLoading()
         }
 
         viewModel.hideLoading = {
-            ProgressHUD.dismiss()
+            self.hideLoading()
         }
 
         setupUI()
@@ -127,3 +126,6 @@ extension RatingViewController: UITableViewDelegate {
         navigationController?.pushViewController(userVC, animated: true)
     }
 }
+
+// MARK: - Extensions
+extension RatingViewController: LoadingView {}

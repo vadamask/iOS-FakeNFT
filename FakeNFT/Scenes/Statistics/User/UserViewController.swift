@@ -5,10 +5,9 @@
 //  Created by Artem Adiev on 09.11.2023.
 //
 
-import UIKit
-import SnapKit
 import Kingfisher
-import ProgressHUD
+import SnapKit
+import UIKit
 
 final class UserViewController: UIViewController {
     private var viewModel: UserViewModel?
@@ -77,11 +76,11 @@ final class UserViewController: UIViewController {
         super.viewDidLoad()
 
         viewModel?.showLoading = {
-            ProgressHUD.show()
+            self.showLoading()
         }
 
         viewModel?.hideLoading = {
-            ProgressHUD.dismiss()
+            self.hideLoading()
         }
 
         viewModel?.fetchUserDetails()
@@ -89,7 +88,7 @@ final class UserViewController: UIViewController {
         setupConstraints()
     }
 
-    @objc func websiteButtonTapped() {
+    @objc private func websiteButtonTapped() {
         guard let url = userWebSiteUrl else {
             print("Неверный URL")
             return
@@ -194,3 +193,6 @@ extension UserViewController: UITableViewDataSource {
 extension UserViewController: UITableViewDelegate {
     // Тут будет вызов экрана коллекции NFT
 }
+
+// MARK: - Extensions
+extension UserViewController: LoadingView {}
