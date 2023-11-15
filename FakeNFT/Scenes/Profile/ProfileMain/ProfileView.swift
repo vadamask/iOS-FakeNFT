@@ -11,6 +11,18 @@ import UIKit
 final class ProfileView: UIView {
     private var viewController: ProfileViewController?
     
+    private let assetLabel: [String] = [
+        "Мои NFT",
+        "Избранные NFT",
+        "О разработчике"
+    ]
+    
+    private let assetViewController: [UIViewController] = [
+        
+        
+        ProfileDevelopersViewController()
+    ]
+    
     //MARK: - Layout view
     private lazy var profileImage: UIImageView = {
         let imageView = UIImageView()

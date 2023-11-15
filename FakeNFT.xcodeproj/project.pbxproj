@@ -47,6 +47,7 @@
 		89388A1D2B03C8CD0082883F /* GetProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89388A1C2B03C8CD0082883F /* GetProfileRequest.swift */; };
 		896ACB932B010926004294F7 /* ProfileNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 896ACB922B010926004294F7 /* ProfileNetworkModel.swift */; };
 		89C34F132B015191008BACAB /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89C34F122B015191008BACAB /* UIBlockingProgressHUD.swift */; };
+		89D675F32B04EE44001F572A /* ProfileDevelopersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D675F22B04EE44001F572A /* ProfileDevelopersViewController.swift */; };
 		89D70B322B02617D00285230 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D70B312B02617D00285230 /* EditProfileView.swift */; };
 		89D70B342B02620C00285230 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D70B332B02620C00285230 /* EditProfileViewController.swift */; };
 		89D70B362B02B65800285230 /* HideKeyboard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D70B352B02B65800285230 /* HideKeyboard+Extension.swift */; };
@@ -126,6 +127,7 @@
 		89388A1C2B03C8CD0082883F /* GetProfileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetProfileRequest.swift; sourceTree = "<group>"; };
 		896ACB922B010926004294F7 /* ProfileNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNetworkModel.swift; sourceTree = "<group>"; };
 		89C34F122B015191008BACAB /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
+		89D675F22B04EE44001F572A /* ProfileDevelopersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDevelopersViewController.swift; sourceTree = "<group>"; };
 		89D70B312B02617D00285230 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		89D70B332B02620C00285230 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		89D70B352B02B65800285230 /* HideKeyboard+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HideKeyboard+Extension.swift"; sourceTree = "<group>"; };
@@ -418,6 +420,7 @@
 		89C34F142B01524D008BACAB /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				89D675F12B04EE1B001F572A /* ProfileDevelopers */,
 				89388A192B03C5550082883F /* ProfileWebsite */,
 				890140EF2AFEAE950031A22D /* ProfileMain */,
 				89C34F152B015297008BACAB /* EditProfile */,
@@ -432,6 +435,14 @@
 				89D70B332B02620C00285230 /* EditProfileViewController.swift */,
 			);
 			path = EditProfile;
+			sourceTree = "<group>";
+		};
+		89D675F12B04EE1B001F572A /* ProfileDevelopers */ = {
+			isa = PBXGroup;
+			children = (
+				89D675F22B04EE44001F572A /* ProfileDevelopersViewController.swift */,
+			);
+			path = ProfileDevelopers;
 			sourceTree = "<group>";
 		};
 		AB30F7C32AF5282B001F8A26 /* ThirdParty */ = {
@@ -702,6 +713,7 @@
 				3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */,
 				0C79EE662A76DDFF00EE90EA /* NftDetailViewController.swift in Sources */,
 				8935A4302B040F1F00556D57 /* PutProfileRequest.swift in Sources */,
+				89D675F32B04EE44001F572A /* ProfileDevelopersViewController.swift in Sources */,
 				E1A1B9DA2AA01CE400C3AFBC /* TabBarController.swift in Sources */,
 				890140F12AFEAEB60031A22D /* ProfileViewController.swift in Sources */,
 				3F478ED129DB476500F6D39E /* Fonts.swift in Sources */,
