@@ -23,7 +23,7 @@ final class ProfileCell: UITableViewCell {
     var textInSection: UILabel = {
         let label = UILabel()
         label.font = .bodyBold17
-        label.textColor = .yaBlack
+        label.textColor = .textPrimary
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -32,7 +32,7 @@ final class ProfileCell: UITableViewCell {
     var valueInSection: UILabel = {
         let label = UILabel()
         label.font = .bodyBold17
-        label.textColor = .yaBlack
+        label.textColor = .textPrimary
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

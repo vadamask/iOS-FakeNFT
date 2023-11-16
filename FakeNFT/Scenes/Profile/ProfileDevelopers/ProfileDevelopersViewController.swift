@@ -10,12 +10,15 @@ import WebKit
 
 final class ProfileDevelopersViewController: UIViewController, WKUIDelegate {
     
-    private lazy var backButton = UIBarButtonItem(
-        image: Asset.backButton.image,
-        style: .plain,
-        target: self,
-        action: #selector(didTapBackButton)
-    )
+    private lazy var backButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(
+            image: Asset.backButton.image,
+            style: .plain,
+            target: self,
+            action: #selector(didTapBackButton))
+        button.tintColor = .textPrimary
+        return button
+    }()
     
     private lazy var webView: WKWebView = {
         let prefs = WKWebpagePreferences()
@@ -42,7 +45,7 @@ final class ProfileDevelopersViewController: UIViewController, WKUIDelegate {
     }
     
     func setupView() {
-        navigationController?.navigationBar.tintColor = .yaBlack
+        navigationController?.navigationBar.tintColor = .textPrimary
         navigationItem.leftBarButtonItem = backButton
         view.backgroundColor = .screenBackground
     }

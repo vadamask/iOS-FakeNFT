@@ -9,12 +9,15 @@ import UIKit
 
 final class ProfileFavoritesViewController: UIViewController {
     // кнопка назад
-    private lazy var backButton = UIBarButtonItem(
-        image: Asset.backButton.image,
-        style: .plain,
-        target: self,
-        action: #selector(didTapBackButton)
-    )
+    private lazy var backButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(
+            image: Asset.backButton.image,
+            style: .plain,
+            target: self,
+            action: #selector(didTapBackButton))
+        button.tintColor = .textPrimary
+        return button
+    }()
     // лейбл при отсутствии нфт
     private lazy var emptyLabel: UILabel = {
         let label = UILabel()

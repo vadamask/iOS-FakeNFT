@@ -9,12 +9,15 @@ import UIKit
 
 final class ProfileMyNFTViewController: UIViewController {
     // кнопка назад
-    private lazy var backButton = UIBarButtonItem(
-        image: Asset.backButton.image,
-        style: .plain,
-        target: self,
-        action: #selector(didTapBackButton)
-    )
+    private lazy var backButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(
+            image: Asset.backButton.image,
+            style: .plain,
+            target: self,
+            action: #selector(didTapBackButton))
+        button.tintColor = .textPrimary
+        return button
+    }()
     // лейбл при отсутствии нфт
     private lazy var emptyLabel: UILabel = {
         let label = UILabel()
@@ -32,8 +35,7 @@ final class ProfileMyNFTViewController: UIViewController {
         addEmptyLabel()
     }
     
-    @objc
-    private func didTapBackButton() {
+    @objc private func didTapBackButton() {
         self.navigationController?.popViewController(animated: true)
     }
     
