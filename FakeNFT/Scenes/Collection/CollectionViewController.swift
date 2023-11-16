@@ -79,7 +79,7 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
     }
 
     private func bind() {
-        viewModel.statePublisher
+        viewModel.state
             .receive(on: RunLoop.main)
             .sink { [weak self] state in
                 switch state {

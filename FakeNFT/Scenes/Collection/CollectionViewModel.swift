@@ -13,8 +13,7 @@ enum CollectionViewState {
 }
 
 protocol CollectionViewModelProtocol {
-    var state: CollectionViewState { get }
-    var statePublisher: Published<CollectionViewState>.Publisher { get }
+    var state: CurrentValueSubject<CollectionViewState, Never> { get }
     var cellViewModels: [CollectionCellViewModel]? { get }
     var headerViewModel: CollectionHeaderViewModel? { get }
     func loadCollection()
@@ -26,8 +25,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
     private let service: NftService
     private(set) var cellViewModels: [CollectionCellViewModel]?
     private(set) var headerViewModel: CollectionHeaderViewModel?
-    @Published private(set) var state: CollectionViewState = .loading
-    var statePublisher: Published<CollectionViewState>.Publisher { $state }
+    private(set) var state = CurrentValueSubject<CollectionViewState, Never>(.loading)
 
     deinit {
         for subscription in subscriptions {
@@ -41,6 +39,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
     }
 
     func loadCollection() {
+        state.value = .loading
         service.loadCollection(by: collectionId)
             .flatMap { [unowned self] collection in
                 let user = self.service.loadUser(by: collection.author)
@@ -72,12 +71,12 @@ final class CollectionViewModel: CollectionViewModelProtocol {
             }
             .sink { [weak self] completion in
                 if case let .failure(error) = completion {
-                    self?.state = .error(error)
+                    self?.state.value = .error(error)
                 }
             } receiveValue: { [weak self] headerVM, cellVM in
                 self?.headerViewModel = headerVM
                 self?.cellViewModels = cellVM
-                self?.state = .loaded
+                self?.state.value = .loaded
             }
             .store(in: &subscriptions)
     }
