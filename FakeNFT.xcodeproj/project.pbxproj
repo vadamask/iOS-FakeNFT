@@ -42,6 +42,7 @@
 		890140F32AFEAECD0031A22D /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890140F22AFEAECD0031A22D /* ProfileCell.swift */; };
 		890140F52AFEAEDB0031A22D /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890140F42AFEAEDB0031A22D /* ProfileView.swift */; };
 		890140F72AFEAEE90031A22D /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890140F62AFEAEE90031A22D /* ProfileViewModel.swift */; };
+		8901E1952B062B8F0082AA9B /* EdgeSwipeBackGesture+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8901E1942B062B8F0082AA9B /* EdgeSwipeBackGesture+Extension.swift */; };
 		8935A4302B040F1F00556D57 /* PutProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8935A42F2B040F1F00556D57 /* PutProfileRequest.swift */; };
 		89388A1B2B03C5790082883F /* WebsiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89388A1A2B03C5790082883F /* WebsiteViewController.swift */; };
 		89388A1D2B03C8CD0082883F /* GetProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89388A1C2B03C8CD0082883F /* GetProfileRequest.swift */; };
@@ -124,6 +125,7 @@
 		890140F22AFEAECD0031A22D /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
 		890140F42AFEAEDB0031A22D /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		890140F62AFEAEE90031A22D /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		8901E1942B062B8F0082AA9B /* EdgeSwipeBackGesture+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EdgeSwipeBackGesture+Extension.swift"; sourceTree = "<group>"; };
 		8935A42F2B040F1F00556D57 /* PutProfileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutProfileRequest.swift; sourceTree = "<group>"; };
 		89388A1A2B03C5790082883F /* WebsiteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsiteViewController.swift; sourceTree = "<group>"; };
 		89388A1C2B03C8CD0082883F /* GetProfileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetProfileRequest.swift; sourceTree = "<group>"; };
@@ -417,6 +419,7 @@
 			children = (
 				89C34F122B015191008BACAB /* UIBlockingProgressHUD.swift */,
 				89D70B352B02B65800285230 /* HideKeyboard+Extension.swift */,
+				8901E1942B062B8F0082AA9B /* EdgeSwipeBackGesture+Extension.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -765,6 +768,7 @@
 				89D675F72B04F5D3001F572A /* ProfileFavoritesViewController.swift in Sources */,
 				3F6806D729CBC50A00B4F915 /* CellsReusingUtils.swift in Sources */,
 				E19CD5AB2A98B56600CA39A5 /* NftImageCollectionViewCell.swift in Sources */,
+				8901E1952B062B8F0082AA9B /* EdgeSwipeBackGesture+Extension.swift in Sources */,
 				0CF2C2E12A784C7000FDC837 /* LinePageControl.swift in Sources */,
 				3F6806D329CBBE9600B4F915 /* NetworkRequest.swift in Sources */,
 				890140F72AFEAEE90031A22D /* ProfileViewModel.swift in Sources */,

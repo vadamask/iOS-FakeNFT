@@ -33,6 +33,7 @@ final class ProfileMyNFTViewController: UIViewController {
         
         setupView()
         addEmptyLabel()
+        addEdgeSwipeBackGesture()
     }
     
     @objc private func didTapBackButton() {

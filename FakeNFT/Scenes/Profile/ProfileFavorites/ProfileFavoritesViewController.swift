@@ -33,6 +33,7 @@ final class ProfileFavoritesViewController: UIViewController {
         
         setupView()
         addSubview()
+        addEdgeSwipeBackGesture()
     }
     
     @objc

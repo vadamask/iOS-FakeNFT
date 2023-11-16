@@ -9,7 +9,6 @@ import UIKit
 import WebKit
 
 final class ProfileDevelopersViewController: UIViewController, WKUIDelegate {
-    
     private lazy var backButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
             image: Asset.backButton.image,
@@ -34,6 +33,7 @@ final class ProfileDevelopersViewController: UIViewController, WKUIDelegate {
         super.viewDidLoad()
         setupView()
         addSubview()
+        addEdgeSwipeBackGesture()
         
         guard let myURL = URL(string: "https://practicum.yandex.ru/ios-developer") else { return }
         webView.load(URLRequest(url: myURL))
