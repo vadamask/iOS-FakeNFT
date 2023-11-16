@@ -74,11 +74,11 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
     }
 
     private func bind() {
-        viewModel.statePublisher
+        viewModel.state
             .receive(on: RunLoop.main)
             .sink { [weak self] newState in
                 switch newState {
-                case .sorting: break
+                case .sorting, .refreshing: break
                 case .loading:
                     self?.showLoading()
                 case .error:
@@ -116,12 +116,9 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
     }
 
     private func applySnapshot() {
-        guard let cellViewModels = viewModel.cellViewModels else {
-            return
-        }
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
-        snapshot.appendItems(cellViewModels)
+        snapshot.appendItems(viewModel.cellViewModels)
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 

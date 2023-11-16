@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 enum CatalogViewModelState {
-    case loading, error(Error), ready, sorting
+    case loading, refreshing, error(Error), ready, sorting
 }
 
 enum CatalogViewModelSortingType: Int {
@@ -17,10 +17,10 @@ enum CatalogViewModelSortingType: Int {
 }
 
 protocol CatalogViewModelProtocol {
-    var state: CatalogViewModelState { get }
-    var statePublisher: Published<CatalogViewModelState>.Publisher { get }
-    var cellViewModels: [CatalogCellViewModel]? { get }
+    var state: CurrentValueSubject<CatalogViewModelState, Never> { get }
+    var cellViewModels: [CatalogCellViewModel] { get }
     func loadCollections()
+    func refreshCollections()
     func changeSorting(to sortingType: CatalogViewModelSortingType)
 }
 
@@ -28,10 +28,10 @@ final class CatalogViewModel: CatalogViewModelProtocol {
     private var subscriptions = Set<AnyCancellable>()
     private let service: NftService
     private let userDefaults = UserDefaults.standard
-    private var sortingType: CatalogViewModelSortingType
-    private(set) var cellViewModels: [CatalogCellViewModel]?
-    @Published private(set) var state: CatalogViewModelState = .loading
-    var statePublisher: Published<CatalogViewModelState>.Publisher { $state }
+    private var currentSortingType: CatalogViewModelSortingType
+    private var sortingTypePublisher = PassthroughSubject<CatalogViewModelSortingType, Never>()
+    private(set) var cellViewModels: [CatalogCellViewModel] = []
+    private(set) var state = CurrentValueSubject<CatalogViewModelState, Never>(.loading)
 
     deinit {
         for subscription in subscriptions {
@@ -41,11 +41,39 @@ final class CatalogViewModel: CatalogViewModelProtocol {
     
     init(service: NftService) {
         self.service = service
-        self.sortingType = userDefaults.sortingType
+        self.currentSortingType = userDefaults.sortingType
+
+        // MARK: For background sorting
+        self.sortingTypePublisher
+            .receive(on: DispatchQueue.global())
+            .flatMap { [unowned self] sortingType in
+                sorting(viewModels: self.cellViewModels, with: sortingType)
+            }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] sortedCells in
+                self?.cellViewModels = sortedCells
+                self?.state.value = .ready
+            }
+            .store(in: &subscriptions)
     }
 
     func loadCollections() {
-        state = .loading
+        state.value = .loading
+        fetchCollections()
+    }
+
+    func refreshCollections() {
+        state.value = .refreshing
+        fetchCollections()
+    }
+
+    func changeSorting(to sortingType: CatalogViewModelSortingType) {
+        currentSortingType = sortingType
+        userDefaults.sortingType = sortingType
+        self.sortingTypePublisher.send(sortingType)
+    }
+
+    private func fetchCollections() {
         service.loadNftCollections()
             .map { nftCollections in
                 nftCollections.map {
@@ -59,33 +87,29 @@ final class CatalogViewModel: CatalogViewModelProtocol {
             }
             .sink { [weak self] completion in
                 if case let .failure(error) = completion {
-                    self?.state = .error(error)
+                    self?.state.value = .error(error)
                 }
             } receiveValue: { [weak self] cellModels in
-                self?.cellViewModels = cellModels
-                self?.sorting()
+                guard let self = self else { return }
+                self.cellViewModels = cellModels
+                self.sortingTypePublisher.send(self.currentSortingType) // Due to iOS 13 support
             }
             .store(in: &subscriptions)
     }
 
-    func changeSorting(to sortingType: CatalogViewModelSortingType) {
-        self.sortingType = sortingType
-        userDefaults.sortingType = self.sortingType
-        sorting()
-    }
-
-    private func sorting() {
-        state = .sorting
+    private func sorting(viewModels: [CatalogCellViewModel], with sortingType: CatalogViewModelSortingType) -> Just<[CatalogCellViewModel]> {
+        state.value = .sorting
+        let sorted: [CatalogCellViewModel]
         switch sortingType {
         case .byNameAsc:
-            cellViewModels?.sort { $0.name.caseInsensitiveCompare($1.name) == .orderedAscending }
+            sorted = viewModels.sorted { $0.name.caseInsensitiveCompare($1.name) == .orderedAscending }
         case .byNameDesc:
-            cellViewModels?.sort { $0.name.caseInsensitiveCompare($1.name) == .orderedDescending }
+            sorted = viewModels.sorted { $0.name.caseInsensitiveCompare($1.name) == .orderedDescending }
         case .byNftCountAsc:
-            cellViewModels?.sort { $0.nftCount < $1.nftCount }
+            sorted = viewModels.sorted { $0.nftCount < $1.nftCount }
         case .byNftCountDesc:
-            cellViewModels?.sort { $0.nftCount > $1.nftCount }
+            sorted = viewModels.sorted { $0.nftCount > $1.nftCount }
         }
-        state = .ready
+        return Just(sorted)
     }
 }
