@@ -36,7 +36,9 @@ final class EditProfileView: UIView {
         label.font = .caption10
         label.textColor = .textPrimaryInvert
         label.textAlignment = .center
-        label.numberOfLines = 0
+        label.numberOfLines = 2
+        label.backgroundColor = .yaBlack.withAlphaComponent(0.6)
+        label.lineBreakMode = .byWordWrapping
         label.contentMode = .scaleAspectFill
         label.layer.cornerRadius = 35
         label.layer.masksToBounds = true

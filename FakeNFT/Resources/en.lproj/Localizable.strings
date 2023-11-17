@@ -5,7 +5,7 @@
 "Error.repeat" = "Repeat";
 "Error.title" = "Error";
 "Tab.profile" = "Profile";
-"Profile.changePhoto" = "Change photo";
+"Profile.changePhoto" = "Change picture";
 "Profile.loadPicture" = "Load picture";
 "Profile.emptyNFTLabel" = "You don't have any NFT favorites yet";
 "Profile.emptyFavouriteNFTLabel" = "You don't have NFT yet";
