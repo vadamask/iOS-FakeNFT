@@ -4,3 +4,14 @@
 "Error.unknown" = "An unknown error has occurred";
 "Error.repeat" = "Repeat";
 "Error.title" = "Error";
+"Tab.profile" = "Profile";
+"Profile.changePhoto" = "Change picture";
+"Profile.loadPicture" = "Load picture";
+"Profile.emptyNFTLabel" = "You don't have any NFT favorites yet";
+"Profile.emptyFavouriteNFTLabel" = "You don't have NFT yet";
+"Profile.username" = "Name";
+"Profile.description" = "Description";
+"Profile.website" = "Website";
+"Profile.myNFT" = "My NFT";
+"Profile.NFTFavorites" = "NFT Favorites";
+"Profile.aboutDeveloper" = "About developer";
