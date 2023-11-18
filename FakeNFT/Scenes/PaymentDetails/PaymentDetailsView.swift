@@ -8,7 +8,6 @@ import SnapKit
 import UIKit
 
 protocol PaymentDetailsViewDelegate: AnyObject {
-    func backButtonTapped()
     func payButtonTapped()
 }
 
@@ -28,26 +27,6 @@ final class PaymentDetailsView: UIView {
         title: L10n.Cart.PaymentScreen.payButton,
         type: .primary
     )
-    
-    private lazy var backButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(Asset.backButton.image, for: .normal)
-        button.tintColor = .borderColor
-        button.addTarget(
-            self,
-            action: #selector(backButtonTapped),
-            for: .touchUpInside
-        )
-        return button
-    }()
-    
-    private lazy var topLabel: UILabel = {
-        let label = UILabel()
-        label.font = .bodyBold17
-        label.textColor = .textPrimary
-        label.text = L10n.Cart.PaymentScreen.topBarTitle
-        return label
-    }()
     
     private lazy var linkLabel: UILabel = {
         let label = UILabel()
@@ -80,22 +59,9 @@ final class PaymentDetailsView: UIView {
     private func setupLayout() {
         addSubview(collectionView)
         addSubview(bottomView)
-        addSubview(backButton)
-        addSubview(topLabel)
     
         bottomView.addSubview(payButton)
         bottomView.addSubview(linkLabel)
-        
-        backButton.snp.makeConstraints { make in
-            make.leading.equalTo(9)
-            make.top.equalTo(safeAreaLayoutGuide).offset(11)
-            make.size.equalTo(CGSize(width: 24, height: 24))
-        }
-        
-        topLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(backButton)
-            make.centerX.equalToSuperview()
-        }
         
         bottomView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
@@ -116,12 +82,8 @@ final class PaymentDetailsView: UIView {
         
         collectionView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(topLabel.snp.bottom).offset(10)
+            make.top.equalTo(10)
         }
-    }
-    
-    @objc private func backButtonTapped() {
-        delegate?.backButtonTapped()
     }
     
     @objc private func payButtonTapped() {

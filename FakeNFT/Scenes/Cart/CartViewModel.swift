@@ -20,12 +20,18 @@ final class CartViewModel {
     @Published var isLoading: Bool?
     let servicesAssembly: ServicesAssembly
     
+    private var coordinator: CartCoordinator
     private var sortOption = SortOption.name
     private let userDefaults = UserDefaults.standard
     
-    init(servicesAssembly: ServicesAssembly) {
+    init(servicesAssembly: ServicesAssembly, coordinator: CartCoordinator) {
         self.servicesAssembly = servicesAssembly
+        self.coordinator = coordinator
         getSortOption()
+    }
+    
+    func paymentDidTapped() {
+        coordinator.goToPaymentDetails()
     }
     
     func setSortOption(_ option: SortOption) {
@@ -34,7 +40,15 @@ final class CartViewModel {
         nfts = sort(nfts)
     }
     
-    func loadOrder(isPullToRefresh: Bool) {
+    func didRefreshTableView() {
+        loadOrder(isPullToRefresh: true)
+    }
+    
+    func loadOrder() {
+        loadOrder(isPullToRefresh: false)
+    }
+    
+    private func loadOrder(isPullToRefresh: Bool) {
         isLoading = !isPullToRefresh
         
         servicesAssembly.nftService.loadOrder(id: "1") { [weak self] result in
@@ -43,6 +57,7 @@ final class CartViewModel {
                 if order.nfts.isEmpty {
                     self?.emptyState = true
                     self?.isLoading = false
+                    self?.nfts = []
                 } else {
                     self?.emptyState = false
                     self?.loadNfts(order.nfts)
@@ -50,18 +65,6 @@ final class CartViewModel {
             case .failure(let error):
                 self?.error = error
                 self?.isLoading = false
-            }
-        }
-    }
-    
-    func deleteNfts() {
-        let dto = NftDto(id: "1", nfts: [])
-        servicesAssembly.nftService.deleteNfts(dto) { [weak self] result in
-            switch result {
-            case .success(let _):
-                self?.nfts = []
-            case .failure(let error):
-                self?.error = error
             }
         }
     }

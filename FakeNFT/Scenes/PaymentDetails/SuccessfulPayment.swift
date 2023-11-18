@@ -8,6 +8,8 @@ import SnapKit
 import UIKit
 
 final class SuccessfulPayment: UIViewController {
+    var coordinator: CartCoordinator?
+    
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = Asset.successfulPayment.image
@@ -33,9 +35,7 @@ final class SuccessfulPayment: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .screenBackground
         buton.action = { [weak self] _ in
-            let controller = UIApplication.shared.windows[0].rootViewController as? TabBarController
-            controller?.selectedIndex = 0
-            self?.presentingViewController?.presentingViewController?.dismiss(animated: true)
+            self?.coordinator?.goToCatatlogTab()
         }
         setupLayout()
     }

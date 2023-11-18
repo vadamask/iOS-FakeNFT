@@ -35,7 +35,7 @@ final class CartViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        viewModel.loadOrder(isPullToRefresh: false)
+        viewModel.loadOrder()
     }
     
     private func setupUI() {
@@ -53,19 +53,13 @@ final class CartViewController: UIViewController {
         cartView.tableView.refreshControl = UIRefreshControl()
         cartView.tableView.refreshControl?.addTarget(
             self,
-            action: #selector(refreshTableView),
+            action: #selector(didRefreshTableView),
             for: .valueChanged
         )
         
-        cartView.completion = { [weak self] in
+        cartView.onResponse = { [weak self] in
             guard let self else { return }
-            let viewModel = PaymentDetailsViewModel(serviceAssembly: self.viewModel.servicesAssembly)
-            let controller = PaymentDetailsViewController(viewModel: viewModel)
-            controller.onSuccess = { [weak self] in
-                self?.viewModel.deleteNfts()
-            }
-            controller.modalPresentationStyle = .overFullScreen
-            self.present(controller, animated: true)
+            viewModel.paymentDidTapped()
         }
     }
     
@@ -97,7 +91,7 @@ final class CartViewController: UIViewController {
                     message: L10n.Error.network,
                     actionText: L10n.Error.repeat
                 ) { [weak self] in
-                    self?.viewModel.loadOrder(isPullToRefresh: false)
+                    self?.viewModel.loadOrder()
                 }
                 self?.showError(model)
                 print(error.localizedDescription)
@@ -169,8 +163,8 @@ final class CartViewController: UIViewController {
         present(actionSheet, animated: true)
     }
     
-    @objc private func refreshTableView() {
-        viewModel.loadOrder(isPullToRefresh: true)
+    @objc private func didRefreshTableView() {
+        viewModel.didRefreshTableView()
     }
 }
 
