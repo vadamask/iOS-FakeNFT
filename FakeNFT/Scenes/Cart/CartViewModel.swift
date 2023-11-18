@@ -30,6 +30,10 @@ final class CartViewModel {
         getSortOption()
     }
     
+    func fakeRequest() {
+        servicesAssembly.nftService.fakeRequest()
+    }
+    
     func paymentDidTapped() {
         coordinator.goToPaymentDetails()
     }

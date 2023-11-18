@@ -35,6 +35,7 @@ final class CartViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        //viewModel.fakeRequest()
         viewModel.loadOrder()
     }
     

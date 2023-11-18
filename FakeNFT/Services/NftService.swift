@@ -12,6 +12,7 @@ protocol NftService {
     func loadCurrencies(completion: @escaping CurrencyCompletion)
     func verifyPayment(with currencyID: String, completion: @escaping PaymentCompletion)
     func deleteNfts(_ dto: NftDto, completion: @escaping DeleteCompletion)
+    func fakeRequest()
 }
 
 final class NftServiceImpl: NftService {
@@ -87,6 +88,19 @@ final class NftServiceImpl: NftService {
                 completion(.success(Void()))
             case.failure(let error):
                 completion(.failure(error))
+            }
+        }
+    }
+    
+    func fakeRequest() {
+        let dto = NftDto(id: "1", nfts: ["1", "2", "3"])
+        let request = DeleteNftsRequest(dto: dto)
+        networkClient.send(request: request) { result in
+            switch result {
+            case .success(_):
+               print("fake success")
+            case.failure(_):
+                print("fake fail")
             }
         }
     }
