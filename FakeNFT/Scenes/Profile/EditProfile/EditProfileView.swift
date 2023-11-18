@@ -206,16 +206,16 @@ final class EditProfileView: UIView {
     }
     
     private func addSubview() {
-        self.addSubview(closeButton)
-        self.addSubview(profileImage)
-        self.addSubview(editProfileImageLabel)
-        self.addSubview(usernameLabel)
-        self.addSubview(usernameTextField)
-        self.addSubview(descriptionLabel)
-        self.addSubview(descriptionTextView)
-        self.addSubview(websiteLabel)
-        self.addSubview(websiteTextField)
-        self.addSubview(loadProfileImage)
+        addSubview(closeButton)
+        addSubview(profileImage)
+        addSubview(editProfileImageLabel)
+        addSubview(usernameLabel)
+        addSubview(usernameTextField)
+        addSubview(descriptionLabel)
+        addSubview(descriptionTextView)
+        addSubview(websiteLabel)
+        addSubview(websiteTextField)
+        addSubview(loadProfileImage)
     }
     
     private func setupConstraints() {
