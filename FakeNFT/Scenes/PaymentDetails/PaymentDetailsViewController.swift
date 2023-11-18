@@ -7,15 +7,51 @@
 import Combine
 import UIKit
 
-private enum Section: Hashable {
-    case main
+struct GeometrySize {
+    let cellPerRow: CGFloat
+    let cellHeight: CGFloat
+    let cellWidth: CGFloat
+    let lineSpacing: CGFloat
+    let interItemSpacing: CGFloat
+    let leftInset: CGFloat
+    let rightInset: CGFloat
+    
+    init(
+        cellPerRow: CGFloat,
+        cellHeight: CGFloat,
+        lineSpacing: CGFloat,
+        interItemSpacing: CGFloat,
+        leftInset: CGFloat,
+        rightInset: CGFloat
+    ) {
+        self.cellPerRow = cellPerRow
+        self.cellHeight = cellHeight
+        self.lineSpacing = lineSpacing
+        self.interItemSpacing = interItemSpacing
+        self.leftInset = leftInset
+        self.rightInset = rightInset
+        
+        let screenWidth = UIScreen.main.bounds.width
+        self.cellWidth = (screenWidth - leftInset - rightInset - interItemSpacing) / cellPerRow
+    }
 }
 
 final class PaymentDetailsViewController: UIViewController {
-    let paymentView = PaymentDetailsView()
+    private enum Section: Hashable {
+        case main
+    }
+    private let paymentView = PaymentDetailsView()
     private lazy var dataSource = configureDataSource()
     private let viewModel: PaymentDetailsViewModel
     private var cancellables: Set<AnyCancellable> = []
+    private let sizes = GeometrySize(
+        cellPerRow: 2,
+        cellHeight: 46,
+        lineSpacing: 7,
+        interItemSpacing: 7,
+        leftInset: 16,
+        rightInset: 16
+    )
     
     init(viewModel: PaymentDetailsViewModel) {
         self.viewModel = viewModel
@@ -158,9 +194,10 @@ extension PaymentDetailsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        let screenWidth = view.bounds.width
-        let cellWidth = (screenWidth - 32 - 7) / 2
-        return CGSize(width: cellWidth, height: 46)
+        return CGSize(
+            width: sizes.cellWidth,
+            height: sizes.cellHeight
+        )
     }
     
     func collectionView(
@@ -168,7 +205,7 @@ extension PaymentDetailsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         minimumLineSpacingForSectionAt section: Int
     ) -> CGFloat {
-        7
+        sizes.lineSpacing
     }
     
     func collectionView(
@@ -176,7 +213,7 @@ extension PaymentDetailsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         minimumInteritemSpacingForSectionAt section: Int
     ) -> CGFloat {
-        7
+        sizes.interItemSpacing
     }
 }
 
