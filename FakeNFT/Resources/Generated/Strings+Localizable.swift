@@ -41,6 +41,8 @@ internal enum L10n {
     internal static let myNFT = L10n.tr("Localizable", "Profile.myNFT", fallback: "Мои NFT")
     /// Избранные NFT
     internal static let nftFavorites = L10n.tr("Localizable", "Profile.NFTFavorites", fallback: "Избранные NFT")
+    /// Нет интернета
+    internal static let noInternet = L10n.tr("Localizable", "Profile.noInternet", fallback: "Нет интернета")
     /// Имя
     internal static let username = L10n.tr("Localizable", "Profile.username", fallback: "Имя")
     /// Сайт

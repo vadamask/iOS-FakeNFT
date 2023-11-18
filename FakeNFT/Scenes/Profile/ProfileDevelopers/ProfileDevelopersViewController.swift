@@ -35,13 +35,13 @@ final class ProfileDevelopersViewController: UIViewController, WKUIDelegate {
         addSubview()
         addEdgeSwipeBackGesture()
         
-        guard let myURL = URL(string: "https://practicum.yandex.ru/ios-developer") else { return }
+        guard let myURL = URL(string: Constants.url) else { return }
         webView.load(URLRequest(url: myURL))
     }
     
     @objc
     private func didTapBackButton() {
-        self.navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
     
     func setupView() {
@@ -59,5 +59,11 @@ final class ProfileDevelopersViewController: UIViewController, WKUIDelegate {
             webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             webView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+    }
+}
+
+extension ProfileDevelopersViewController {
+    enum Constants {
+        static let url = "https://practicum.yandex.ru/ios-developer"
     }
 }
