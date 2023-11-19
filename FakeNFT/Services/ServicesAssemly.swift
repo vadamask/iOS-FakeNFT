@@ -1,14 +1,10 @@
 final class ServicesAssembly {
-    private let networkClient: NetworkClient
-    private let nftStorage: NftStorage
+    static let shared = ServicesAssembly()
+    
+    private let networkClient: NetworkClient = DefaultNetworkClient()
+    private let nftStorage: NftStorage = NftStorageImpl()
 
-    init(
-        networkClient: NetworkClient,
-        nftStorage: NftStorage
-    ) {
-        self.networkClient = networkClient
-        self.nftStorage = nftStorage
-    }
+    private init() {}
 
     var nftService: NftService {
         NftServiceImpl(

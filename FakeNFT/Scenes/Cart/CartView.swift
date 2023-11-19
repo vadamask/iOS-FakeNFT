@@ -9,6 +9,8 @@ import SnapKit
 import UIKit
 
 final class CartView: UIView {
+    var onResponse: (() -> Void)?
+    
     lazy var countLabel: UILabel = {
         let label = UILabel()
         label.font = .bodyRegular15
@@ -40,16 +42,7 @@ final class CartView: UIView {
         return label
     }()
     
-    lazy var bottomView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .placeholderBackground
-        view.layer.cornerRadius = 12
-        view.layer.maskedCorners = [
-            .layerMinXMinYCorner,
-            .layerMaxXMinYCorner
-        ]
-        return view
-    }()
+    lazy var bottomView = BottomView()
     
     private let buyButton = ActionButton(
         title: L10n.Cart.MainScreen.buyNft,
@@ -68,6 +61,9 @@ final class CartView: UIView {
 
     private func setupUI() {
         backgroundColor = .screenBackground
+        buyButton.action = { [weak self] _ in
+            self?.onResponse?()
+        }
     }
 
     private func setupLayout() {

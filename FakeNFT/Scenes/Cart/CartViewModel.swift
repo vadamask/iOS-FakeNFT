@@ -4,7 +4,7 @@
 //
 //  Created by Вадим Шишков on 05.11.2023.
 //
-import Combine
+
 import Foundation
 
 enum SortOption: Int {
@@ -13,33 +13,47 @@ enum SortOption: Int {
     case rating
 }
 
-private enum Constants {
-    static let sortCartKey = "sortCartKey"
-}
-
 final class CartViewModel {
     @Published var nfts: [Nft] = []
     @Published var error: Error?
     @Published var emptyState: Bool?
     @Published var isLoading: Bool?
+    let servicesAssembly: ServicesAssembly
     
+    private var coordinator: CartCoordinator
     private var sortOption = SortOption.name
-    private let servicesAssembly: ServicesAssembly
     private let userDefaults = UserDefaults.standard
     
-    init(servicesAssembly: ServicesAssembly) {
+    init(servicesAssembly: ServicesAssembly, coordinator: CartCoordinator) {
         self.servicesAssembly = servicesAssembly
+        self.coordinator = coordinator
         getSortOption()
+    }
+    
+    func fakeRequest() {
+        servicesAssembly.nftService.fakeRequest()
+    }
+    
+    func paymentDidTapped() {
+        coordinator.goToPaymentDetails()
     }
     
     func setSortOption(_ option: SortOption) {
         sortOption = option
-        userDefaults.set(option.rawValue, forKey: Constants.sortCartKey)
+        userDefaults.set(option.rawValue, forKey: UserDefaultsKeys.sortCartKey)
         nfts = sort(nfts)
     }
     
+    func didRefreshTableView() {
+        loadOrder(isPullToRefresh: true)
+    }
+    
     func loadOrder() {
-        isLoading = true
+        loadOrder(isPullToRefresh: false)
+    }
+    
+    private func loadOrder(isPullToRefresh: Bool) {
+        isLoading = !isPullToRefresh
         
         servicesAssembly.nftService.loadOrder(id: "1") { [weak self] result in
             switch result {
@@ -47,6 +61,7 @@ final class CartViewModel {
                 if order.nfts.isEmpty {
                     self?.emptyState = true
                     self?.isLoading = false
+                    self?.nfts = []
                 } else {
                     self?.emptyState = false
                     self?.loadNfts(order.nfts)
@@ -89,14 +104,14 @@ final class CartViewModel {
         }
         
         group.notify(queue: DispatchQueue.main) { [weak self] in
-            guard let self = self else { return }
-            self.isLoading = false
+            guard let self else { return }
+            isLoading = false
             self.nfts = sort(nfts)
         }
     }
     
     private func getSortOption() {
-        let rawValue = userDefaults.integer(forKey: Constants.sortCartKey)
+        let rawValue = userDefaults.integer(forKey: UserDefaultsKeys.sortCartKey)
         if let sortOption = SortOption(rawValue: rawValue) {
             self.sortOption = sortOption
         }

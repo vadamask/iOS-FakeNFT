@@ -31,6 +31,11 @@ final class CartViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         bind()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        //viewModel.fakeRequest()
         viewModel.loadOrder()
     }
     
@@ -46,11 +51,22 @@ final class CartViewController: UIViewController {
         self.rightBarItem = rightBarItem
         
         cartView.tableView.dataSource = self
+        cartView.tableView.refreshControl = UIRefreshControl()
+        cartView.tableView.refreshControl?.addTarget(
+            self,
+            action: #selector(didRefreshTableView),
+            for: .valueChanged
+        )
+        
+        cartView.onResponse = { [weak self] in
+            guard let self else { return }
+            viewModel.paymentDidTapped()
+        }
     }
     
     private func bind() {
         viewModel.$nfts.sink { [weak self] nfts in
-            guard let self = self else { return }
+            guard let self else { return }
             
             DispatchQueue.main.async { [weak self] in
                 self?.cartView.tableView.reloadData()
@@ -65,12 +81,13 @@ final class CartViewController: UIViewController {
                 : .borderColor
                 
                 self?.cartView.bottomView.isHidden = nfts.isEmpty ? true : false
+                self?.cartView.tableView.refreshControl?.endRefreshing()
             }
         }
         .store(in: &cancellables)
         
         viewModel.$error.sink { [weak self] error in
-            if let error = error {
+            if let error {
                 let model = ErrorModel(
                     message: L10n.Error.network,
                     actionText: L10n.Error.repeat
@@ -84,7 +101,7 @@ final class CartViewController: UIViewController {
         .store(in: &cancellables)
         
         viewModel.$emptyState.sink { [weak self] emptyState in
-            guard let self = self, let emptyState = emptyState else { return }
+            guard let self, let emptyState else { return }
             if emptyState {
                 cartView.emptyStateLabel.isHidden = false
                 rightBarItem?.tintColor = .textPrimaryInvert
@@ -95,10 +112,13 @@ final class CartViewController: UIViewController {
         .store(in: &cancellables)
         
         viewModel.$isLoading.sink { [weak self] isLoading in
-            guard
-                let self = self,
-                let isLoading = isLoading else { return }
-            isLoading ? showLoading() : hideLoading()
+            guard let self, let isLoading else { return }
+            if isLoading {
+                showLoading()
+            } else {
+                hideLoading()
+                self.cartView.tableView.refreshControl?.endRefreshing()
+            }
         }
         .store(in: &cancellables)
     }
@@ -143,7 +163,13 @@ final class CartViewController: UIViewController {
         
         present(actionSheet, animated: true)
     }
+    
+    @objc private func didRefreshTableView() {
+        viewModel.didRefreshTableView()
+    }
 }
+
+// MARK: - UITableViewDataSource
 
 extension CartViewController: UITableViewDataSource {
     func tableView(
