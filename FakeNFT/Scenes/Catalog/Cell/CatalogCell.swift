@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-final class CatalogCell: UITableViewCell, ReuseIdentifying {
+final class CatalogCell: UICollectionViewCell, ReuseIdentifying {
     var viewModel: CatalogCellViewModel? {
         didSet {
             update()
@@ -38,8 +38,8 @@ final class CatalogCell: UITableViewCell, ReuseIdentifying {
         return label
     }()
 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupViews()
         setupConstraints()
     }
@@ -62,14 +62,11 @@ final class CatalogCell: UITableViewCell, ReuseIdentifying {
     }
 
     private func setupConstraints() {
-        stackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 8, left: 16, bottom: 13, right: 16))
-        }
         coverImage.snp.makeConstraints { make in
             make.height.equalTo(140)
         }
-        label.snp.makeConstraints { make in
-            make.height.equalTo(22)
+        stackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
 

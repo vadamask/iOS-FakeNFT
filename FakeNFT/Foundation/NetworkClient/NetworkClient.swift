@@ -1,6 +1,8 @@
 import Foundation
+import Combine
 
 enum NetworkClientError: Error {
+    case urlError
     case httpStatusCode(Int)
     case urlRequestError(Error)
     case urlSessionError
@@ -22,6 +24,9 @@ protocol NetworkClient {
         completionQueue: DispatchQueue,
         onResponse: @escaping (Result<T, Error>) -> Void
     ) -> NetworkTask?
+
+    // MARK: Combine
+    func send<T: Decodable>(request: NetworkRequest) -> AnyPublisher<T, Error>
 }
 
 extension NetworkClient {
@@ -43,7 +48,7 @@ extension NetworkClient {
     }
 }
 
-struct DefaultNetworkClient: NetworkClient {
+class DefaultNetworkClient: NetworkClient {
     private let session: URLSession
     private let decoder: JSONDecoder
     private let encoder: JSONEncoder
@@ -114,6 +119,25 @@ struct DefaultNetworkClient: NetworkClient {
                 onResponse(.failure(error))
             }
         }
+    }
+
+    // MARK: Combine
+    func send<T: Decodable>(request: NetworkRequest) -> AnyPublisher<T, Error> {
+        guard let request = create(request: request) else {
+            return Fail(error: NetworkClientError.urlError).eraseToAnyPublisher()
+        }
+        return session.dataTaskPublisher(for: request)
+            .tryMap { data, response -> Data in
+                guard let response = response as? HTTPURLResponse else {
+                    throw NetworkClientError.urlSessionError
+                }
+                guard 200 ..< 300 ~= response.statusCode else {
+                    throw NetworkClientError.httpStatusCode(response.statusCode)
+                }
+                return data
+            }
+            .decode(type: T.self, decoder: JSONDecoder())
+            .eraseToAnyPublisher()
     }
 
     // MARK: - Private

@@ -1,11 +1,17 @@
 import Foundation
+import Combine
 
 typealias NftCompletion = (Result<Nft, Error>) -> Void
 typealias NftCollectionCompletion = (Result<[NftCollection], Error>) -> Void
 
 protocol NftService {
     func loadNft(id: String, completion: @escaping NftCompletion)
-    func loadNftCollections(completion: @escaping NftCollectionCompletion)
+    func loadNftCollections() -> AnyPublisher<[NftCollection], Error>
+    func loadCollection(by id: String) -> AnyPublisher<NftCollection, Error>
+    func loadNft(by id: String) -> AnyPublisher<Nft, Error>
+    func loadUser(by id: String) -> AnyPublisher<NftUser, Error>
+    func loadProfile() -> AnyPublisher<NftProfile, Error>
+    func loadOrder(by id: String) -> AnyPublisher<NftOrder, Error>
 }
 
 final class NftServiceImpl: NftService {
@@ -35,15 +41,39 @@ final class NftServiceImpl: NftService {
         }
     }
 
-    func loadNftCollections(completion: @escaping NftCollectionCompletion) {
+    func loadNftCollections() -> AnyPublisher<[NftCollection], Error> {
         let request = NftCollectionRequest()
-        networkClient.send(request: request, type: [NftCollection].self) { result in
-            switch result {
-            case .success(let collections):
-                completion(.success(collections))
-            case .failure(let error):
-                completion(.failure(error))
+        return networkClient.send(request: request)
+    }
+    func loadCollection(by id: String) -> AnyPublisher<NftCollection, Error> {
+        let request = NftCollectionIdRequest(id: id)
+        return networkClient.send(request: request)
+    }
+    func loadNft(by id: String) -> AnyPublisher<Nft, Error> {
+        if let nft = storage.getNft(with: id) {
+            return Future { promise in
+                promise(.success(nft))
             }
+            .eraseToAnyPublisher()
         }
+        let request = NFTRequest(id: id)
+        return networkClient.send(request: request)
+            .map { [weak self] nft in
+                self?.storage.saveNft(nft)
+                return nft
+            }
+        .eraseToAnyPublisher()
+    }
+    func loadUser(by id: String) -> AnyPublisher<NftUser, Error> {
+        let request = NftUserRequest(id: id)
+        return networkClient.send(request: request)
+    }
+    func loadOrder(by id: String) -> AnyPublisher<NftOrder, Error> {
+        let request = NftOrderRequest(id: id)
+        return networkClient.send(request: request)
+    }
+    func loadProfile() -> AnyPublisher<NftProfile, Error> {
+        let request = NftProfileRequest()
+        return networkClient.send(request: request)
     }
 }

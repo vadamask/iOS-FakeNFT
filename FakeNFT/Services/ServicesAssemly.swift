@@ -1,4 +1,8 @@
 final class ServicesAssembly {
+    static let shared = ServicesAssembly(
+        networkClient: DefaultNetworkClient(),
+        nftStorage: NftStorageImpl())
+
     private let networkClient: NetworkClient
     private let nftStorage: NftStorage
 
