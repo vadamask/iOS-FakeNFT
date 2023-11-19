@@ -9,8 +9,8 @@ import UIKit
 import WebKit
 
 final class WebsiteViewController: UIViewController, WKUIDelegate {
-    var webView: WKWebView?
-    var websiteURL: String?
+    private var webView: WKWebView?
+    private var websiteURL: String?
     
     override func loadView() {
         let webConfiguration = WKWebViewConfiguration()
