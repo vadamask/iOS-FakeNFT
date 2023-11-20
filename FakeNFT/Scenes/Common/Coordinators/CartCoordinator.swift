@@ -67,4 +67,10 @@ final class CartCoordinator: Coordinator {
         navigationController.present(controller, animated: true)
     }
     
+    func dismiss(isApproved: Bool) {
+        if isApproved {
+            onResponse?()
+        }
+        navigationController.dismiss(animated: true)
+    }
 }

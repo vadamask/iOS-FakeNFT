@@ -4,6 +4,7 @@ protocol NftStorage: AnyObject {
     func saveNft(_ nft: Nft)
     func getNft(with id: String) -> Nft?
     func clearStorage()
+    func delete(_ id: String)
 }
 
 final class NftStorageImpl: NftStorage {
@@ -25,5 +26,9 @@ final class NftStorageImpl: NftStorage {
     
     func clearStorage() {
         storage = [:]
+    }
+    
+    func delete(_ id: String) {
+        storage.removeValue(forKey: id)
     }
 }

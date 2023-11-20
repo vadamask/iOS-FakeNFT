@@ -23,6 +23,7 @@ final class CartViewModel {
     private var coordinator: CartCoordinator
     private var sortOption = SortOption.name
     private let userDefaults = UserDefaults.standard
+    private let serialQueue = DispatchQueue(label: "loadNfts")
     
     init(servicesAssembly: ServicesAssembly, coordinator: CartCoordinator) {
         self.servicesAssembly = servicesAssembly
@@ -50,6 +51,25 @@ final class CartViewModel {
     
     func loadOrder() {
         loadOrder(isPullToRefresh: false)
+    }
+    
+    func deleteButtonTapped(with id: String) {
+        coordinator.onResponse = { [weak self] in
+            self?.deleteNft(with: id)
+        }
+        coordinator.goToDeleteNft()
+    }
+    
+    func deleteNft(with id: String) {
+        var ids = nfts.map { $0.id }
+        servicesAssembly.nftService.deleteNft(id, from: ids) { [weak self] result in
+            switch result {
+            case .success(_):
+                self?.loadOrder(isPullToRefresh: false)
+            case .failure(let error):
+                self?.error = error
+            }
+        }
     }
     
     private func loadOrder(isPullToRefresh: Bool) {
@@ -94,7 +114,9 @@ final class CartViewModel {
                 self?.servicesAssembly.nftService.loadNft(id: id) { result in
                     switch result {
                     case .success(let nft):
-                        nfts.append(nft)
+                        self?.serialQueue.async {
+                            nfts.append(nft)
+                        }
                     case .failure(let error):
                         self?.error = error
                     }
