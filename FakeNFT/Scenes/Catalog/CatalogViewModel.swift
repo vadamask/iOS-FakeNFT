@@ -41,7 +41,7 @@ final class CatalogViewModel: CatalogViewModelProtocol {
     
     init(service: NftService) {
         self.service = service
-        self.currentSortingType = userDefaults.sortingType
+        self.currentSortingType = userDefaults.catalogSortingType
 
         // MARK: For background sorting
         self.sortingTypePublisher
@@ -69,7 +69,7 @@ final class CatalogViewModel: CatalogViewModelProtocol {
 
     func changeSorting(to sortingType: CatalogViewModelSortingType) {
         currentSortingType = sortingType
-        userDefaults.sortingType = sortingType
+        userDefaults.catalogSortingType = sortingType
         self.sortingTypePublisher.send(sortingType)
     }
 
