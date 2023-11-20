@@ -24,3 +24,7 @@
 
 "cart.successful_payment.backToCatatlog" = "Return to the catalog";
 "cart.successful_payment.label" = "Success! The payment has passed, congratulations on your purchase!";
+
+"cart.delete_screen.approveDelete" = "Are you sure you want to remove the item from the cart?";
+"cart.delete_screen.delete" = "Delete";
+"cart.delete_screen.goBack" = "Return";

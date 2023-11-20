@@ -53,18 +53,6 @@ final class PaymentDetailsViewModel {
         }
     }
     
-    private func deleteNfts() {
-        let dto = NftDto(id: "1", nfts: [])
-        servicesAssembly.nftService.deleteNfts(dto) { [weak self] result in
-            switch result {
-            case .success(_):
-                print("delete success")
-            case .failure(let error):
-                self?.error = error
-            }
-        }
-    }
-    
     func goToSuccessPayment() {
         coordinator.goToSuccessPayment()
     }
@@ -75,5 +63,17 @@ final class PaymentDetailsViewModel {
     
     func backButtonTapped() {
         coordinator.pop()
+    }
+    
+    private func deleteNfts() {
+        let dto = NftDto(id: "1", nfts: [])
+        servicesAssembly.nftService.clearOrder(dto) { [weak self] result in
+            switch result {
+            case .success(_):
+                print("delete success")
+            case .failure(let error):
+                self?.error = error
+            }
+        }
     }
 }

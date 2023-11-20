@@ -24,3 +24,7 @@
 
 "cart.successful_payment.backToCatatlog" = "Вернуться в каталог";
 "cart.successful_payment.label" = "Успех! Оплата прошла, поздравляем с покупкой!";
+
+"cart.delete_screen.approveDelete" = "Вы уверены, что хотите удалить объект из корзины?";
+"cart.delete_screen.delete" = "Удалить";
+"cart.delete_screen.goBack" = "Вернуться";

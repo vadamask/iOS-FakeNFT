@@ -11,6 +11,7 @@ final class CartCoordinator: Coordinator {
     weak var parentCoordinator: Coordinator?
     var children: [Coordinator] = []
     var navigationController: UINavigationController
+    var onResponse: (() -> Void)?
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -58,4 +59,12 @@ final class CartCoordinator: Coordinator {
         navigationController.popToRootViewController(animated: false)
         navigationController.dismiss(animated: true)
     }
+    
+    func goToDeleteNft() {
+        let controller = DeleteNft()
+        controller.modalPresentationStyle = .overFullScreen
+        controller.coordinator = self
+        navigationController.present(controller, animated: true)
+    }
+    
 }
