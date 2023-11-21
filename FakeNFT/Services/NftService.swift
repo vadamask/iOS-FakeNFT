@@ -85,7 +85,7 @@ final class NftServiceImpl: NftService {
         let request = DeleteNftsRequest(dto: dto)
         networkClient.send(request: request) { result in
             switch result {
-            case .success(_):
+            case .success:
                 completion(.success(Void()))
             case.failure(let error):
                 completion(.failure(error))
@@ -100,7 +100,7 @@ final class NftServiceImpl: NftService {
         let request = DeleteNftsRequest(dto: dto)
         networkClient.send(request: request) { result in
             switch result {
-            case .success(_):
+            case .success:
                 completion(.success(Void()))
             case.failure(let error):
                 completion(.failure(error))
@@ -113,9 +113,9 @@ final class NftServiceImpl: NftService {
         let request = DeleteNftsRequest(dto: dto)
         networkClient.send(request: request) { result in
             switch result {
-            case .success(_):
-               print("fake success")
-            case.failure(_):
+            case .success:
+                print("fake success")
+            case.failure:
                 print("fake fail")
             }
         }

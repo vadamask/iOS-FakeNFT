@@ -53,7 +53,7 @@ final class PaymentDetailsViewModel {
         }
     }
     
-    func goToSuccessPayment() {
+    func paymentDidTapped() {
         coordinator.goToSuccessPayment()
     }
     
@@ -61,7 +61,7 @@ final class PaymentDetailsViewModel {
         selectedCurrencyID = currencies.value[indexPath.row].id
     }
     
-    func backButtonTapped() {
+    func backButtonDidTapped() {
         coordinator.pop()
     }
     
@@ -69,7 +69,7 @@ final class PaymentDetailsViewModel {
         let dto = NftDto(id: "1", nfts: [])
         servicesAssembly.nftService.clearOrder(dto) { [weak self] result in
             switch result {
-            case .success(_):
+            case .success:
                 print("delete success")
             case .failure(let error):
                 self?.error = error

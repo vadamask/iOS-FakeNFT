@@ -61,10 +61,10 @@ final class CartViewModel {
     }
     
     func deleteNft(with id: String) {
-        var ids = nfts.map { $0.id }
+        let ids = nfts.map { $0.id }
         servicesAssembly.nftService.deleteNft(id, from: ids) { [weak self] result in
             switch result {
-            case .success(_):
+            case .success:
                 self?.loadOrder(isPullToRefresh: false)
             case .failure(let error):
                 self?.error = error
