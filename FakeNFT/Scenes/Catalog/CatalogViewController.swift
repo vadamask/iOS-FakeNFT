@@ -13,6 +13,17 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
     private lazy var dataSource = makeDataSource()
     private let viewModel: CatalogViewModelProtocol
 
+    private lazy var sortButtonItem = {
+        let button = UIBarButtonItem(
+            image: Asset.sortButton.image,
+            style: .done,
+            target: self,
+            action: #selector(sortButtonTapped)
+        )
+        button.isEnabled = false
+        return button
+    }()
+
     init(viewModel: CatalogViewModelProtocol, layout: UICollectionViewLayout) {
         self.viewModel = viewModel
         super.init(collectionViewLayout: layout)
@@ -45,12 +56,6 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
         super.viewDidLoad()
 
         // MARK: Configuring sort button item right side
-        let sortButtonItem = UIBarButtonItem(
-            image: Asset.sortButton.image,
-            style: .done,
-            target: self,
-            action: #selector(sortButtonTapped)
-        )
         navigationItem.rightBarButtonItem = sortButtonItem
 
         // MARK: Configuring collectionView
@@ -58,6 +63,7 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
         collectionView.refreshControl = UIRefreshControl()
         collectionView.backgroundView = activityIndicator
         collectionView.register(CatalogCell.self)
+        collectionView.register(CatalogCellPlaceholder.self)
 
         // MARK: add action for refresh control
         collectionView.refreshControl?.addTarget(self, action: #selector(refreshCatalog), for: .valueChanged)
@@ -75,13 +81,21 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
 
     private func bind() {
         viewModel.state
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchSerialQueue.main)
             .sink { [weak self] newState in
                 switch newState {
-                case .sorting, .refreshing: break
+                case .initial:
+                    self?.sortButtonItem.isEnabled = false
+                    self?.collectionView.isUserInteractionEnabled = false
+                    self?.applySnapshot()
                 case .loading:
+                    self?.sortButtonItem.isEnabled = false
                     self?.showLoading()
+                case .refreshing, .sorting:
+                    self?.sortButtonItem.isEnabled = false
                 case .error:
+                    self?.sortButtonItem.isEnabled = false
+                    self?.collectionView.isUserInteractionEnabled = true
                     self?.hideLoading()
                     self?.showError(
                         ErrorModel(
@@ -92,6 +106,8 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
                         }
                     )
                 case .ready:
+                    self?.collectionView.isUserInteractionEnabled = true
+                    self?.sortButtonItem.isEnabled = true
                     self?.hideLoading()
                     self?.applySnapshot()
                     self?.collectionView.refreshControl?.endRefreshing()
@@ -101,16 +117,21 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
     }
 
     @objc private func refreshCatalog() {
-        viewModel.loadCollections()
+        viewModel.refreshCollections()
     }
 
     private func makeDataSource() -> DataSource {
         let dataSource = DataSource(
             collectionView: collectionView
-        ) { collectionView, indexPath, catalogCellViewModel -> UICollectionViewCell? in
-            let cell: CatalogCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-            cell.viewModel = catalogCellViewModel
-            return cell
+        ) { [weak self] collectionView, indexPath, catalogCellViewModel -> UICollectionViewCell? in
+            if case .loading = self?.viewModel.state.value {
+                let cell: CatalogCellPlaceholder = collectionView.dequeueReusableCell(indexPath: indexPath)
+                return cell
+            } else {
+                let cell: CatalogCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+                cell.viewModel = catalogCellViewModel
+                return cell
+            }
         }
         return dataSource
     }

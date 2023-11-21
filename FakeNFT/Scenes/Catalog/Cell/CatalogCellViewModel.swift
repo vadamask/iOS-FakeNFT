@@ -10,6 +10,6 @@ import UIKit
 struct CatalogCellViewModel: Hashable {
     let id: String
     let name: String
-    let coverUrl: URL
+    let coverUrl: URL?
     let nftCount: Int
 }
