@@ -24,7 +24,10 @@ class OnboardingViewController: UIPageViewController {
                 description: "Смотрите статистику других и покажите всем, что у вас самая ценная коллекция",
                 button: ActionButton(
                     title: "Что внутри?",
-                    type: .primary
+                    type: .primary,
+                    action: { _ in
+                        print("Clicked")
+                    }
                 )
             )
         ]
