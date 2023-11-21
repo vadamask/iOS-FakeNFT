@@ -10,9 +10,11 @@ import SnapKit
 import UIKit
 
 final class UserViewController: UIViewController {
+    // MARK: - Properties
     private var viewModel: UserViewModel?
     private var user: User?
     private var nftCount = 0
+    private var nftCollection: [String]? = []
     private var userWebSiteUrl = URL(string: "")
 
     // MARK: - UI elements
@@ -170,6 +172,7 @@ final class UserViewController: UIViewController {
         nftCount = user.nfts.count
         descriptionLabel.text = user.description
         userWebSiteUrl = user.website
+        nftCollection = user.nfts
         tableView.reloadData()
         makeVisible()
     }
@@ -192,7 +195,20 @@ extension UserViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension UserViewController: UITableViewDelegate {
     // Тут будет вызов экрана коллекции NFT
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let nftCollection = nftCollection else {
+            // Обработать случай, когда у пользователя нет NFT
+            let error = ErrorModel(message: "У пользователя нет NFT", actionText: "ОК", action: {})
+            print("КОЛИЧЕСТВО НФТ: \(nftCollection)")
+            showError(error)
+            return
+        }
+        print("КОЛИЧЕСТВО НФТ: \(nftCollection)")
+        let collectionVC = CollectionViewController(nftIds: nftCollection)
+        navigationController?.pushViewController(collectionVC, animated: true)
+    }
 }
 
 // MARK: - Extensions
 extension UserViewController: LoadingView {}
+extension UserViewController: ErrorView {}

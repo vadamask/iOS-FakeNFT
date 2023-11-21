@@ -19,7 +19,7 @@ final class RatingViewModel {
     var showLoading: (() -> Void)?
     var hideLoading: (() -> Void)?
 
-    // MARK: - Initialization
+    // MARK: - Init
     init(networkClient: NetworkClient) {
         self.networkClient = networkClient
     }

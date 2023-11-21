@@ -9,8 +9,8 @@ import Kingfisher
 import SnapKit
 import UIKit
 
-// MARK: - UI elements
 final class RatingCell: UITableViewCell, ReuseIdentifying {
+    // MARK: - UI elements
     private let contentContainer: UIView = {
         let contentContainer = UIView()
         contentContainer.backgroundColor = .placeholderBackground
@@ -43,7 +43,7 @@ final class RatingCell: UITableViewCell, ReuseIdentifying {
         return ratingLabel
     }()
 
-// MARK: - Lifecycle
+    // MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
@@ -55,7 +55,7 @@ final class RatingCell: UITableViewCell, ReuseIdentifying {
         fatalError("init(coder:) has not been implemented")
     }
 
-// MARK: - Setup UI
+    // MARK: - Setup UI
     func setupViews() {
         selectionStyle = .none
         contentView.backgroundColor = .clear
