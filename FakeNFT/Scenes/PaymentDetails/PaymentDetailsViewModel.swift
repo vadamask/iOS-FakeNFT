@@ -74,7 +74,7 @@ final class PaymentDetailsViewModel {
         servicesAssembly.nftService.clearOrder(dto) { [weak self] result in
             switch result {
             case .success:
-                print("delete success")
+                NotificationCenter.default.post(name: .nftsDeleted, object: nil)
             case .failure(let error):
                 self?.error = error
             }

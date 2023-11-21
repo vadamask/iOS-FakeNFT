@@ -29,6 +29,13 @@ final class CartViewModel {
         self.servicesAssembly = servicesAssembly
         self.coordinator = coordinator
         getSortOption()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(nftsDidDeleted),
+            name: .nftsDeleted,
+            object: nil
+        )
     }
     
     func fakeRequest() {
@@ -137,5 +144,13 @@ final class CartViewModel {
         if let sortOption = SortOption(rawValue: rawValue) {
             self.sortOption = sortOption
         }
+    }
+    
+    @objc private func nftsDidDeleted() {
+        nfts = []
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }

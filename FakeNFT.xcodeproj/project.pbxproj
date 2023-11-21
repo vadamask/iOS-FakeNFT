@@ -59,6 +59,7 @@
 		DD74B8092B07ECDA00648CD7 /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD74B8082B07ECDA00648CD7 /* TabBarCoordinator.swift */; };
 		DD81660B2B0BD59000124FDB /* DeleteNft.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD81660A2B0BD59000124FDB /* DeleteNft.swift */; };
 		DD81660F2B0D169800124FDB /* TermsOfUse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD81660E2B0D169800124FDB /* TermsOfUse.swift */; };
+		DD8166122B0D2D9F00124FDB /* NotificationName+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8166112B0D2D9F00124FDB /* NotificationName+Constants.swift */; };
 		DD8923012AF419D8001DB539 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = DD8923002AF419D8001DB539 /* SnapKit */; };
 		DDA8E4672B00DBC6007563B3 /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA8E4662B00DBC6007563B3 /* UserDefaultsKeys.swift */; };
 		DDCDBA1D2AF77E1F00F87214 /* CartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCDBA1C2AF77E1F00F87214 /* CartViewModel.swift */; };
@@ -158,6 +159,7 @@
 		DD74B8082B07ECDA00648CD7 /* TabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCoordinator.swift; sourceTree = "<group>"; };
 		DD81660A2B0BD59000124FDB /* DeleteNft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteNft.swift; sourceTree = "<group>"; };
 		DD81660E2B0D169800124FDB /* TermsOfUse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfUse.swift; sourceTree = "<group>"; };
+		DD8166112B0D2D9F00124FDB /* NotificationName+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Constants.swift"; sourceTree = "<group>"; };
 		DDA8E4662B00DBC6007563B3 /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
 		DDCDBA1C2AF77E1F00F87214 /* CartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewModel.swift; sourceTree = "<group>"; };
 		DDCDBA1E2AF78DCB00F87214 /* CartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartCell.swift; sourceTree = "<group>"; };
@@ -383,6 +385,7 @@
 				3F6806D629CBC50A00B4F915 /* CellsReusingUtils.swift */,
 				0CFCB74A2A780EA80009A829 /* UIView+Constraints.swift */,
 				DDA8E4662B00DBC6007563B3 /* UserDefaultsKeys.swift */,
+				DD8166112B0D2D9F00124FDB /* NotificationName+Constants.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -781,6 +784,7 @@
 				DD74B8092B07ECDA00648CD7 /* TabBarCoordinator.swift in Sources */,
 				DD74B8032B07D0EB00648CD7 /* ProfileCoordinator.swift in Sources */,
 				DDCDBA1D2AF77E1F00F87214 /* CartViewModel.swift in Sources */,
+				DD8166122B0D2D9F00124FDB /* NotificationName+Constants.swift in Sources */,
 				DD74B8012B07CB1D00648CD7 /* CartCoordinator.swift in Sources */,
 				0CFCB74B2A780EA80009A829 /* UIView+Constraints.swift in Sources */,
 				3F6806D729CBC50A00B4F915 /* CellsReusingUtils.swift in Sources */,
