@@ -12,6 +12,7 @@ protocol NftService {
     func loadUser(by id: String) -> AnyPublisher<NftUser, Error>
     func loadProfile() -> AnyPublisher<NftProfile, Error>
     func loadOrder(by id: String) -> AnyPublisher<NftOrder, Error>
+    func updateOrder(id: String, nftOrderDto: NftOrderDto) -> AnyPublisher<NftOrder, Error>
     func updateProfile(nftProfileDto: NftProfileDto) -> AnyPublisher<NftProfile, Error>
 }
 
@@ -71,6 +72,10 @@ final class NftServiceImpl: NftService {
     }
     func loadOrder(by id: String) -> AnyPublisher<NftOrder, Error> {
         let request = NftOrderRequest(id: id)
+        return networkClient.send(request: request)
+    }
+    func updateOrder(id: String, nftOrderDto: NftOrderDto) -> AnyPublisher<NftOrder, Error> {
+        let request = NftOrderRequest(id: id, httpMethod: .put, dto: nftOrderDto)
         return networkClient.send(request: request)
     }
     func loadProfile() -> AnyPublisher<NftProfile, Error> {
