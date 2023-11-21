@@ -238,6 +238,10 @@ extension PaymentDetailsViewController: PaymentDetailsViewDelegate {
     func payButtonTapped() {
         viewModel.verifyPayment()
     }
+    
+    func linkTapped() {
+        viewModel.linkDidTapped()
+    }
 }
 
 // MARK: - ErrorView

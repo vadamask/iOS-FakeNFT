@@ -9,6 +9,7 @@ import UIKit
 
 protocol PaymentDetailsViewDelegate: AnyObject {
     func payButtonTapped()
+    func linkTapped()
 }
 
 final class PaymentDetailsView: UIView {
@@ -30,10 +31,31 @@ final class PaymentDetailsView: UIView {
     
     private lazy var linkLabel: UILabel = {
         let label = UILabel()
-        label.font = .caption13
-        label.textColor = .textPrimary
         label.numberOfLines = 0
-        label.text = L10n.Cart.PaymentScreen.terms
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(
+            UITapGestureRecognizer(
+                target: self,
+                action: #selector(linkTapped)
+            )
+        )
+        let text = L10n.Cart.PaymentScreen.terms
+        let attrString = NSMutableAttributedString(
+            string: text,
+            attributes: [
+                .font: UIFont.caption13,
+                .foregroundColor: UIColor.textPrimary
+            ]
+        )
+        if let index = text.firstIndex(where: { $0 == "\n" }),
+            let range = text.range(of: text[index...]) {
+            attrString.addAttribute(
+                .foregroundColor,
+                value: UIColor.yaBlue,
+                range: NSRange(range, in: text)
+            )
+        }
+        label.attributedText = attrString
         return label
     }()
     
@@ -47,6 +69,10 @@ final class PaymentDetailsView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc private func linkTapped() {
+        delegate?.linkTapped()
     }
     
     private func setupUI() {

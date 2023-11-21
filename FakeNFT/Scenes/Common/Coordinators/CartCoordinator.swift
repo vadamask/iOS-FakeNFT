@@ -67,6 +67,11 @@ final class CartCoordinator: Coordinator {
         navigationController.present(controller, animated: true)
     }
     
+    func goToTerms() {
+        let controller = TermsOfUse()
+        navigationController.present(controller, animated: true)
+    }
+    
     func dismiss(isApproved: Bool) {
         if isApproved {
             onResponse?()

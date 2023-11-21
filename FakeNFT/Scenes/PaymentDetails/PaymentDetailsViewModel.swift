@@ -65,6 +65,10 @@ final class PaymentDetailsViewModel {
         coordinator.pop()
     }
     
+    func linkDidTapped() {
+        coordinator.goToTerms()
+    }
+    
     private func deleteNfts() {
         let dto = NftDto(id: "1", nfts: [])
         servicesAssembly.nftService.clearOrder(dto) { [weak self] result in
