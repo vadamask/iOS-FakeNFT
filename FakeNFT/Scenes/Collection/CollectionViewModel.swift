@@ -18,6 +18,8 @@ protocol CollectionViewModelProtocol {
     var headerViewModel: CollectionHeaderViewModel? { get }
     func loadCollection()
     func likeNftWith(id: String, isLiked: Bool)
+    func addToCartNftWith(id: String)
+    func removeFromCartNftWith(id: String)
     func navigateToAuthorPage(url: URL)
 }
 
@@ -112,6 +114,50 @@ final class CollectionViewModel: CollectionViewModelProtocol {
                 guard let self = self else { return }
                 for i in 0..<self.cellViewModels.count {
                     self.cellViewModels[i].isLiked = profile.likes.contains(self.cellViewModels[i].id)
+                }
+                self.state.value = .loaded
+            }
+            .store(in: &subscriptions)
+    }
+
+    func addToCartNftWith(id: String) {
+        service.loadOrder(by: "1")
+            .flatMap { [unowned self] order in
+                var nfts = order.nfts
+                nfts.append(id)
+                let orderDto = NftOrderDto(nfts: nfts)
+                return service.updateOrder(id: order.id, nftOrderDto: orderDto)
+            }
+            .sink { [weak self] completion in
+                if case let .failure(error) = completion {
+                    self?.state.value = .error(error)
+                }
+            } receiveValue: { [weak self] order in
+                guard let self = self else { return }
+                for i in 0..<self.cellViewModels.count {
+                    self.cellViewModels[i].inOrder = order.nfts.contains(self.cellViewModels[i].id)
+                }
+                self.state.value = .loaded
+            }
+            .store(in: &subscriptions)
+    }
+    
+    func removeFromCartNftWith(id: String) {
+        service.loadOrder(by: "1")
+            .flatMap { [unowned self] order in
+                var nfts = order.nfts
+                nfts.removeAll { $0 == id }
+                let orderDto = NftOrderDto(nfts: nfts)
+                return service.updateOrder(id: order.id, nftOrderDto: orderDto)
+            }
+            .sink { [weak self] completion in
+                if case let .failure(error) = completion {
+                    self?.state.value = .error(error)
+                }
+            } receiveValue: { [weak self] order in
+                guard let self = self else { return }
+                for i in 0..<self.cellViewModels.count {
+                    self.cellViewModels[i].inOrder = order.nfts.contains(self.cellViewModels[i].id)
                 }
                 self.state.value = .loaded
             }
