@@ -27,7 +27,7 @@ final class TabBarCoordinator: Coordinator {
     private func initializeTabBar() {
         let tabBarController = TabBarController()
 
-        // catalog
+        // MARK: Catalog
 
         let catalogNavigationController = UINavigationController()
         let catalogCoordinator = CatalogCoordinator(navigationController: catalogNavigationController)

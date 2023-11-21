@@ -10,6 +10,9 @@ import UIKit
 final class ProgressLinePageControl: UIView {
     // MARK: - Properties
 
+    var duration: Double = 3
+    var completion: (() -> Void)?
+
     var numberOfItems: Int = 0 {
         didSet {
             setupStackView()
@@ -53,7 +56,7 @@ final class ProgressLinePageControl: UIView {
 
         for _ in (0..<numberOfItems) {
             let segment = UIProgressView()
-            segment.trackTintColor = .placeholderBackground
+            segment.trackTintColor = .white
             segment.progressTintColor = .orange
             stackView.addArrangedSubview(segment)
         }
@@ -72,9 +75,14 @@ final class ProgressLinePageControl: UIView {
     func startAnimating() {
         guard let progressView = self.stackView.arrangedSubviews[self.selectedItem] as? UIProgressView else { return }
         progressView.progress = 1
-        UIView.animate(withDuration: 3, delay: 0, options: .curveLinear) {
+        UIView.animate(withDuration: duration, delay: 0, options: .curveLinear, animations: {
             progressView.layoutIfNeeded()
-        }
+        }, completion: { [weak self] completion in
+            print(completion)
+            if completion {
+                self?.completion?()
+            }
+        })
     }
     func stopAnimating() {
         guard let progressView = self.stackView.arrangedSubviews[self.selectedItem] as? UIProgressView else { return }

@@ -25,7 +25,19 @@ final class AppCoordinator: Coordinator {
     }
 
     func start() {
-        goToHome()
+        if UserDefaults.standard.isOnBoarded {
+            goToHome()
+        } else {
+            goToOnboarding()
+        }
+    }
+
+    func goToOnboarding() {
+        children.removeAll()
+        let onBoarding = OnboardingViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+        onBoarding.coordinator = self
+        navigationController.pushViewController(onBoarding, animated: true)
+        navigationController.setNavigationBarHidden(true, animated: true)
     }
 
     func goToHome() {

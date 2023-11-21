@@ -8,7 +8,8 @@
 import UIKit
 
 class OnboardingViewController: UIPageViewController {
-    private let orderedViewControllers: [UIViewController] = {
+    weak var coordinator: AppCoordinator?
+    private lazy var orderedViewControllers: [UIViewController] = {
         return [
             OnboardingPage(
                 bgImage: Asset.onboarding1BG.image,
@@ -24,20 +25,19 @@ class OnboardingViewController: UIPageViewController {
                 description: "Смотрите статистику других и покажите всем, что у вас самая ценная коллекция",
                 button: ActionButton(
                     title: "Что внутри?",
-                    type: .primary,
-                    action: { _ in
-                        print("Clicked")
-                    }
-                )
+                    type: .primary
+                ) { [weak self] _ in
+                    UserDefaults.standard.isOnBoarded = true
+                    self?.coordinator?.goToHome()
+                }
             )
         ]
     }()
-    var timer: Timer?
-    var pageControl = ProgressLinePageControl()
+
+    private var pageControl = ProgressLinePageControl()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        UserDefaults.standard.isOnBoarded = true
         overrideUserInterfaceStyle = .light
         dataSource = self
         delegate = self
@@ -54,27 +54,20 @@ class OnboardingViewController: UIPageViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        startTimer()
+        startAnimating()
     }
 
-    func startTimer() {
-        timer = Timer.scheduledTimer(
-            timeInterval: 3,
-            target: self,
-            selector: #selector(changeSlide),
-            userInfo: nil,
-            repeats: true
-        )
+    private func startAnimating() {
         pageControl.startAnimating()
     }
-    func stopTimer() {
-        timer?.invalidate()
+
+    private func stopAnimating() {
         pageControl.stopAnimating()
     }
 
-    @objc func changeSlide() {
+    private func changeSlide() {
         if pageControl.selectedItem == pageControl.numberOfItems - 1 {
-            stopTimer()
+            stopAnimating()
             return
         }
         
@@ -84,9 +77,12 @@ class OnboardingViewController: UIPageViewController {
         pageControl.startAnimating()
     }
 
-    func configurePageControl() {
+    private func configurePageControl() {
         pageControl.numberOfItems = orderedViewControllers.count
         pageControl.selectedItem = 0
+        pageControl.completion = { [weak self] in
+            self?.changeSlide()
+        }
         view.addSubview(pageControl)
         pageControl.snp.makeConstraints { make in
             make.width.equalToSuperview().offset(-32)
@@ -138,11 +134,11 @@ extension OnboardingViewController: UIPageViewControllerDataSource {
 
 extension OnboardingViewController: UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        stopTimer()
+        stopAnimating()
         if let pageContentViewController = pageViewController.viewControllers?[0] {
             if let index = orderedViewControllers.firstIndex(of: pageContentViewController) {
                 pageControl.selectedItem = index
-                startTimer()
+                startAnimating()
             }
         }
     }
