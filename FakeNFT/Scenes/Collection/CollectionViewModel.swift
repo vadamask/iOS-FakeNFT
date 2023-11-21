@@ -14,16 +14,19 @@ enum CollectionViewState {
 
 protocol CollectionViewModelProtocol {
     var state: CurrentValueSubject<CollectionViewState, Never> { get }
-    var cellViewModels: [CollectionCellViewModel]? { get }
+    var cellViewModels: [CollectionCellViewModel] { get }
     var headerViewModel: CollectionHeaderViewModel? { get }
     func loadCollection()
+    func likeNftWith(id: String, isLiked: Bool)
+    func navigateToAuthorPage(url: URL)
 }
 
 final class CollectionViewModel: CollectionViewModelProtocol {
+    weak var navigation: CollectionNavigation?
     private var subscriptions = Set<AnyCancellable>()
     private let collectionId: String
     private let service: NftService
-    private(set) var cellViewModels: [CollectionCellViewModel]?
+    private(set) var cellViewModels: [CollectionCellViewModel] = []
     private(set) var headerViewModel: CollectionHeaderViewModel?
     private(set) var state = CurrentValueSubject<CollectionViewState, Never>(.loading)
 
@@ -33,9 +36,10 @@ final class CollectionViewModel: CollectionViewModelProtocol {
         }
     }
 
-    init(collectionId: String, service: NftService) {
+    init(collectionId: String, service: NftService, navigation: CollectionNavigation) {
         self.collectionId = collectionId
         self.service = service
+        self.navigation = navigation
     }
 
     func loadCollection() {
@@ -58,6 +62,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
                         )
                         let cellVM = nfts.map {
                             CollectionCellViewModel(
+                                id: $0.id,
                                 imageUrls: $0.images,
                                 isLiked: profile.likes.contains($0.id),
                                 name: $0.name,
@@ -65,6 +70,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
                                 price: $0.price,
                                 inOrder: order.nfts.contains($0.id))
                         }
+                        .sorted { $0.name < $1.name }
                         return (headerVM, cellVM)
                     }
                     .eraseToAnyPublisher()
@@ -79,5 +85,40 @@ final class CollectionViewModel: CollectionViewModelProtocol {
                 self?.state.value = .loaded
             }
             .store(in: &subscriptions)
+    }
+
+    func likeNftWith(id: String, isLiked: Bool) {
+        service.loadProfile()
+            .flatMap { [unowned self] profile -> AnyPublisher<NftProfile, Error> in
+                var likes = profile.likes
+                if isLiked {
+                    likes.append(id)
+                } else {
+                    likes.removeAll { $0 == id }
+                }
+                let profileDto = NftProfileDto(
+                    name: profile.name,
+                    description: profile.description,
+                    website: profile.website.description,
+                    likes: likes
+                )
+                return self.service.updateProfile(nftProfileDto: profileDto)
+            }
+            .sink { [weak self] completion in
+                if case let .failure(error) = completion {
+                    self?.state.value = .error(error)
+                }
+            } receiveValue: { [weak self] profile in
+                guard let self = self else { return }
+                for i in 0..<self.cellViewModels.count {
+                    self.cellViewModels[i].isLiked = profile.likes.contains(self.cellViewModels[i].id)
+                }
+                self.state.value = .loaded
+            }
+            .store(in: &subscriptions)
+    }
+
+    func navigateToAuthorPage(url: URL) {
+        navigation?.goToAuthorPage(url: url)
     }
 }

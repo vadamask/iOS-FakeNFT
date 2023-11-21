@@ -8,10 +8,11 @@
 import Foundation
 
 struct CollectionCellViewModel: Hashable {
+    let id: String
     let imageUrls: [URL]
-    let isLiked: Bool
+    var isLiked: Bool
     let name: String
     let rating: Int
     let price: Double
-    let inOrder: Bool
+    var inOrder: Bool
 }

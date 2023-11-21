@@ -17,6 +17,7 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
     typealias DataSource = UICollectionViewDiffableDataSource<Section, CollectionCellViewModel>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, CollectionCellViewModel>
     private var subscriptions = Set<AnyCancellable>()
+    private var cellSubscriptions = Set<AnyCancellable>()
     private lazy var dataSource = makeDataSource()
     private let viewModel: CollectionViewModelProtocol
 
@@ -51,7 +52,7 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
         super.viewDidLoad()
 
         // MARK: Configure collectionView
-        collectionView.refreshControl = UIRefreshControl()
+        collectionView.contentInset.bottom = 35
         collectionView.backgroundColor = .screenBackground
         collectionView.backgroundView = activityIndicator
         collectionView.contentInsetAdjustmentBehavior = .never
@@ -71,10 +72,7 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
 
     private func setupConstraints() {
         collectionView.snp.makeConstraints { make in
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.top.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.edges.equalToSuperview()
         }
     }
 
@@ -105,18 +103,26 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
     private func makeDataSource() -> DataSource {
         let dataSource = DataSource(
             collectionView: collectionView
-        ) { collectionView, indexPath, collectionCellViewModel -> UICollectionViewCell? in
+        ) { [weak self] collectionView, indexPath, collectionCellViewModel -> UICollectionViewCell? in
+            guard let self = self else { fatalError("fatal error()") }
             let cell: CollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
             cell.viewModel = collectionCellViewModel
+            cell.likeAction.sink { [weak self] id, isLiked in
+                self?.viewModel.likeNftWith(id: id, isLiked: isLiked)
+            }
+            .store(in: &cell.subscriptions)
+            cell.cartAction.sink { [weak self] id, inOrder in
+                print(id, inOrder)
+            }
+            .store(in: &cell.subscriptions)
             return cell
         }
         dataSource.supplementaryViewProvider = { [weak self] collectionView, kind, indexPath in
             let headerView: CollectionHeader = collectionView.dequeueReusableView(
                 ofKind: kind, indexPath: indexPath
             )
-            headerView.onNameAuthorLabelClicked = { authorUrlString in
-                let webViewVC = WebViewController(url: authorUrlString)
-                self?.navigationController?.pushViewController(webViewVC, animated: true)
+            headerView.subscription = headerView.authorAction.sink { [weak self] url in
+                self?.viewModel.navigateToAuthorPage(url: url)
             }
             headerView.viewModel = self?.viewModel.headerViewModel
             return headerView
@@ -125,13 +131,10 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
     }
 
     func applySnapshot() {
-        guard
-            viewModel.headerViewModel != nil,
-            let cellViewModels = viewModel.cellViewModels
-        else { return }
+        guard viewModel.headerViewModel != nil else { return }
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
-        snapshot.appendItems(cellViewModels)
+        snapshot.appendItems(viewModel.cellViewModels)
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 }

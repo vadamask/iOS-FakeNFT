@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 import SnapKit
 
 final class CollectionCell: UICollectionViewCell, ReuseIdentifying {
@@ -15,21 +16,28 @@ final class CollectionCell: UICollectionViewCell, ReuseIdentifying {
         }
     }
 
+    var subscriptions: Set<AnyCancellable> = []
+    private(set) var likeAction = PassthroughSubject<(String, Bool), Never>()
+    private(set) var cartAction = PassthroughSubject<(String, Bool), Never>()
+
     private let imageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 12
         imageView.layer.masksToBounds = true
+        imageView.isUserInteractionEnabled = true
         return imageView
     }()
 
-    private let likeButton = {
+    private lazy var likeButton = {
         let button = UIButton()
+        button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         return button
     }()
 
-    private let addToCartButton = {
+    private lazy var addToCartButton = {
         let button = UIButton(type: .system)
         button.tintColor = .segmentActive
+        button.addTarget(self, action: #selector(cartButtonTapped), for: .touchUpInside)
         return button
     }()
 
@@ -91,6 +99,7 @@ final class CollectionCell: UICollectionViewCell, ReuseIdentifying {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+        subscriptions.removeAll()
         nameLabel.text = nil
         priceLabel.text = nil
         imageView.image = nil
@@ -149,5 +158,19 @@ final class CollectionCell: UICollectionViewCell, ReuseIdentifying {
         }
         let spacer = UIView()
         ratingStackView.addArrangedSubview(spacer)
+    }
+
+    @objc private func likeButtonTapped() {
+        guard
+            let id = viewModel?.id,
+            let isLiked = viewModel?.isLiked else { return }
+        likeAction.send((id, !isLiked))
+    }
+
+    @objc private func cartButtonTapped() {
+        guard
+            let id = viewModel?.id,
+            let inOrder = viewModel?.inOrder else { return }
+        cartAction.send((id, !inOrder))
     }
 }
