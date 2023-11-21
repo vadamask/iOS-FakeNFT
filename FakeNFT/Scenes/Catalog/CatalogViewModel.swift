@@ -16,15 +16,17 @@ enum CatalogViewModelSortingType: Int {
     case byNameAsc, byNameDesc, byNftCountAsc, byNftCountDesc
 }
 
-protocol CatalogViewModelProtocol {
+protocol CatalogViewModelProtocol: AnyObject {
     var state: CurrentValueSubject<CatalogViewModelState, Never> { get }
     var cellViewModels: [CatalogCellViewModel] { get }
     func loadCollections()
     func refreshCollections()
     func changeSorting(to sortingType: CatalogViewModelSortingType)
+    func navigateToCollectionWith(id: String)
 }
 
 final class CatalogViewModel: CatalogViewModelProtocol {
+    weak var navigation: CatalogNavigation?
     private var subscriptions = Set<AnyCancellable>()
     private let service: NftService
     private let userDefaults = UserDefaults.standard
@@ -39,8 +41,9 @@ final class CatalogViewModel: CatalogViewModelProtocol {
         }
     }
     
-    init(service: NftService) {
+    init(service: NftService, navigation: CatalogNavigation) {
         self.service = service
+        self.navigation = navigation
         self.currentSortingType = userDefaults.catalogSortingType
 
         // MARK: For background sorting
@@ -111,5 +114,9 @@ final class CatalogViewModel: CatalogViewModelProtocol {
             sorted = viewModels.sorted { $0.nftCount > $1.nftCount }
         }
         return Just(sorted)
+    }
+
+    func navigateToCollectionWith(id: String) {
+        navigation?.goToCollectionWith(id: id)
     }
 }

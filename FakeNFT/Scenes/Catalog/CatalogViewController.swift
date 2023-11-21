@@ -154,13 +154,6 @@ extension CatalogViewController {
         guard let collectionId = cell.viewModel?.id else {
             return
         }
-        let viewModel = CollectionViewModel(
-            collectionId: collectionId,
-            service: ServicesAssembly.shared.nftService)
-        let collectionViewController = CollectionViewController(
-            viewModel: viewModel,
-            layout: CollectionLayout())
-        collectionViewController.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(collectionViewController, animated: true)
+        viewModel.navigateToCollectionWith(id: collectionId)
     }
 }
