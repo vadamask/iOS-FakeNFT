@@ -81,7 +81,7 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
 
     private func bind() {
         viewModel.state
-            .receive(on: DispatchSerialQueue.main)
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] newState in
                 switch newState {
                 case .initial:

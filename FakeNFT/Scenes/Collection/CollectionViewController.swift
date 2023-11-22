@@ -77,7 +77,7 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
 
     private func bind() {
         viewModel.state
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
                 switch state {
                 case .initial:
