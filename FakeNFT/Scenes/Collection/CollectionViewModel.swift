@@ -21,6 +21,7 @@ protocol CollectionViewModelProtocol {
     func addToCartNftWith(id: String)
     func removeFromCartNftWith(id: String)
     func navigateToAuthorPage(url: URL)
+    func navigateToNftPageWith(id: String)
 }
 
 final class CollectionViewModel: CollectionViewModelProtocol {
@@ -185,5 +186,9 @@ final class CollectionViewModel: CollectionViewModelProtocol {
 
     func navigateToAuthorPage(url: URL) {
         navigation?.goToAuthorPage(url: url)
+    }
+
+    func navigateToNftPageWith(id: String) {
+        navigation?.goToNftPage(id: id)
     }
 }

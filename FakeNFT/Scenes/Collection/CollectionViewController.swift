@@ -156,4 +156,13 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
         snapshot.appendItems(viewModel.cellViewModels)
         dataSource.apply(snapshot, animatingDifferences: true)
     }
+
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        let cell: CollectionCell = collectionView.getCell(indexPath: indexPath)
+        guard let nftId = cell.viewModel?.id else {
+            return
+        }
+        viewModel.navigateToNftPageWith(id: nftId)
+    }
 }

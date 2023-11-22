@@ -13,6 +13,7 @@ protocol CatalogNavigation: AnyObject {
 
 protocol CollectionNavigation: AnyObject {
     func goToAuthorPage(url: URL)
+    func goToNftPage(id: String)
 }
 
 class CatalogCoordinator: Coordinator {
@@ -53,6 +54,14 @@ extension CatalogCoordinator: CatalogNavigation {
 }
 
 extension CatalogCoordinator: CollectionNavigation {
+    func goToNftPage(id: String) {
+        let input = NftDetailInput(id: id)
+        let presenter = NftDetailPresenterImpl(input: input, service: ServicesAssembly.shared.nftService)
+        let vc = NftDetailViewController(presenter: presenter)
+        presenter.view = vc
+        navigationController.present(vc, animated: true)
+    }
+    
     func goToAuthorPage(url: URL) {
         let webViewVC = WebViewController(url: url)
         navigationController.pushViewController(webViewVC, animated: true)
