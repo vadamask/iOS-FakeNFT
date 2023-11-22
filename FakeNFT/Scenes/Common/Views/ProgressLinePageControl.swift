@@ -78,7 +78,6 @@ final class ProgressLinePageControl: UIView {
         UIView.animate(withDuration: duration, delay: 0, options: .curveLinear, animations: {
             progressView.layoutIfNeeded()
         }, completion: { [weak self] completion in
-            print(completion)
             if completion {
                 self?.completion?()
             }
