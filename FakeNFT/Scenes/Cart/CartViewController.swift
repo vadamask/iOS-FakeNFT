@@ -185,9 +185,8 @@ extension CartViewController: UITableViewDataSource {
     ) -> UITableViewCell {
         let cell = cartView.tableView.dequeueReusableCell() as CartCell
         cell.setup(with: viewModel.nfts[indexPath.row])
-        cell.onResponse = { [weak self] id in
-            guard let self else { return }
-            viewModel.deleteButtonTapped(with: id)
+        cell.didTapDeleteButton = { [weak self] id in
+            self?.viewModel.deleteButtonTapped(with: id)
         }
         return cell
     }

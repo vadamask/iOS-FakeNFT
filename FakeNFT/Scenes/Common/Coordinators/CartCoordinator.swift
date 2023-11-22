@@ -61,7 +61,7 @@ final class CartCoordinator: Coordinator {
     }
     
     func goToDeleteNft() {
-        let controller = DeleteNft()
+        let controller = DeleteNftViewController()
         controller.modalPresentationStyle = .overFullScreen
         controller.coordinator = self
         navigationController.present(controller, animated: true)

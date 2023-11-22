@@ -9,7 +9,7 @@ import UIKit
 
 final class CartCell: UITableViewCell, ReuseIdentifying {
     static var defaultReuseIdentifier: String = "CartCell"
-    var onResponse: ((String) -> Void)?
+    var didTapDeleteButton: ((String) -> Void)?
     
     private var nftID = ""
     
@@ -90,7 +90,7 @@ final class CartCell: UITableViewCell, ReuseIdentifying {
         nameLabel.text = ""
         priceNameLabel.text = ""
         priceAndCurrencyLabel.text = ""
-        onResponse = nil
+        didTapDeleteButton = nil
     }
 
     func setup(with model: Nft) {
@@ -108,7 +108,7 @@ final class CartCell: UITableViewCell, ReuseIdentifying {
     }
     
     @objc private func deleteButtonTapped() {
-        onResponse?(nftID)
+        didTapDeleteButton?(nftID)
     }
 
     private func setupUI() {

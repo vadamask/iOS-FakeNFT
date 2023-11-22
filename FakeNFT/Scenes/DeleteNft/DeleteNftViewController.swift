@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class DeleteNft: UIViewController {
+final class DeleteNftViewController: UIViewController {
     var coordinator: CartCoordinator?
     
     private lazy var blurView: UIVisualEffectView = {

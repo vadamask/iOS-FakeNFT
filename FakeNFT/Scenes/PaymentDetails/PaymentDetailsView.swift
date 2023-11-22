@@ -71,10 +71,6 @@ final class PaymentDetailsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc private func linkTapped() {
-        delegate?.linkTapped()
-    }
-    
     private func setupUI() {
         backgroundColor = .screenBackground
         payButton.action = { [weak self] _ in
@@ -114,5 +110,9 @@ final class PaymentDetailsView: UIView {
     
     @objc private func payButtonTapped() {
         delegate?.payButtonTapped()
+    }
+    
+    @objc private func linkTapped() {
+        delegate?.linkTapped()
     }
 }
