@@ -48,8 +48,7 @@ final class CollectionCellPlaceholder: UICollectionViewCell, ReuseIdentifying {
         }
         bottomView.snp.makeConstraints { make in
             make.top.equalTo(topView.snp.bottom).offset(8)
-            make.bottom.equalToSuperview()
-            make.width.equalToSuperview()
+            make.width.bottom.equalToSuperview()
             make.height.equalTo(50)
         }
     }

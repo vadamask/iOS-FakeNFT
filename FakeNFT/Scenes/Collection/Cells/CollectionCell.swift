@@ -126,10 +126,8 @@ final class CollectionCell: UICollectionViewCell, ReuseIdentifying {
             make.height.equalTo(contentView.snp.width)
         }
         likeButton.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.right.equalToSuperview()
-            make.width.equalTo(40)
-            make.height.equalTo(likeButton.snp.width)
+            make.top.trailing.equalToSuperview()
+            make.width.height.equalTo(40)
         }
         addToCartButton.snp.makeConstraints { make in
             make.width.equalTo(40)
