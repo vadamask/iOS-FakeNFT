@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 enum CollectionViewState {
-    case loading, loaded, error(Error)
+    case initial, loading, loaded, error(Error)
 }
 
 protocol CollectionViewModelProtocol {
@@ -30,7 +30,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
     private let service: NftService
     private(set) var cellViewModels: [CollectionCellViewModel] = []
     private(set) var headerViewModel: CollectionHeaderViewModel?
-    private(set) var state = CurrentValueSubject<CollectionViewState, Never>(.loading)
+    private(set) var state = CurrentValueSubject<CollectionViewState, Never>(.initial)
 
     deinit {
         for subscription in subscriptions {
@@ -42,6 +42,25 @@ final class CollectionViewModel: CollectionViewModelProtocol {
         self.collectionId = collectionId
         self.service = service
         self.navigation = navigation
+        self.headerViewModel = CollectionHeaderViewModel(
+            name: "",
+            author: "",
+            description: "",
+            cover: nil
+        )
+        for i in 0...5 {
+            self.cellViewModels.append(
+                CollectionCellViewModel(
+                    id: "\(i)",
+                    imageUrls: [],
+                    isLiked: false,
+                    name: "",
+                    rating: 0,
+                    price: 0,
+                    inOrder: false
+                )
+            )
+        }
     }
 
     func loadCollection() {

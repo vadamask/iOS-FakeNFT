@@ -31,7 +31,10 @@ final class WebViewController: UIViewController {
         view.backgroundColor = .screenBackground
         setupView()
         setupConstraints()
+    }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         guard let url = url else { return }
         webView.load(URLRequest(url: url))
     }

@@ -10,12 +10,9 @@ import Combine
 import SnapKit
 
 final class CollectionViewController: UICollectionViewController, LoadingView, ErrorView {
-    enum Section {
-        case main
-    }
     internal lazy var activityIndicator = UIActivityIndicatorView()
-    typealias DataSource = UICollectionViewDiffableDataSource<Section, CollectionCellViewModel>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, CollectionCellViewModel>
+    typealias DataSource = UICollectionViewDiffableDataSource<CollectionHeaderViewModel, CollectionCellViewModel>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<CollectionHeaderViewModel, CollectionCellViewModel>
     private var subscriptions = Set<AnyCancellable>()
     private var cellSubscriptions = Set<AnyCancellable>()
     private lazy var dataSource = makeDataSource()
@@ -59,7 +56,9 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
 
         // MARK: reuse registration
         collectionView.registerHeaderView(CollectionHeader.self)
+        collectionView.registerHeaderView(CollectionHeaderPlaceholder.self)
         collectionView.register(CollectionCell.self)
+        collectionView.register(CollectionCellPlaceholder.self)
 
         setupConstraints()
 
@@ -81,9 +80,14 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
             .receive(on: RunLoop.main)
             .sink { [weak self] state in
                 switch state {
+                case .initial:
+                    self?.collectionView.isUserInteractionEnabled = false
+                    self?.applySnapshot()
                 case .loading:
+                    self?.collectionView.isUserInteractionEnabled = false
                     self?.showLoading()
                 case .loaded:
+                    self?.collectionView.isUserInteractionEnabled = true
                     self?.hideLoading()
                     self?.applySnapshot()
                 case .error:
@@ -104,40 +108,51 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
         let dataSource = DataSource(
             collectionView: collectionView
         ) { [weak self] collectionView, indexPath, collectionCellViewModel -> UICollectionViewCell? in
-            guard let self = self else { fatalError("fatal error()") }
-            let cell: CollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-            cell.viewModel = collectionCellViewModel
-            cell.likeAction.sink { [weak self] id, isLiked in
-                self?.viewModel.likeNftWith(id: id, isLiked: isLiked)
-            }
-            .store(in: &cell.subscriptions)
-            cell.cartAction.sink { [weak self] id, inOrder in
-                if inOrder {
-                    self?.viewModel.addToCartNftWith(id: id)
-                } else {
-                    self?.viewModel.removeFromCartNftWith(id: id)
+            if case .loading = self?.viewModel.state.value {
+                let cell: CollectionCellPlaceholder = collectionView.dequeueReusableCell(indexPath: indexPath)
+                return cell
+            } else {
+                let cell: CollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+                cell.viewModel = collectionCellViewModel
+                cell.likeAction.sink { [weak self] id, isLiked in
+                    self?.viewModel.likeNftWith(id: id, isLiked: isLiked)
                 }
+                .store(in: &cell.subscriptions)
+                cell.cartAction.sink { [weak self] id, inOrder in
+                    if inOrder {
+                        self?.viewModel.addToCartNftWith(id: id)
+                    } else {
+                        self?.viewModel.removeFromCartNftWith(id: id)
+                    }
+                }
+                .store(in: &cell.subscriptions)
+                return cell
             }
-            .store(in: &cell.subscriptions)
-            return cell
         }
         dataSource.supplementaryViewProvider = { [weak self] collectionView, kind, indexPath in
-            let headerView: CollectionHeader = collectionView.dequeueReusableView(
-                ofKind: kind, indexPath: indexPath
-            )
-            headerView.subscription = headerView.authorAction.sink { [weak self] url in
-                self?.viewModel.navigateToAuthorPage(url: url)
+            if case .loading = self?.viewModel.state.value {
+                let headerView: CollectionHeaderPlaceholder = collectionView.dequeueReusableView(
+                    ofKind: kind, indexPath: indexPath
+                )
+                return headerView
+            } else {
+                let headerView: CollectionHeader = collectionView.dequeueReusableView(
+                    ofKind: kind, indexPath: indexPath
+                )
+                headerView.subscription = headerView.authorAction.sink { [weak self] url in
+                    self?.viewModel.navigateToAuthorPage(url: url)
+                }
+                headerView.viewModel = self?.viewModel.headerViewModel
+                return headerView
             }
-            headerView.viewModel = self?.viewModel.headerViewModel
-            return headerView
         }
         return dataSource
     }
 
     func applySnapshot() {
-        guard viewModel.headerViewModel != nil else { return }
+        guard let headerViewModel = viewModel.headerViewModel else { return }
         var snapshot = Snapshot()
-        snapshot.appendSections([.main])
+        snapshot.appendSections([headerViewModel])
         snapshot.appendItems(viewModel.cellViewModels)
         dataSource.apply(snapshot, animatingDifferences: true)
     }

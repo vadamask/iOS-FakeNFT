@@ -9,7 +9,7 @@ import Foundation
 
 struct CollectionCellViewModel: Hashable {
     let id: String
-    let imageUrls: [URL]
+    let imageUrls: [URL?]
     var isLiked: Bool
     let name: String
     let rating: Int
