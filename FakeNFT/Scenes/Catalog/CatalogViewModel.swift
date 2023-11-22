@@ -32,13 +32,7 @@ final class CatalogViewModel: CatalogViewModelProtocol {
     private let userDefaults = UserDefaults.standard
     private var currentSortingType: CatalogViewModelSortingType
     private var sortingTypePublisher = PassthroughSubject<CatalogViewModelSortingType, Never>()
-    private(set) var cellViewModels: [CatalogCellViewModel] = [
-        CatalogCellViewModel(id: "1", name: "", coverUrl: nil, nftCount: 0),
-        CatalogCellViewModel(id: "2", name: "", coverUrl: nil, nftCount: 0),
-        CatalogCellViewModel(id: "3", name: "", coverUrl: nil, nftCount: 0),
-        CatalogCellViewModel(id: "4", name: "", coverUrl: nil, nftCount: 0),
-        CatalogCellViewModel(id: "5", name: "", coverUrl: nil, nftCount: 0)
-    ]
+    private(set) var cellViewModels: [CatalogCellViewModel] = []
     private(set) var state = CurrentValueSubject<CatalogViewModelState, Never>(.initial)
 
     deinit {
@@ -51,6 +45,12 @@ final class CatalogViewModel: CatalogViewModelProtocol {
         self.service = service
         self.navigation = navigation
         self.currentSortingType = userDefaults.catalogSortingType
+
+        for i in 0...4 {
+            self.cellViewModels.append(
+                CatalogCellViewModel(id: "\(i)", name: "", coverUrl: nil, nftCount: 0)
+            )
+        }
 
         // MARK: For background sorting
         self.sortingTypePublisher

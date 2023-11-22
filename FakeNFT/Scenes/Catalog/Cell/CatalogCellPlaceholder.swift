@@ -73,7 +73,7 @@ final class CatalogCellPlaceholder: UICollectionViewCell, ReuseIdentifying {
 
         let labelGradient = makeGradient()
         labelGradient.frame = label.bounds
-        labelGradient.cornerRadius = labelGradient.frame.height / 2
+        labelGradient.cornerRadius = 4
         label.layer.addSublayer(labelGradient)
 
         let gradientChangeAnimation = CABasicAnimation(keyPath: "locations")
