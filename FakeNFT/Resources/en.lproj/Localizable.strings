@@ -1,3 +1,12 @@
+// Onboarding
+"Onboarding.title1" = "Explore";
+"Onboarding.title2" = "Collect";
+"Onboarding.title3" = "Compete";
+"Onboarding.description1" = "Join and discover a new world of unique NFT for collectors";
+"Onboarding.description2" = "Replenish your collection with exclusive pictures created by the neural network!";
+"Onboarding.description3" = "See the statistics of others and show everyone that you have the most valuable collection";
+"Onboarding.button" = "What's inside?";
+
 "Tab.catalog" = "Catalog";
 "Catalog.openNft" = "Open Nft";
 "Error.network" = "A network error has occurred";

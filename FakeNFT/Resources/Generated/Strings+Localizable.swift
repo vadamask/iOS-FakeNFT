@@ -34,6 +34,22 @@ internal enum L10n {
     /// Произошла неизвестная ошибка
     internal static let unknown = L10n.tr("Localizable", "Error.unknown", fallback: "Произошла неизвестная ошибка")
   }
+  internal enum Onboarding {
+    /// Что внутри?
+    internal static let button = L10n.tr("Localizable", "Onboarding.button", fallback: "Что внутри?")
+    /// Присоединяйтесь и откройте новый мир уникальных NFT для коллекционеров
+    internal static let description1 = L10n.tr("Localizable", "Onboarding.description1", fallback: "Присоединяйтесь и откройте новый мир уникальных NFT для коллекционеров")
+    /// Пополняйте свою коллекцию эксклюзивными картинками, созданными нейросетью!
+    internal static let description2 = L10n.tr("Localizable", "Onboarding.description2", fallback: "Пополняйте свою коллекцию эксклюзивными картинками, созданными нейросетью!")
+    /// Смотрите статистику других и покажите всем, что у вас самая ценная коллекция
+    internal static let description3 = L10n.tr("Localizable", "Onboarding.description3", fallback: "Смотрите статистику других и покажите всем, что у вас самая ценная коллекция")
+    /// Исследуйте
+    internal static let title1 = L10n.tr("Localizable", "Onboarding.title1", fallback: "Исследуйте")
+    /// Коллекционируйте
+    internal static let title2 = L10n.tr("Localizable", "Onboarding.title2", fallback: "Коллекционируйте")
+    /// Состязайтесь
+    internal static let title3 = L10n.tr("Localizable", "Onboarding.title3", fallback: "Состязайтесь")
+  }
   internal enum Tab {
     /// Каталог
     internal static let catalog = L10n.tr("Localizable", "Tab.catalog", fallback: "Каталог")

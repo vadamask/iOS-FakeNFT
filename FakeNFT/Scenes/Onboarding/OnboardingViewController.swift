@@ -13,18 +13,18 @@ class OnboardingViewController: UIPageViewController {
         return [
             OnboardingPage(
                 bgImage: Asset.onboarding1BG.image,
-                title: "Исследуйте",
-                description: "Присоединяйтесь и откройте новый мир уникальных NFT для коллекционеров"),
+                title: L10n.Onboarding.title1,
+                description: L10n.Onboarding.description1),
             OnboardingPage(
                 bgImage: Asset.onboarding2BG.image,
-                title: "Коллекционируйте",
-                description: "Пополняйте свою коллекцию эксклюзивными картинками, созданными нейросетью!"),
+                title: L10n.Onboarding.title2,
+                description: L10n.Onboarding.description2),
             OnboardingPage(
                 bgImage: Asset.onboarding3BG.image,
-                title: "Состязайтесь",
-                description: "Смотрите статистику других и покажите всем, что у вас самая ценная коллекция",
+                title: L10n.Onboarding.title3,
+                description: L10n.Onboarding.description3,
                 button: ActionButton(
-                    title: "Что внутри?",
+                    title: L10n.Onboarding.button,
                     type: .primary
                 ) { [weak self] _ in
                     UserDefaults.standard.isOnBoarded = true
