@@ -26,7 +26,7 @@ final class CollectionViewModel {
         self.nftIds = nftIds
     }
 
-    // MARK: - Data fetching
+    // MARK: - Data Fetching
     func fetchNftCollection() {
         guard !nftIds.isEmpty else { return }
 
@@ -56,7 +56,7 @@ final class CollectionViewModel {
                 }
             }
         }
-        // Когда все запросы завершены, мы скрываем индикатор загрузки
+        // Когда все запросы завершены, скрываем индикатор загрузки
         fetchGroup.notify(queue: .main) {
             self.hideLoading?()
         }

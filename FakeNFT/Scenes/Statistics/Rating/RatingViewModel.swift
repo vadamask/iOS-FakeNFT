@@ -30,8 +30,6 @@ final class RatingViewModel {
 
         let request = UsersRequest()
         networkClient.send(request: request, type: [User].self) { [weak self] result in
-            // Лучше все действия с UI производить в контроллере, в том числе и DispatchQueue.main.async { }
-            // TODO: Изучить варианты
             DispatchQueue.main.async {
                 self?.hideLoading?()
 

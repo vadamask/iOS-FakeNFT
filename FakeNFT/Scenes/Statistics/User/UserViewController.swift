@@ -196,16 +196,15 @@ extension UserViewController: UITableViewDataSource {
 extension UserViewController: UITableViewDelegate {
     // Тут будет вызов экрана коллекции NFT
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let nftCollection = nftCollection else {
-            // Обработать случай, когда у пользователя нет NFT
+        guard let nftCollection = nftCollection else { return }
+        if nftCollection.isEmpty {
             let error = ErrorModel(message: "У пользователя нет NFT", actionText: "ОК", action: {})
             print("КОЛИЧЕСТВО НФТ: \(nftCollection)")
             showError(error)
-            return
+        } else {
+            let collectionVC = CollectionViewController(nftIds: nftCollection)
+            navigationController?.pushViewController(collectionVC, animated: true)
         }
-        print("КОЛИЧЕСТВО НФТ: \(nftCollection)")
-        let collectionVC = CollectionViewController(nftIds: nftCollection)
-        navigationController?.pushViewController(collectionVC, animated: true)
     }
 }
 

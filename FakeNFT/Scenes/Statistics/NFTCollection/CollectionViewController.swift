@@ -10,6 +10,7 @@ import UIKit
 final class CollectionViewController: UIViewController {
     private let viewModel: CollectionViewModel
 
+    // MARK: - Properties
     private var nftIds: [String] = []
     private var nfts: [Nft] = []
 
@@ -67,8 +68,7 @@ final class CollectionViewController: UIViewController {
 
     private func setupNavigationBar() {
         navigationController?.navigationBar.tintColor = .yaBlack
-        // TODO: Локализовать
-        navigationItem.title = "Коллекция NFT"
+        navigationItem.title = L10n.User.nftCollection
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
 
