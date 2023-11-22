@@ -57,9 +57,9 @@ extension CatalogCoordinator: CollectionNavigation {
     func goToNftPage(id: String) {
         let input = NftDetailInput(id: id)
         let presenter = NftDetailPresenterImpl(input: input, service: ServicesAssembly.shared.nftService)
-        let vc = NftDetailViewController(presenter: presenter)
-        presenter.view = vc
-        navigationController.present(vc, animated: true)
+        let vcontroller = NftDetailViewController(presenter: presenter)
+        presenter.view = vcontroller
+        navigationController.present(vcontroller, animated: true)
     }
     
     func goToAuthorPage(url: URL) {

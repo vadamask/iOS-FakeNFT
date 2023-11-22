@@ -52,6 +52,11 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
         navigationItem.backButtonTitle = ""
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        AppStoreReviewManager.requestReviewIfAppropriate()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 

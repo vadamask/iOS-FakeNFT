@@ -11,6 +11,8 @@ extension UserDefaults {
     private enum Keys {
         static let isOnBoarded = "isOnBoarded"
         static let catalogSortingKey = "catalogSortingKey"
+        static let reviewWorthyActionCount = "reviewWorthyActionCount"
+        static let lastReviewRequestAppVersion = "lastReviewRequestAppVersion"
     }
     var catalogSortingType: CatalogViewModelSortingType {
         get {
@@ -27,6 +29,24 @@ extension UserDefaults {
         }
         set {
             set(newValue, forKey: Keys.isOnBoarded)
+        }
+    }
+
+    var reviewWorthyActionCount: Int {
+        get {
+            return integer(forKey: Keys.reviewWorthyActionCount)
+        }
+        set {
+            set(newValue, forKey: Keys.reviewWorthyActionCount)
+        }
+    }
+
+    var lastReviewRequestAppVersion: String? {
+        get {
+            return string(forKey: Keys.lastReviewRequestAppVersion)
+        }
+        set {
+            set(newValue, forKey: Keys.lastReviewRequestAppVersion)
         }
     }
 }
