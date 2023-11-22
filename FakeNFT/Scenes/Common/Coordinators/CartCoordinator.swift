@@ -4,7 +4,7 @@
 //
 //  Created by Вадим Шишков on 17.11.2023.
 //
-
+import SafariServices
 import UIKit
 
 final class CartCoordinator: Coordinator {
@@ -68,7 +68,10 @@ final class CartCoordinator: Coordinator {
     }
     
     func goToTerms() {
-        let controller = TermsOfUse()
+        let termsURL = "https://yandex.ru/legal/practicum_termsofuse/"
+        guard let url = URL(string: termsURL) else { return }
+        let controller = SFSafariViewController(url: url)
+        controller.modalPresentationStyle = .pageSheet
         navigationController.present(controller, animated: true)
     }
     
