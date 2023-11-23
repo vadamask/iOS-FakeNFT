@@ -8,7 +8,7 @@
 import UIKit
 import WebKit
 
-final class ProfileDevelopersViewController: UIViewController, WKUIDelegate {
+final class DevelopersViewController: UIViewController, WKUIDelegate {
     private lazy var backButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
             image: Asset.backButton.image,
@@ -62,7 +62,7 @@ final class ProfileDevelopersViewController: UIViewController, WKUIDelegate {
     }
 }
 
-extension ProfileDevelopersViewController {
+extension DevelopersViewController {
     enum Constants {
         static let url = "https://practicum.yandex.ru/ios-developer"
     }

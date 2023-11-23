@@ -7,11 +7,10 @@
 
 import UIKit
 // установка и обновление кол-ва звёзд в рейтинге в зависимости от оценки
-final class StarRating: UIStackView {
-    var starsRating = 0
-    
-    private var starRatingInactive = "ratingInactive"
-    private var starRatingActive = "ratingActive"
+final class StarRatingController: UIStackView {
+    private var starsRating = 0
+    private var starsEmptyPicName = "ratingInactive"
+    private var starsFilledPicName = "ratingActive"
     
     init(starsRating: Int = 0) {
         super.init(frame: .zero)

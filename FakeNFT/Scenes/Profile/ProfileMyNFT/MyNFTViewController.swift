@@ -1,13 +1,13 @@
 //
-//  ProfileFavoritesViewController.swift
+//  ProfileMyNFTViewController.swift
 //  FakeNFT
 //
-//  Created by Ann Goncharova on 15.11.2023.
+//  Created by Anka on 15.11.2023.
 //
 
 import UIKit
 
-final class ProfileFavoritesViewController: UIViewController {
+final class MyNFTViewController: UIViewController {
     // кнопка назад
     private lazy var backButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
@@ -21,7 +21,7 @@ final class ProfileFavoritesViewController: UIViewController {
     // лейбл при отсутствии нфт
     private lazy var emptyLabel: UILabel = {
         let label = UILabel()
-        label.text = L10n.Profile.emptyFavouriteNFTLabel // У вас ещё нет избранных NFT
+        label.text = L10n.Profile.emptyNFTLabel // У вас ещё нет NFT
         label.font = .bodyBold17
         label.textColor = .textPrimary
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -32,12 +32,11 @@ final class ProfileFavoritesViewController: UIViewController {
         super.viewDidLoad()
         
         setupView()
-        addSubview()
+        addEmptyLabel()
         addEdgeSwipeBackGesture()
     }
     
-    @objc
-    private func didTapBackButton() {
+    @objc private func didTapBackButton() {
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -47,12 +46,13 @@ final class ProfileFavoritesViewController: UIViewController {
         view.backgroundColor = .screenBackground
     }
     
-    func addSubview() {
+    func addEmptyLabel() {
         view.addSubview(emptyLabel)
         
         NSLayoutConstraint.activate([
             emptyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             emptyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
+        
     }
 }
