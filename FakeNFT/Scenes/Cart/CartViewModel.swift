@@ -7,25 +7,61 @@
 
 import Foundation
 
+protocol CartViewModelProtocol {
+    var nfts: [Nft] { get }
+    var nftsPublished: Published<[Nft]> { get }
+    var nftsPublisher: Published<[Nft]>.Publisher { get }
+    
+    var error: Error? { get set }
+    var errorPublished: Published<Error?> { get }
+    var errorPublisher: Published<Error?>.Publisher { get }
+    
+    var emptyState: Bool? { get set }
+    var emptyStatePublished: Published<Bool?> { get }
+    var emptyStatePublisher: Published<Bool?>.Publisher { get }
+    
+    var isLoading: Bool? { get set }
+    var isLoadingPublished: Published<Bool?> { get }
+    var isLoadingPublisher: Published<Bool?>.Publisher { get }
+    
+    func loadOrder()
+    func paymentDidTapped()
+    func setSortOption(_ option: SortOption)
+    func didRefreshTableView()
+    func deleteButtonTapped(with id: String)
+}
+
 enum SortOption: Int {
     case name
     case price
     case rating
 }
 
-final class CartViewModel {
+final class CartViewModel: CartViewModelProtocol {
     @Published var nfts: [Nft] = []
+    var nftsPublished: Published<[Nft]> { _nfts }
+    var nftsPublisher: Published<[Nft]>.Publisher { $nfts }
+    
     @Published var error: Error?
+    var errorPublished: Published<Error?> { _error }
+    var errorPublisher: Published<Error?>.Publisher { $error }
+    
     @Published var emptyState: Bool?
+    var emptyStatePublished: Published<Bool?> { _emptyState }
+    var emptyStatePublisher: Published<Bool?>.Publisher { $emptyState }
+    
     @Published var isLoading: Bool?
-    let servicesAssembly: ServicesAssembly
+    var isLoadingPublished: Published<Bool?> { _isLoading }
+    var isLoadingPublisher: Published<Bool?>.Publisher { $isLoading }
+    
+    let servicesAssembly: ServicesAssemblyProtocol
     
     private var coordinator: CartCoordinator
     private var sortOption = SortOption.name
     private let userDefaults = UserDefaults.standard
     private let serialQueue = DispatchQueue(label: "loadNfts")
     
-    init(servicesAssembly: ServicesAssembly, coordinator: CartCoordinator) {
+    init(servicesAssembly: ServicesAssemblyProtocol, coordinator: CartCoordinator) {
         self.servicesAssembly = servicesAssembly
         self.coordinator = coordinator
         getSortOption()

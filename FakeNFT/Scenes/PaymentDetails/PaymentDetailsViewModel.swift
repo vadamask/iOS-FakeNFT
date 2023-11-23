@@ -14,10 +14,10 @@ final class PaymentDetailsViewModel {
     @Published var isPaymentSuccess: Bool?
     var currencies = CurrentValueSubject<[Currency], Never>([])
     
-    private let servicesAssembly: ServicesAssembly
+    private let servicesAssembly: ServicesAssemblyProtocol
     private var coordinator: CartCoordinator
     
-    init(serviceAssembly: ServicesAssembly, coordinator: CartCoordinator) {
+    init(serviceAssembly: ServicesAssemblyProtocol, coordinator: CartCoordinator) {
         self.servicesAssembly = serviceAssembly
         self.coordinator = coordinator
     }

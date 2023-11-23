@@ -1,10 +1,12 @@
-final class ServicesAssembly {
-    static let shared = ServicesAssembly()
-    
+protocol ServicesAssemblyProtocol {
+    var nftService: NftService { get }
+}
+
+final class ServicesAssembly: ServicesAssemblyProtocol { 
     private let networkClient: NetworkClient = DefaultNetworkClient()
     private let nftStorage: NftStorage = NftStorageImpl()
 
-    private init() {}
+    init() {}
 
     var nftService: NftService {
         NftServiceImpl(

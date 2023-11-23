@@ -19,16 +19,20 @@ final class CartCoordinator: Coordinator {
     
     func start() {
         let cartViewModel = CartViewModel(
-            servicesAssembly: ServicesAssembly.shared,
+            servicesAssembly: ServicesAssembly(),
             coordinator: self
         )
-        let cartController = CartViewController(viewModel: cartViewModel)
+        let cartView = CartView()
+        let cartController = CartViewController(
+            viewModel: cartViewModel,
+            cartView: cartView
+        )
         navigationController.pushViewController(cartController, animated: true)
     }
     
     func goToPaymentDetails() {
         let viewModel = PaymentDetailsViewModel(
-            serviceAssembly: ServicesAssembly.shared,
+            serviceAssembly: ServicesAssembly(),
             coordinator: self
         )
         let controller = PaymentDetailsViewController(viewModel: viewModel)
