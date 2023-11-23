@@ -16,14 +16,10 @@ protocol CollectionNavigation: AnyObject {
     func goToNftPage(id: String)
 }
 
-class CatalogCoordinator: Coordinator {
+final class CatalogCoordinator: Coordinator {
     weak var parentCoordinator: Coordinator?
     var children: [Coordinator] = []
     var navigationController: UINavigationController
-
-    deinit {
-        print("CatalogCoordinator deinit")
-    }
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController

@@ -42,8 +42,7 @@ final class CollectionCellPlaceholder: UICollectionViewCell, ReuseIdentifying {
 
     private func setupConstraints() {
         topView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.width.equalToSuperview()
+            make.top.width.equalToSuperview()
             make.height.equalTo(contentView.snp.width)
         }
         bottomView.snp.makeConstraints { make in

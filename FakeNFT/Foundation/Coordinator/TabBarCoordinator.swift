@@ -11,10 +11,6 @@ final class TabBarCoordinator: Coordinator {
     weak var parentCoordinator: Coordinator?
     var children: [Coordinator] = []
     var navigationController: UINavigationController
-    
-    deinit {
-        print("TabBarCoordinator deinit")
-    }
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController

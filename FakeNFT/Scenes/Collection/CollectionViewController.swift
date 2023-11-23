@@ -119,11 +119,7 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
                 }
                 .store(in: &cell.subscriptions)
                 cell.cartAction.sink { [weak self] id, inOrder in
-                    if inOrder {
-                        self?.viewModel.addToCartNftWith(id: id)
-                    } else {
-                        self?.viewModel.removeFromCartNftWith(id: id)
-                    }
+                    inOrder ? self?.viewModel.addToCartNftWith(id: id) : self?.viewModel.removeFromCartNftWith(id: id)
                 }
                 .store(in: &cell.subscriptions)
                 return cell

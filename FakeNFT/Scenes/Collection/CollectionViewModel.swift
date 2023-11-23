@@ -113,11 +113,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
         service.loadProfile()
             .flatMap { [unowned self] profile -> AnyPublisher<NftProfile, Error> in
                 var likes = profile.likes
-                if isLiked {
-                    likes.append(id)
-                } else {
-                    likes.removeAll { $0 == id }
-                }
+                isLiked ? likes.append(id) : likes.removeAll { $0 == id }
                 let profileDto = NftProfileDto(
                     name: profile.name,
                     description: profile.description,
