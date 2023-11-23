@@ -7,7 +7,8 @@
 
 import UIKit
 
-final class MyNFTCell: UITableViewCell {
+final class MyNFTCell: UITableViewCell, ReuseIdentifying {
+    var tapAction: (() -> Void)?
     // NFT картинка
     private lazy var nftImage: UIImageView = {
         let imageView = UIImageView()
@@ -35,8 +36,8 @@ final class MyNFTCell: UITableViewCell {
         return label
     }()
     // рейтинг (5 звезд)
-    private lazy var nftRating: StarRating = {
-        let nftRating = StarRating(starsRating: 5)
+    private lazy var nftRating: StarRatingController = {
+        let nftRating = StarRatingController(starsRating: 5)
         nftRating.translatesAutoresizingMaskIntoConstraints = false
         return nftRating
     }()
@@ -49,7 +50,7 @@ final class MyNFTCell: UITableViewCell {
         return label
     }()
     // стаквью нфт
-    private lazy var nftPrice: UIStackView = {
+    private lazy var nftPriceStack: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .equalSpacing
@@ -59,7 +60,7 @@ final class MyNFTCell: UITableViewCell {
         return stackView
     }()
     // лейбл "Цена"
-    private lazy var nftPriceText: UILabel = {
+    private lazy var nftPriceLabel: UILabel = {
         let label = UILabel()
         label.font = .caption13
         label.textColor = .textPrimary
@@ -85,25 +86,45 @@ final class MyNFTCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        setupConstraints()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    // настройка ячейки отображения нфт
+    func configureCell(with model: CellModel) {
+        nftImage.kf.setImage(with: URL(string: model.image))
+        nftName.text = model.name
+        nftRating.setStarsRating(rating: model.rating)
+        nftAuthor.text = "от \(model.author)"
+        nftPriceValue.text = "\(model.price) ETH"
+        nftFavorite.isFavorite = model.isFavorite
+        nftFavorite.nftID = model.id
+    }
     
-    private func addSubViews() {
-        contentView.addSubview(nftImage)
-        contentView.addSubview(nftFavorite)
-        contentView.addSubview(nftStack)
-        nftStack.addArrangedSubview(nftName)
-        nftStack.addArrangedSubview(nftRating)
-        nftStack.addArrangedSubview(nftAuthor)
-        contentView.addSubview(nftPrice)
-        nftPrice.addArrangedSubview(nftPriceText)
-        nftPrice.addArrangedSubview(nftPriceValue)
+    @objc private func didTapFavoriteButton(_ sender: FavoriteButton) {
+        sender.isFavorite.toggle()
+        if let tapAction = tapAction { tapAction() }
     }
     
     private func setupConstraints() {
+        [nftImage, nftFavorite, nftStack, nftPriceStack].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview($0)
+        }
+        
+        [nftName, nftRating, nftAuthor].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            nftStack.addArrangedSubview($0)
+        }
+        
+        [nftPriceLabel, nftPriceValue].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            nftPriceStack.addArrangedSubview($0)
+        }
+        
         NSLayoutConstraint.activate([
             // картинка нфт
             nftImage.centerYAnchor.constraint(equalTo: centerYAnchor),
@@ -124,11 +145,20 @@ final class MyNFTCell: UITableViewCell {
             nftRating.heightAnchor.constraint(equalToConstant: 12),
             
             // стаквью с нфт (цена)
-            nftPrice.centerYAnchor.constraint(equalTo: centerYAnchor),
-            nftPrice.leadingAnchor.constraint(equalTo: nftStack.trailingAnchor)
+            nftPriceStack.centerYAnchor.constraint(equalTo: centerYAnchor),
+            nftPriceStack.leadingAnchor.constraint(equalTo: nftStack.trailingAnchor)
         ])
     }
 }
 
-extension MyNFTCell: ReuseIdentifying {
+extension MyNFTCell {
+    struct CellModel {
+        let image: String
+        let name: String
+        let rating: Int
+        let author: String
+        let price: Float
+        let isFavorite: Bool
+        let id: String
+    }
 }

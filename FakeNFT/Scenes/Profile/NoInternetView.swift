@@ -7,8 +7,9 @@
 
 import UIKit
 
-final class NoInternetView: UIView {
-    private lazy var noInternetLabel: UILabel = {
+final class NoContentView: UIView {
+    private let noContent: NoContent
+    private lazy var noContentLabel: UILabel = {
         let label = UILabel()
         label.text = L10n.Profile.noInternet
         label.font = .bodyBold17
@@ -17,22 +18,23 @@ final class NoInternetView: UIView {
         return label
     }()
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, noContent: NoContent) {
+        self.noContent = noContent
         super.init(frame: .zero)
         self.backgroundColor = .screenBackground
-        addConstraints()
+        setupConstraints()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func addConstraints() {
-        addSubview(noInternetLabel)
+    func setupConstraints() {
+        addSubview(noContentLabel)
         
         NSLayoutConstraint.activate([
-            noInternetLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            noInternetLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
+            noContentLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            noContentLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
     }
 }
