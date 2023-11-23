@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 final class CollectionCell: UICollectionViewCell, ReuseIdentifying {
     var viewModel: CollectionCellViewModel? {
         didSet {
