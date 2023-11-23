@@ -9,7 +9,7 @@ import Kingfisher
 import UIKit
 
 final class ProfileView: UIView {
-    private let viewModel: ProfileViewModelProtocol
+    private var viewModel: ProfileViewModelProtocol
     private var viewController: ProfileViewController
     private var assetViewControllers: [UIViewController] = []
     
@@ -83,9 +83,9 @@ final class ProfileView: UIView {
     }()
     
     init(frame: CGRect, viewModel: ProfileViewModelProtocol, viewController: ProfileViewController) {
-        super.init(frame: .zero)
         self.viewModel = viewModel
         self.viewController = viewController
+        super.init(frame: .zero)
         
         self.backgroundColor = .screenBackground
         setupConstraints()

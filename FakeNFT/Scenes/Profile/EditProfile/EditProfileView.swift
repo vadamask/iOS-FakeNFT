@@ -16,7 +16,7 @@ final class EditProfileView: UIView {
         let button = UIButton()
         button.setImage(Asset.closeButton.image, for: .normal)
         button.tintColor = .textPrimary
-        button.addTarget(self, action: #selector(closeButtonDidTap), for: .touchUpInside)
+        button.addTarget(self, action: #selector(closeDidTap), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -140,7 +140,7 @@ final class EditProfileView: UIView {
     init(frame: CGRect, viewController: EditProfileViewController, viewModel: ProfileViewModelProtocol) {
         self.viewController = viewController
         self.viewModel = viewModel
-        super.init(frame: .zero)
+        super.init(frame: frame)
 
         self.backgroundColor = .screenBackground
         setupConstraints()
@@ -160,7 +160,7 @@ final class EditProfileView: UIView {
         endEditing(true)
     }
     
-    func getData() {
+    private func getData() {
         avatarImage.kf.setImage(
             with: viewModel.avatarURL,
             placeholder: UIImage(named: "Profile"),
@@ -171,7 +171,7 @@ final class EditProfileView: UIView {
         websiteTextField.text = viewModel.website
     }
     // кнопка закрыть нажата
-    @objc func closeButtonDidTap(_ sender: UITapGestureRecognizer) {
+    @objc private func closeDidTap(_ sender: UITapGestureRecognizer) {
         guard
             let name = nameTextField.text,
             !name.isEmpty,
@@ -194,7 +194,7 @@ final class EditProfileView: UIView {
     }
     
     // смена картинки профиля
-    @objc func changeAvatarDidTap(_ sender: UITapGestureRecognizer) {
+    @objc private func changeAvatarDidTap(_ sender: UITapGestureRecognizer) {
         avatarUpdateURLLabel.isHidden = false
         let alert = UIAlertController(
             title: "Загрузить изображение",
@@ -269,7 +269,7 @@ final class EditProfileView: UIView {
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview($0)
-            
+        }
             NSLayoutConstraint.activate([
                 // кнопка закрыть
                 closeButton.heightAnchor.constraint(equalToConstant: 42),
@@ -327,7 +327,6 @@ final class EditProfileView: UIView {
             ])
         }
     }
-}
 
 extension EditProfileView: UITextFieldDelegate, UITextViewDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
