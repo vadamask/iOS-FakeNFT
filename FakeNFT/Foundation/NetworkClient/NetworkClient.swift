@@ -76,6 +76,7 @@ struct DefaultNetworkClient: NetworkClient {
                 onResponse(.failure(NetworkClientError.urlSessionError))
                 return
             }
+            print("HTTP Status Code: \(response.statusCode)")
 
             guard 200 ..< 300 ~= response.statusCode else {
                 onResponse(.failure(NetworkClientError.httpStatusCode(response.statusCode)))
@@ -130,9 +131,15 @@ struct DefaultNetworkClient: NetworkClient {
         if
             let dto = request.dto,
             let dtoEncoded = try? encoder.encode(dto) {
-                urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                urlRequest.httpBody = dtoEncoded
+            urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            urlRequest.httpBody = dtoEncoded
+            // Логирование тела запроса
+            print("Request Body: \(String(data: dtoEncoded, encoding: .utf8) ?? "")")
         }
+        // Логирование полного запроса
+        print("Request URL: \(urlRequest.url?.absoluteString ?? "")")
+        print("HTTP Method: \(urlRequest.httpMethod ?? "")")
+        print("Headers: \(urlRequest.allHTTPHeaderFields ?? [:])")
 
         return urlRequest
     }

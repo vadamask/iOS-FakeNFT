@@ -7,6 +7,10 @@
 
 import Foundation
 
+struct UserDefaultsKeys {
+    static let sortingOrder = "sortingOrder"
+}
+
 final class RatingViewModel {
     // MARK: - Properties
     private var networkClient: NetworkClient
@@ -19,7 +23,7 @@ final class RatingViewModel {
     var showLoading: (() -> Void)?
     var hideLoading: (() -> Void)?
 
-    // MARK: - Initialization
+    // MARK: - Init
     init(networkClient: NetworkClient) {
         self.networkClient = networkClient
     }
@@ -30,15 +34,17 @@ final class RatingViewModel {
 
         let request = UsersRequest()
         networkClient.send(request: request, type: [User].self) { [weak self] result in
-            // Лучше все действия с UI производить в контроллере, в том числе и DispatchQueue.main.async { }
-            // TODO: Изучить варианты
             DispatchQueue.main.async {
                 self?.hideLoading?()
 
                 switch result {
                 case .success(let decodedUsers):
                     self?.users = decodedUsers
-                    self?.sortByRating()
+                    if UserDefaults.standard.string(forKey: UserDefaultsKeys.sortingOrder) == "name" {
+                        self?.sortByName()
+                    } else {
+                        self?.sortByRating()
+                    }
                     self?.reloadTableViewClosure?()
                 case .failure(let error):
                     print("Error fetching users: \(error.localizedDescription)")
@@ -58,8 +64,8 @@ final class RatingViewModel {
 
     // MARK: - Sorting
     func sortByName() {
-        users.sort { $0.name.lowercased() < $1.name.lowercased()
-        }
+        users.sort { $0.name.lowercased() < $1.name.lowercased() }
+        UserDefaults.standard.set("name", forKey: UserDefaultsKeys.sortingOrder)
     }
 
     func sortByRating() {
@@ -67,5 +73,6 @@ final class RatingViewModel {
             guard let rating1 = Int($0.rating), let rating2 = Int($1.rating) else { return false }
             return rating1 > rating2
         }
+        UserDefaults.standard.set("rating", forKey: UserDefaultsKeys.sortingOrder)
     }
 }

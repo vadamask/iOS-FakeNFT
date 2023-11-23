@@ -123,6 +123,7 @@ extension RatingViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let user = viewModel.getUser(at: indexPath)
         let userVC = UserViewController(userId: user.id)
+        userVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(userVC, animated: true)
     }
 }
