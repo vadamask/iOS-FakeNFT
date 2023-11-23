@@ -93,8 +93,7 @@ final class MyNFTViewModel: MyNFTViewModelProtocol {
         }
     }
     
-    @objc
-    private func unlikeNFTFromFavorites(notification: Notification) {
+    @objc private func unlikeNFTFromFavorites(notification: Notification) {
         let nftId = notification.object as? String
         self.likedIDs = likedIDs?.filter({ $0 != nftId })
     }

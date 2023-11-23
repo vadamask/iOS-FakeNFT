@@ -103,11 +103,42 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
         self.navigationController?.popViewController(animated: true)
     }
     
-    @objc private func didTapSortButton() {} // функция сортировки
+    @objc private func didTapSortButton() {
+        let alert = UIAlertController(
+            title: nil,
+            message: "Сортировка",
+            preferredStyle: .actionSheet
+        )
+        let sortByPriceAction = UIAlertAction(title: "По цене", style: .default) { [weak self] _ in
+            self?.viewModel.sort = .price
+            self?.saveSortOrder(order: .price)
+        }
+        let sortByRatingAction = UIAlertAction(title: "По рейтингу", style: .default) { [weak self] _ in
+            self?.viewModel.sort = .rating
+            self?.saveSortOrder(order: .rating)
+        }
+        let sortByNameAction = UIAlertAction(title: "По названию", style: .default) { [weak self] _ in
+            self?.viewModel.sort = .name
+            self?.saveSortOrder(order: .name)
+        }
+        let closeAction = UIAlertAction(title: "Закрыть", style: .cancel)
+        
+        alert.addAction(sortByPriceAction)
+        alert.addAction(sortByRatingAction)
+        alert.addAction(sortByNameAction)
+        alert.addAction(closeAction)
+        
+        present(alert, animated: true)
+    }
+    
+    private func saveSortOrder(order: MyNFTViewModel.Sort) {
+            let data = try? PropertyListEncoder().encode(order)
+            UserDefaults.standard.set(data, forKey: "sortOrder")
+        }
     
     private func setupView() {
         if nftsID.isEmpty {
-            view.backgroundColor = .white
+            view.backgroundColor = .screenBackground
             setupNavBar(emptyNFTs: true)
             setupEmptyLabel()
         } else {

@@ -7,10 +7,10 @@
 
 import UIKit
 
-final class ProfileCell: UITableViewCell {
+final class ProfileAssetsCell: UITableViewCell, ReuseIdentifying {
     //MARK: - Layout elements
-    // кнопка для открытия ячейки секции
-    var openSection: UIImageView = {
+    // >
+    var disclosureIndicator: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "chevron.forward")
         imageView.tintColor = .textPrimary
@@ -20,7 +20,7 @@ final class ProfileCell: UITableViewCell {
     }()
     
     // текст ячейки главного экрана профиля
-    var textInSection: UILabel = {
+    var assetLabel: UILabel = {
         let label = UILabel()
         label.font = .bodyBold17
         label.textColor = .textPrimary
@@ -29,7 +29,7 @@ final class ProfileCell: UITableViewCell {
     }()
     
     // числовое значение ячейки главного профиля
-    var valueInSection: UILabel = {
+    var assetValueLabel: UILabel = {
         let label = UILabel()
         label.font = .bodyBold17
         label.textColor = .textPrimary
@@ -39,39 +39,34 @@ final class ProfileCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addTextInSection()
-        addValueInSection()
-        addOpenSection()
+        setupConstraint()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func addTextInSection() {
-        addSubview(textInSection)
-        NSLayoutConstraint.activate([
-            textInSection.centerYAnchor.constraint(equalTo: centerYAnchor),
-            textInSection.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-        ])
+    func setAssets(label: String? = nil, value: String?) {
+        if let label = label { assetLabel.text = label }
+        if let value = value { assetValueLabel.text = value }
     }
     
-    func addValueInSection() {
-        addSubview(valueInSection)
+    private func setupConstraint() {
+            [assetLabel, assetValueLabel, disclosureIndicator].forEach {
+                $0.translatesAutoresizingMaskIntoConstraints = false
+                addSubview($0)
+            }
+        
         NSLayoutConstraint.activate([
-            valueInSection.centerYAnchor.constraint(equalTo: centerYAnchor),
-            valueInSection.leadingAnchor.constraint(equalTo: textInSection.trailingAnchor, constant: 8)
+            // текст ячейки таблицы
+            assetLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            assetLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            // числовое значение ячейки таблицы
+            assetValueLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            assetValueLabel.leadingAnchor.constraint(equalTo: assetLabel.trailingAnchor, constant: 8),
+            // >
+            disclosureIndicator.centerYAnchor.constraint(equalTo: centerYAnchor),
+            disclosureIndicator.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
         ])
     }
-    
-    func addOpenSection() {
-        addSubview(openSection)
-        NSLayoutConstraint.activate([
-            openSection.centerYAnchor.constraint(equalTo: centerYAnchor),
-            openSection.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
-        ])
-    }
-}
-
-extension ProfileCell: ReuseIdentifying {
 }

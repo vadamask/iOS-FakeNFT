@@ -9,22 +9,25 @@ import Kingfisher
 import UIKit
 
 final class ProfileView: UIView {
-    private var viewController: ProfileViewController?
+    private let viewModel: ProfileViewModelProtocol
+    private var viewController: ProfileViewController
+    private var assetViewControllers: [UIViewController] = []
     
-    private let assetLabel: [String] = [
+    private let assetNameLabel: [String] = [
         L10n.Profile.myNFT,
         L10n.Profile.nftFavorites,
         L10n.Profile.aboutDeveloper
     ]
     
-    private let assetViewController: [UIViewController] = [
-        ProfileMyNFTViewController(),
-        ProfileFavoritesViewController(),
-        ProfileDevelopersViewController()
+    private lazy var assetValue: [String?] = [
+        "\(viewModel.nfts?.count ?? 0)",
+        "\(viewModel.likes?.count ?? 0)",
+        nil
     ]
     
     // MARK: - Layout view
-    private lazy var profileImage: UIImageView = {
+    // картинка профиля
+    private lazy var avatarImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = Asset.profile.image
         imageView.layer.cornerRadius = 35
@@ -33,8 +36,8 @@ final class ProfileView: UIView {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    
-    private lazy var usernameLabel: UILabel = {
+    // лейбл с именем юзера
+    private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.text = ""
         label.font = .headline22
@@ -42,7 +45,7 @@ final class ProfileView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+    // раздел "О себе юзера"
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .caption13
@@ -67,35 +70,53 @@ final class ProfileView: UIView {
         return label
     }()
     // тейбл вью
-    private lazy var categoryTableView: UITableView = {
+    private lazy var profileAssetsTable: UITableView = {
         let tableView = UITableView()
         tableView.separatorStyle = .none
         tableView.allowsMultipleSelection = false
         tableView.dataSource = self
         tableView.isScrollEnabled = false
         tableView.delegate = self
-        tableView.register(ProfileCell.self)
+        tableView.register(ProfileAssetsCell.self)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
     
-    init(frame: CGRect, viewController: ProfileViewController) {
+    init(frame: CGRect, viewModel: ProfileViewModelProtocol, viewController: ProfileViewController) {
         super.init(frame: .zero)
+        self.viewModel = viewModel
         self.viewController = viewController
+        
         self.backgroundColor = .screenBackground
-        addProfileImage()
-        addUsernameLabel()
-        addDescriptionLabel()
-        addWebsiteLabel()
-        addcategoryTableView()
+        setupConstraints()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(likesUpdated),
+            name: NSNotification.Name(rawValue: "likesUpdated"),
+            object: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func initialViewControllers() {
+        let myNFTViewController = MyNFTViewController(nftIDs: viewModel.nfts ?? [], likedIDs: viewModel.likes ?? [])
+        let favoritesViewController = FavoritesViewController(likedIDs: viewModel.likes ?? [])
+        let developersViewController = DevelopersViewController()
+        
+        assetViewControllers = [myNFTViewController, favoritesViewController, developersViewController]
+    }
+    
     @objc private func websiteDidTap(_ sender: UITapGestureRecognizer) {
-        viewController?.present(WebsiteViewController(webView: nil, websiteURL: websiteLabel.text), animated: true)
+        viewController.present(WebsiteViewController(websiteURL: websiteLabel.text), animated: true)
+    }
+    
+    @objc private func likesUpdated(notification: Notification) {
+        guard let likesUpdated = notification.object as? Int else { return }
+        let cell = profileAssetsTable.cellForRow(at: [0,1]) as? ProfileAssetsCell
+        cell?.setAssets(label: nil, value: "(\(likesUpdated))")
     }
     
     func updateViews(
@@ -106,62 +127,53 @@ final class ProfileView: UIView {
         nftCount: String?,
         likesCount: String?
     ) {
-        profileImage.kf.setImage(
+        avatarImage.kf.setImage(
             with: avatarURL,
-            placeholder: Asset.profile.image,
+            placeholder: UIImage(named: "Profile"),
             options: [.processor(RoundCornerImageProcessor(cornerRadius: 35))])
-        usernameLabel.text = userName
+        nameLabel.text = userName
         descriptionLabel.text = description
         websiteLabel.text = website
         
-        let nftsCountLabel = categoryTableView.cellForRow(at: [0,0]) as? ProfileCell
-        nftsCountLabel?.valueInSection.text = nftCount
-        let likesCountLabel = categoryTableView.cellForRow(at: [0,1]) as? ProfileCell
-        likesCountLabel?.valueInSection.text = likesCount
+        let myNFTCell = profileAssetsTable.cellForRow(at: [0,0]) as? ProfileAssetsCell
+        myNFTCell?.setAssets(label: nil, value: nftCount)
+        
+        let likesCell = profileAssetsTable.cellForRow(at: [0,1]) as? ProfileAssetsCell
+        likesCell?.setAssets(label: nil, value: likesCount)
     }
     
-    // MARK: - Layout constraints
-    func addProfileImage() {
-        addSubview(profileImage)
+    private func setupConstraints() {
+        [avatarImage,
+         nameLabel,
+         descriptionLabel,
+         websiteLabel,
+         profileAssetsTable].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            addSubview($0)
+        }
+        
         NSLayoutConstraint.activate([
-            profileImage.heightAnchor.constraint(equalToConstant: 70),
-            profileImage.widthAnchor.constraint(equalToConstant: 70),
-            profileImage.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
-            profileImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16)
-        ])
-    }
-    
-    func addUsernameLabel() {
-        addSubview(usernameLabel)
-        usernameLabel.topAnchor.constraint(equalTo: profileImage.topAnchor, constant: 21).isActive = true
-        usernameLabel.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 16).isActive = true
-    }
-    
-    private func addDescriptionLabel() {
-        addSubview(descriptionLabel)
-        NSLayoutConstraint.activate([
-            descriptionLabel.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 20),
+            // фотка профиля
+            avatarImage.heightAnchor.constraint(equalToConstant: 70),
+            avatarImage.widthAnchor.constraint(equalToConstant: 70),
+            avatarImage.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
+            avatarImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            // лейбл с именем юзера
+            nameLabel.topAnchor.constraint(equalTo: avatarImage.topAnchor, constant: 21),
+            nameLabel.leadingAnchor.constraint(equalTo: avatarImage.trailingAnchor, constant: 16),
+            // описание интересов юзера
+            descriptionLabel.topAnchor.constraint(equalTo: avatarImage.bottomAnchor, constant: 20),
             descriptionLabel.heightAnchor.constraint(equalToConstant: 72),
             descriptionLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            descriptionLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16)
-        ])
-    }
-    
-    private func addWebsiteLabel() {
-        addSubview(websiteLabel)
-        NSLayoutConstraint.activate([
+            descriptionLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            // лейбл с веб-сайтом юзера
             websiteLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 8),
             websiteLabel.leadingAnchor.constraint(equalTo: descriptionLabel.leadingAnchor),
-        ])
-    }
-    
-    private func addcategoryTableView() {
-        addSubview(categoryTableView)
-        NSLayoutConstraint.activate([
-            categoryTableView.topAnchor.constraint(equalTo: websiteLabel.bottomAnchor, constant: 40),
-            categoryTableView.heightAnchor.constraint(equalToConstant: 54 * 3),
-            categoryTableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            categoryTableView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+            // таблица с разделами (мои нфт, избранное, о разработчике)
+            profileAssetsTable.topAnchor.constraint(equalTo: websiteLabel.bottomAnchor, constant: 40),
+            profileAssetsTable.heightAnchor.constraint(equalToConstant: 54 * 3),
+            profileAssetsTable.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            profileAssetsTable.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])
     }
 }
@@ -170,16 +182,15 @@ final class ProfileView: UIView {
 // возвращаем кол-во строк в таблице
 extension ProfileView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return assetNameLabel.count
     }
     
     // настройка ячейки строки таблицы
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: ProfileCell = tableView.dequeueReusableCell()
+        let cell: ProfileAssetsCell = tableView.dequeueReusableCell()
         
         cell.backgroundColor = .screenBackground
-        cell.textInSection.text = assetLabel[indexPath.row]
-        cell.valueInSection.text = ""
+        cell.setAssets(label: assetNameLabel[indexPath.row], value: assetValue[indexPath.row])
         cell.selectionStyle = .none
         return cell
     }
@@ -192,6 +203,6 @@ extension ProfileView: UITableViewDataSource {
 
 extension ProfileView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewController?.navigationController?.pushViewController(assetViewController[indexPath.row], animated: true)
+        viewController.navigationController?.pushViewController(self.assetViewControllers[indexPath.row], animated: true)
     }
 }
