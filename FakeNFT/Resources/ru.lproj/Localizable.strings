@@ -1,3 +1,12 @@
+// Onboarding
+"Onboarding.title1" = "Исследуйте";
+"Onboarding.title2" = "Коллекционируйте";
+"Onboarding.title3" = "Состязайтесь";
+"Onboarding.description1" = "Присоединяйтесь и откройте новый мир уникальных NFT для коллекционеров";
+"Onboarding.description2" = "Пополняйте свою коллекцию эксклюзивными картинками, созданными нейросетью!";
+"Onboarding.description3" = "Смотрите статистику других и покажите всем, что у вас самая ценная коллекция";
+"Onboarding.button" = "Что внутри?";
+
 "Tab.catalog" = "Каталог";
 "Catalog.openNft" = "Открыть Nft";
 "Error.network" = "Произошла ошибка сети";

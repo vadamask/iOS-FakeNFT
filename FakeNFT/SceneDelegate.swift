@@ -2,7 +2,7 @@ import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
-
+    var appCoordinator: AppCoordinator?
 //    let servicesAssembly = ServicesAssembly(
 //        networkClient: DefaultNetworkClient(),
 //        nftStorage: NftStorageImpl()
@@ -13,8 +13,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
         window = UIWindow(windowScene: scene)
-        let mainTabBarController = TabBarController()
-        window?.rootViewController = mainTabBarController
+        let navigationController = UINavigationController()
+        appCoordinator = AppCoordinator(navigationController: navigationController)
+        appCoordinator?.start()
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
 }

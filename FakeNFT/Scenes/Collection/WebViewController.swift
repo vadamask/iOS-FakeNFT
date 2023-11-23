@@ -31,7 +31,10 @@ final class WebViewController: UIViewController {
         view.backgroundColor = .screenBackground
         setupView()
         setupConstraints()
+    }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         guard let url = url else { return }
         webView.load(URLRequest(url: url))
     }
@@ -42,7 +45,8 @@ final class WebViewController: UIViewController {
 
     private func setupConstraints() {
         webView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.leading.trailing.bottom.equalToSuperview()
         }
     }
 }

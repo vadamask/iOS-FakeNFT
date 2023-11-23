@@ -11,6 +11,6 @@ struct CollectionHeaderViewModel: Hashable {
     let name: String
     var author: String
     let description: String
-    let cover: URL
+    let cover: URL?
     var webSite: URL?
 }

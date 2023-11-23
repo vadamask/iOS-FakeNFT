@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 final class CollectionHeader: UICollectionReusableView, ReuseIdentifying {
     var viewModel: CollectionHeaderViewModel? {
@@ -13,7 +14,8 @@ final class CollectionHeader: UICollectionReusableView, ReuseIdentifying {
             updateUI()
         }
     }
-    var onNameAuthorLabelClicked: ((URL) -> Void)?
+    var subscription: AnyCancellable?
+    private(set) var authorAction = PassthroughSubject<URL, Never>()
     private let coverImageView = {
         let imageVIew = UIImageView()
         imageVIew.image = Asset.blueBonnie.image
@@ -133,6 +135,6 @@ final class CollectionHeader: UICollectionReusableView, ReuseIdentifying {
 
     @objc private func authorLabelClicked() {
         guard let webSite = viewModel?.webSite else { return }
-        onNameAuthorLabelClicked?(webSite)
+        authorAction.send(webSite)
     }
 }

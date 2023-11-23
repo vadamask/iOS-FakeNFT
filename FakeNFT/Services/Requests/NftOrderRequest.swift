@@ -9,6 +9,8 @@ import Foundation
 
 struct NftOrderRequest: NetworkRequest {
     let id: String
+    var httpMethod: HttpMethod = .get
+    var dto: Encodable?
 
     var endpoint: URL? {
         URL(string: "\(RequestConstants.baseURL)/api/v1/orders/\(id)")
