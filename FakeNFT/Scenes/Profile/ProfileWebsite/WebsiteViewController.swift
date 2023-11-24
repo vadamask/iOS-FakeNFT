@@ -9,8 +9,8 @@ import UIKit
 import WebKit
 
 final class WebsiteViewController: UIViewController, WKUIDelegate {
-    var webView: WKWebView?
-    var websiteURL: String?
+    private var webView: WKWebView?
+    private var websiteURL: String?
     
     override func loadView() {
         let webConfiguration = WKWebViewConfiguration()
@@ -19,8 +19,7 @@ final class WebsiteViewController: UIViewController, WKUIDelegate {
         view = webView
     }
     
-    init(webView: WKWebView?, websiteURL: String?) {
-        self.webView = webView
+    init(websiteURL: String?) {
         self.websiteURL = websiteURL
         super.init(nibName: nil, bundle: nil)
     }
@@ -32,9 +31,11 @@ final class WebsiteViewController: UIViewController, WKUIDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        guard let websiteURL = websiteURL,
-              let myURL = URL(string: websiteURL) else { return }
-        let myRequest = URLRequest(url: myURL)
-        webView?.load(myRequest)
+        guard
+            let websiteURL = websiteURL,
+            let requestURL = URL(string: websiteURL)
+        else { return }
+        let request = URLRequest(url: requestURL)
+        webView?.load(request)
     }
 }

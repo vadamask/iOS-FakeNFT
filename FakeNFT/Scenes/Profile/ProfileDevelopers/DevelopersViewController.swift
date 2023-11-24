@@ -8,49 +8,52 @@
 import UIKit
 import WebKit
 
-final class ProfileDevelopersViewController: UIViewController, WKUIDelegate {
-    private lazy var backButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(
-            image: Asset.backButton.image,
-            style: .plain,
-            target: self,
-            action: #selector(didTapBackButton))
-        button.tintColor = .textPrimary
-        return button
-    }()
+final class DevelopersViewController: UIViewController, WKUIDelegate, UIGestureRecognizerDelegate {
+    private lazy var backButton = UIBarButtonItem(
+        image: Asset.backButton.image,
+        style: .plain,
+        target: self,
+        action: #selector(didTapBackButton)
+    )
     
     private lazy var webView: WKWebView = {
         let prefs = WKWebpagePreferences()
         let configuration = WKWebViewConfiguration()
         configuration.defaultWebpagePreferences = prefs
         let webView = WKWebView(frame: .zero, configuration: configuration)
-        webView.backgroundColor = .screenBackground
         webView.translatesAutoresizingMaskIntoConstraints = false
+        webView.backgroundColor = .white
         return webView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        addSubview()
-        addEdgeSwipeBackGesture()
+        addWebView()
         
         guard let myURL = URL(string: "https://practicum.yandex.ru/ios-developer") else { return }
         webView.load(URLRequest(url: myURL))
+        
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
-    @objc
-    private func didTapBackButton() {
-        self.navigationController?.popViewController(animated: true)
+    override func viewDidAppear(_ animated: Bool) {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
     
-    func setupView() {
-        navigationController?.navigationBar.tintColor = .textPrimary
+    @objc private func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    private func setupView() {
+        navigationController?.navigationBar.tintColor = .black
         navigationItem.leftBarButtonItem = backButton
-        view.backgroundColor = .screenBackground
+        backButton.accessibilityIdentifier = "backButton"
+        
+        view.backgroundColor = .white
     }
     
-    func addSubview() {
+    private func addWebView() {
         view.addSubview(webView)
         
         NSLayoutConstraint.activate([

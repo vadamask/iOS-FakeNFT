@@ -7,10 +7,30 @@
 
 import UIKit
 
-final class ProfileViewModel {
-    var onChange: (() -> Void)?
+protocol ProfileViewModelProtocol: AnyObject {
+    var onChange: (() -> Void)? { get set }
+    var onLoaded: (() -> Void)? { get set }
+    var onError: (() -> Void)? { get set }
     
-    private weak var viewController: UIViewController?
+    var avatarURL: URL? { get }
+    var name: String? { get }
+    var description: String? { get }
+    var website: String? { get }
+    var likes: [String]? { get }
+    var nfts: [String]? { get }
+    var id: String? { get }
+    var error: Error? { get }
+    
+    func getProfileData()
+    func putProfileData(name: String, avatar: String, description: String, website: String, likes: [String])
+}
+
+final class ProfileViewModel: ProfileViewModelProtocol {
+    var onChange: (() -> Void)?
+    var onLoaded: (() -> Void)?
+    var onError: (() -> Void)?
+    
+    private var networkClient: NetworkClient = DefaultNetworkClient()
     
     private(set) var avatarURL: URL? {
         didSet {
@@ -39,64 +59,73 @@ final class ProfileViewModel {
     private(set) var nfts: [String]? {
         didSet {
             onChange?()
+            onLoaded?()
         }
     }
     
     private(set) var likes: [String]? {
         didSet {
             onChange?()
+            onLoaded?()
         }
     }
     private(set) var id: String?
+    private(set) var error: Error?
     
-    init(viewController: UIViewController) {
-        self.viewController = viewController
-        getProfileData()
+    init(networkClient: NetworkClient? = nil) {
+        if let networkClient = networkClient { self.networkClient = networkClient }
     }
     
     func getProfileData() {
         UIBlockingProgressHUD.show()
-        let networkClient = DefaultNetworkClient()
         
-        networkClient.send(request: GetProfileRequest(), type: ProfileNetworkModel.self) { [weak self] result in
+        networkClient.send(request: GetProfileRequest(httpMethod: .get), type: ProfileNetworkModel.self) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                     case .success(let profile):
-                        self?.avatarURL = URL(string: profile.avatar)
+                        self?.fillFrom(response: profile)
                         self?.name = profile.name
-                        self?.description = profile.description
-                        self?.website = profile.website
                         self?.nfts = profile.nfts
                         self?.likes = profile.likes
-                        self?.id = profile.id
-                    case .failure(let error):
-                        print(error)
+                        UIBlockingProgressHUD.dismiss()
+                    case .failure(let failure):
+                        self?.error = failure
+                        self?.onError?()
+                        UIBlockingProgressHUD.dismiss()
                 }
-                UIBlockingProgressHUD.dismiss()
             }
         }
     }
     
-    func putProfileData(name: String, description: String, website: String, likes: [String]) {
-        let networkClient = DefaultNetworkClient()
-        
-        let request = PutProfileRequest(name: name, description: description, website: website, likes: likes)
+    func putProfileData(name: String, avatar: String, description: String, website: String, likes: [String]) {
+        UIBlockingProgressHUD.dismiss()
+        let request = PutProfileRequest(
+            name: name,
+            avatar: avatar,
+            description: description,
+            website: website,
+            likes: likes)
         
         networkClient.send(request: request, type: ProfileNetworkModel.self) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                     case .success(let profile):
-                        self?.avatarURL = URL(string: profile.avatar)
-                        self?.name = profile.name
-                        self?.description = profile.description
-                        self?.website = profile.website
-                        self?.nfts = profile.nfts
-                        self?.likes = profile.likes
-                        self?.id = profile.id
-                    case .failure(let error):
-                        print(error)
+                        self?.fillFrom(response: profile)
+                        UIBlockingProgressHUD.dismiss()
+                    case .failure(let failure):
+                        self?.error = failure
+                        self?.onError?()
+                        UIBlockingProgressHUD.dismiss()
                 }
             }
         }
+    }
+    // получение и заполнение данными из сетевого запроса
+    private func fillFrom(response: ProfileNetworkModel){
+        self.avatarURL = URL(string: response.avatar)
+        self.name = response.name
+        self.description = response.description
+        self.website = response.website
+        self.id = response.id
     }
 }

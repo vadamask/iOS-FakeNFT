@@ -1,44 +1,67 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
-    private var servicesAssembly: ServicesAssembly
-    
-    private let catalogTabBarItem = UITabBarItem(
-        title: L10n.Tab.catalog,
-        image: Asset.catalog.image,
-        tag: 0
-    )
-    
-    private let profileTabBarItem = UITabBarItem(
-        title: L10n.Tab.profile,
-        image: Asset.profile.image,
-        tag: 1
-    )
-    
-    init(servicesAssembly: ServicesAssembly) {
-        self.servicesAssembly = servicesAssembly
-        super.init(nibName: nil, bundle: nil)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureController()
     }
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    
+    private func createMockViewController(
+        title: String,
+        backgroundColor: UIColor
+    ) -> UIViewController {
+        let vc = UIViewController()
+        vc.title = title
+        vc.view.backgroundColor = backgroundColor
+        return vc
     }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        tabBar.unselectedItemTintColor = .tabInactive
-        tabBar.tintColor = .tabActive
-        
-        let catalogController = TestCatalogViewController(
-            servicesAssembly: servicesAssembly
+    
+    private func configureController() {
+        let firstMockVc = createMockViewController(
+            title: "1-st mock vc",
+            backgroundColor: .screenBackground
         )
-        catalogController.tabBarItem = catalogTabBarItem
         
-        let profileController = ProfileViewController()
-        profileController.tabBarItem = profileTabBarItem
-        let profileNavController = UINavigationController(rootViewController: profileController)
+        let thirdMockVc = createMockViewController(
+            title: "3-rd mock vc",
+            backgroundColor: .screenBackground
+        )
+        let forthMockVc = createMockViewController(
+            title: "4-th mock vc",
+            backgroundColor: .screenBackground
+        )
         
-        viewControllers = [catalogController, profileNavController]
+        tabBar.backgroundColor = .screenBackground
         
-        view.backgroundColor = .screenBackground
+        let profileNavigationController = NavigationController(
+            rootViewController: ProfileViewController(viewModel: ProfileViewModel(networkClient: nil))
+        )
+        let cartNavigationController = NavigationController(
+            rootViewController: thirdMockVc
+        )
+        let statisticsNavigationController = NavigationController(
+            rootViewController: forthMockVc
+        )
+        
+        let catalogueNavigationController = NFTsFactory.create()
+        
+        self.viewControllers = [
+            configureTab(
+                controller: profileNavigationController,
+                title: "Профиль", // добавить локаль
+                image: Asset.profile.image
+            )
+        ]
+    }
+    
+    private func configureTab(
+        controller: UIViewController,
+        title: String? = nil,
+        image: UIImage
+    ) -> UIViewController {
+        let tab = controller
+        let tabBarItem = UITabBarItem(title: title, image: image, selectedImage: nil)
+        tab.tabBarItem = tabBarItem
+        return tab
     }
 }

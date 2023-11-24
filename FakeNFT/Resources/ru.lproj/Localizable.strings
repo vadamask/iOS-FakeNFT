@@ -15,4 +15,5 @@
 "Profile.myNFT" = "Мои NFT";
 "Profile.NFTFavorites" = "Избранные NFT";
 "Profile.aboutDeveloper" = "О разработчике";
-
+"Profile.noInternet" = "Нет интернета";
+"Profile.priceText" = "Цена";

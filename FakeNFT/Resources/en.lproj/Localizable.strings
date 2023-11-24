@@ -15,3 +15,5 @@
 "Profile.myNFT" = "My NFT";
 "Profile.NFTFavorites" = "NFT Favorites";
 "Profile.aboutDeveloper" = "About developer";
+"Profile.noInternet" = "No internet";
+"Profile.priceText" = "Price";
