@@ -65,6 +65,8 @@ final class CartTests: XCTestCase {
         controller.viewDidAppear(false)
         
         // then
-        //XCTAssertEqual(viewModel.nfts.count, 3)
+        let exp = expectation(description: "after 3 seconds")
+        _ = XCTWaiter.wait(for: [exp], timeout: 3)
+        XCTAssertEqual(viewModel.nfts.count, 3)
     }
 }
