@@ -9,7 +9,7 @@ import UIKit
 // вью для звездного рейтинга нфт
 final class StarsView: UIView {
     enum Rating: Int {
-        case zero = 0
+        case zero
         case one
         case two
         case three

@@ -9,8 +9,6 @@ import UIKit
 // установка и обновление кол-ва звёзд в рейтинге в зависимости от оценки
 final class StarRatingController: UIStackView {
     private var starsRating = 0
-    private var starsEmptyPicName = "ratingInactive"
-    private var starsFilledPicName = "ratingActive"
     
     init(starsRating: Int = 0) {
         super.init(frame: .zero)
@@ -19,10 +17,10 @@ final class StarRatingController: UIStackView {
         
         var starTag = 1
         for _ in 0..<starsRating {
-            let image = UIImageView()
-            image.image = UIImage(asset: Asset.ratingInactive)
-            image.tag = starTag
-            self.addArrangedSubview(image)
+            let imageView = UIImageView()
+            imageView.image = Asset.ratingInactive.image
+            imageView.tag = starTag
+            self.addArrangedSubview(imageView)
             starTag += 1
         }
     }

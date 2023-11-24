@@ -11,8 +11,8 @@ final class FavoriteButton: UIButton {
     var nftID: String?
     var isFavorite: Bool = false {
         didSet {
-            let imageName = self.isFavorite ? "heartFilled" : "heartEmpty"
-            self.setImage(UIImage(named: imageName), for: .normal)
+            let image = self.isFavorite ? Asset.heartFilled.image : Asset.heartEmpty.image
+            self.setImage(image, for: .normal)
         }
     }
     
