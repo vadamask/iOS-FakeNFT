@@ -27,6 +27,10 @@ protocol CollectionViewModelProtocol {
 final class CollectionViewModel: CollectionViewModelProtocol {
     weak var navigation: CollectionNavigation?
     private var subscriptions = Set<AnyCancellable>()
+    private var loadSubscription: AnyCancellable?
+    private var likeSubscription: AnyCancellable?
+    private var addCartSubscription: AnyCancellable?
+    private var removeCartSubscription: AnyCancellable?
     private let collectionId: String
     private let service: NftService
     private(set) var cellViewModels: [CollectionCellViewModel] = []
@@ -39,7 +43,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
         }
     }
 
-    init(collectionId: String, service: NftService, navigation: CollectionNavigation) {
+    init(collectionId: String, service: NftService, navigation: CollectionNavigation?) {
         self.collectionId = collectionId
         self.service = service
         self.navigation = navigation
@@ -66,7 +70,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
 
     func loadCollection() {
         state.value = .loading
-        service.loadCollection(by: collectionId)
+        loadSubscription = service.loadCollection(by: collectionId)
             .flatMap { [unowned self] collection in
                 let user = self.service.loadUser(by: collection.author)
                 let profile = self.service.loadProfile()
@@ -99,19 +103,20 @@ final class CollectionViewModel: CollectionViewModelProtocol {
             }
             .sink { [weak self] completion in
                 if case let .failure(error) = completion {
+                    print(error)
                     self?.state.value = .error(error)
                 }
+                self?.loadSubscription?.cancel()
             } receiveValue: { [weak self] headerVM, cellVM in
                 self?.headerViewModel = headerVM
                 self?.cellViewModels = cellVM
                 self?.state.value = .loaded
             }
-            .store(in: &subscriptions)
     }
 
     func likeNftWith(id: String, isLiked: Bool) {
-        service.loadProfile()
-            .flatMap { [unowned self] profile -> AnyPublisher<NftProfile, Error> in
+        likeSubscription = service.loadProfile()
+            .flatMap { [unowned self] profile in
                 var likes = profile.likes
                 isLiked ? likes.append(id) : likes.removeAll { $0 == id }
                 let profileDto = NftProfileDto(
@@ -126,6 +131,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
                 if case let .failure(error) = completion {
                     self?.state.value = .error(error)
                 }
+                self?.likeSubscription?.cancel()
             } receiveValue: { [weak self] profile in
                 guard let self = self else { return }
                 for i in 0..<self.cellViewModels.count {
@@ -133,11 +139,10 @@ final class CollectionViewModel: CollectionViewModelProtocol {
                 }
                 self.state.value = .loaded
             }
-            .store(in: &subscriptions)
     }
 
     func addToCartNftWith(id: String) {
-        service.loadOrder(by: "1")
+        addCartSubscription = service.loadOrder(by: "1")
             .flatMap { [unowned self] order in
                 var nfts = order.nfts
                 nfts.append(id)
@@ -148,6 +153,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
                 if case let .failure(error) = completion {
                     self?.state.value = .error(error)
                 }
+                self?.addCartSubscription?.cancel()
             } receiveValue: { [weak self] order in
                 guard let self = self else { return }
                 for i in 0..<self.cellViewModels.count {
@@ -155,11 +161,10 @@ final class CollectionViewModel: CollectionViewModelProtocol {
                 }
                 self.state.value = .loaded
             }
-            .store(in: &subscriptions)
     }
     
     func removeFromCartNftWith(id: String) {
-        service.loadOrder(by: "1")
+        removeCartSubscription = service.loadOrder(by: "1")
             .flatMap { [unowned self] order in
                 var nfts = order.nfts
                 nfts.removeAll { $0 == id }
@@ -170,6 +175,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
                 if case let .failure(error) = completion {
                     self?.state.value = .error(error)
                 }
+                self?.removeCartSubscription?.cancel()
             } receiveValue: { [weak self] order in
                 guard let self = self else { return }
                 for i in 0..<self.cellViewModels.count {
@@ -177,7 +183,6 @@ final class CollectionViewModel: CollectionViewModelProtocol {
                 }
                 self.state.value = .loaded
             }
-            .store(in: &subscriptions)
     }
 
     func navigateToAuthorPage(url: URL) {

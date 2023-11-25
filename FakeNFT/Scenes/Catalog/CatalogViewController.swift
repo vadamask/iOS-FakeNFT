@@ -98,15 +98,22 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
                     self?.showLoading()
                 case .refreshing, .sorting:
                     self?.sortButtonItem.isEnabled = false
-                case .error:
+                case .error(let error):
                     self?.sortButtonItem.isEnabled = false
                     self?.collectionView.isUserInteractionEnabled = true
                     self?.hideLoading()
+                    var description: String
+                    switch error {
+                    case let error as NetworkClientError:
+                        description = error.errorDescription ?? error.localizedDescription
+                    default:
+                        description = error.localizedDescription
+                    }
                     self?.showError(
                         ErrorModel(
-                            message: L10n.Error.unableToLoad,
+                            message: description,
                             actionText: L10n.Error.repeat
-                        ) {
+                        ) { [weak self] in
                             self?.viewModel.loadCollections()
                         }
                     )

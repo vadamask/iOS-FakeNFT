@@ -90,10 +90,17 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
                     self?.collectionView.isUserInteractionEnabled = true
                     self?.hideLoading()
                     self?.applySnapshot()
-                case .error:
+                case .error(let error):
+                    var description: String
+                    switch error {
+                    case let error as NetworkClientError:
+                        description = error.errorDescription ?? error.localizedDescription
+                    default:
+                        description = error.localizedDescription
+                    }
                     self?.showError(
                         ErrorModel(
-                            message: L10n.Error.unableToLoad,
+                            message: description,
                             actionText: L10n.Error.repeat
                         ) {
                             self?.viewModel.loadCollection()

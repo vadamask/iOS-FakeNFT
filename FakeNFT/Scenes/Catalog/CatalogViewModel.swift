@@ -27,6 +27,7 @@ protocol CatalogViewModelProtocol: AnyObject {
 
 final class CatalogViewModel: CatalogViewModelProtocol {
     weak var navigation: CatalogNavigation?
+    private var loadSubscription: AnyCancellable?
     private var subscriptions = Set<AnyCancellable>()
     private let service: NftService
     private let userDefaults = UserDefaults.standard
@@ -41,7 +42,7 @@ final class CatalogViewModel: CatalogViewModelProtocol {
         }
     }
     
-    init(service: NftService, navigation: CatalogNavigation) {
+    init(service: NftService, navigation: CatalogNavigation?) {
         self.service = service
         self.navigation = navigation
         self.currentSortingType = userDefaults.catalogSortingType
@@ -83,7 +84,7 @@ final class CatalogViewModel: CatalogViewModelProtocol {
     }
 
     private func fetchCollections() {
-        service.loadNftCollections()
+        loadSubscription = service.loadNftCollections()
             .map { nftCollections in
                 nftCollections.map {
                     CatalogCellViewModel(
@@ -98,12 +99,12 @@ final class CatalogViewModel: CatalogViewModelProtocol {
                 if case let .failure(error) = completion {
                     self?.state.value = .error(error)
                 }
+                self?.loadSubscription?.cancel()
             } receiveValue: { [weak self] cellModels in
                 guard let self = self else { return }
                 self.cellViewModels = cellModels
                 self.sortingTypePublisher.send(self.currentSortingType) // Due to iOS 13 support
             }
-            .store(in: &subscriptions)
     }
 
     private func sorting(viewModels: [CatalogCellViewModel], with sortingType: CatalogViewModelSortingType) -> Just<[CatalogCellViewModel]> {
