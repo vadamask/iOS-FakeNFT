@@ -6,14 +6,14 @@ typealias NftCollectionCompletion = (Result<[NftCollection], Error>) -> Void
 
 protocol NftService {
     func loadNft(id: String, completion: @escaping NftCompletion)
-    func loadNftCollections() -> AnyPublisher<[NftCollection], Error>
-    func loadCollection(by id: String) -> AnyPublisher<NftCollection, Error>
-    func loadNft(by id: String) -> AnyPublisher<Nft, Error>
-    func loadUser(by id: String) -> AnyPublisher<NftUser, Error>
-    func loadProfile() -> AnyPublisher<NftProfile, Error>
-    func loadOrder(by id: String) -> AnyPublisher<NftOrder, Error>
-    func updateOrder(id: String, nftOrderDto: NftOrderDto) -> AnyPublisher<NftOrder, Error>
-    func updateProfile(nftProfileDto: NftProfileDto) -> AnyPublisher<NftProfile, Error>
+    func loadNftCollections() -> AnyPublisher<[NftCollection], NetworkClientError>
+    func loadCollection(by id: String) -> AnyPublisher<NftCollection, NetworkClientError>
+    func loadNft(by id: String) -> AnyPublisher<Nft, NetworkClientError>
+    func loadUser(by id: String) -> AnyPublisher<NftUser, NetworkClientError>
+    func loadProfile() -> AnyPublisher<NftProfile, NetworkClientError>
+    func loadOrder(by id: String) -> AnyPublisher<NftOrder, NetworkClientError>
+    func updateOrder(id: String, nftOrderDto: NftOrderDto) -> AnyPublisher<NftOrder, NetworkClientError>
+    func updateProfile(nftProfileDto: NftProfileDto) -> AnyPublisher<NftProfile, NetworkClientError>
 }
 
 final class NftServiceImpl: NftService {
@@ -43,15 +43,15 @@ final class NftServiceImpl: NftService {
         }
     }
 
-    func loadNftCollections() -> AnyPublisher<[NftCollection], Error> {
+    func loadNftCollections() -> AnyPublisher<[NftCollection], NetworkClientError> {
         let request = NftCollectionRequest()
         return networkClient.send(request: request)
     }
-    func loadCollection(by id: String) -> AnyPublisher<NftCollection, Error> {
+    func loadCollection(by id: String) -> AnyPublisher<NftCollection, NetworkClientError> {
         let request = NftCollectionIdRequest(id: id)
         return networkClient.send(request: request)
     }
-    func loadNft(by id: String) -> AnyPublisher<Nft, Error> {
+    func loadNft(by id: String) -> AnyPublisher<Nft, NetworkClientError> {
         if let nft = storage.getNft(with: id) {
             return Future { promise in
                 promise(.success(nft))
@@ -66,23 +66,23 @@ final class NftServiceImpl: NftService {
             }
         .eraseToAnyPublisher()
     }
-    func loadUser(by id: String) -> AnyPublisher<NftUser, Error> {
+    func loadUser(by id: String) -> AnyPublisher<NftUser, NetworkClientError> {
         let request = NftUserRequest(id: id)
         return networkClient.send(request: request)
     }
-    func loadOrder(by id: String) -> AnyPublisher<NftOrder, Error> {
+    func loadOrder(by id: String) -> AnyPublisher<NftOrder, NetworkClientError> {
         let request = NftOrderRequest(id: id)
         return networkClient.send(request: request)
     }
-    func updateOrder(id: String, nftOrderDto: NftOrderDto) -> AnyPublisher<NftOrder, Error> {
+    func updateOrder(id: String, nftOrderDto: NftOrderDto) -> AnyPublisher<NftOrder, NetworkClientError> {
         let request = NftOrderRequest(id: id, httpMethod: .put, dto: nftOrderDto)
         return networkClient.send(request: request)
     }
-    func loadProfile() -> AnyPublisher<NftProfile, Error> {
+    func loadProfile() -> AnyPublisher<NftProfile, NetworkClientError> {
         let request = NftProfileRequest()
         return networkClient.send(request: request)
     }
-    func updateProfile(nftProfileDto: NftProfileDto) -> AnyPublisher<NftProfile, Error> {
+    func updateProfile(nftProfileDto: NftProfileDto) -> AnyPublisher<NftProfile, NetworkClientError> {
         let request = NftProfileRequest(httpMethod: .put, dto: nftProfileDto)
         return networkClient.send(request: request)
     }
