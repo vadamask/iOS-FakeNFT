@@ -1,12 +1,33 @@
 import Foundation
 import Combine
 
-enum NetworkClientError: Error {
-    case urlError
+enum NetworkClientError: LocalizedError {
+    case urlError(URLError)
     case httpStatusCode(Int)
     case urlRequestError(Error)
     case urlSessionError
     case parsingError
+    case invalidRequest
+    case errorJsonLoad
+
+    var errorDescription: String? {
+        switch self {
+        case .urlError(let urlError):
+            return urlError.localizedDescription
+        case .httpStatusCode(let statusCode):
+            return "Code (\(statusCode)): \(HTTPURLResponse.localizedString(forStatusCode: statusCode))"
+        case .urlRequestError(let error):
+            return error.localizedDescription
+        case .urlSessionError:
+            return L10n.Error.urlSessionError
+        case .parsingError:
+            return L10n.Error.parsingError
+        case .invalidRequest:
+            return L10n.Error.invalidRequest
+        case .errorJsonLoad:
+            return L10n.Error.errorJsonLoad
+        }
+    }
 }
 
 protocol NetworkClient {
@@ -26,7 +47,7 @@ protocol NetworkClient {
     ) -> NetworkTask?
 
     // MARK: Combine
-    func send<T: Decodable>(request: NetworkRequest) -> AnyPublisher<T, Error>
+    func send<T: Decodable>(request: NetworkRequest) -> AnyPublisher<T, NetworkClientError>
 }
 
 extension NetworkClient {
@@ -122,9 +143,9 @@ class DefaultNetworkClient: NetworkClient {
     }
 
     // MARK: Combine
-    func send<T: Decodable>(request: NetworkRequest) -> AnyPublisher<T, Error> {
+    func send<T: Decodable>(request: NetworkRequest) -> AnyPublisher<T, NetworkClientError> {
         guard let request = create(request: request) else {
-            return Fail(error: NetworkClientError.urlError).eraseToAnyPublisher()
+            return Fail(error: NetworkClientError.invalidRequest).eraseToAnyPublisher()
         }
         return session.dataTaskPublisher(for: request)
             .tryMap { data, response -> Data in
@@ -137,6 +158,18 @@ class DefaultNetworkClient: NetworkClient {
                 return data
             }
             .decode(type: T.self, decoder: JSONDecoder())
+            .mapError { error in
+                switch error {
+                case is Swift.DecodingError:
+                    return .parsingError
+                case let urlError as URLError:
+                    return .urlError(urlError)
+                case let err as NetworkClientError:
+                    return err
+                default:
+                    return .urlRequestError(error)
+                }
+            }
             .eraseToAnyPublisher()
     }
 
