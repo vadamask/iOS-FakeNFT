@@ -64,16 +64,17 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if let sortOrder = UserDefaults.standard.data(forKey: "sortOrder") {
-            let order = try? PropertyListDecoder().decode(MyNFTViewModel.Sort.self, from: sortOrder)
-            self.viewModel.sort = order
-        } else {
-            self.viewModel.sort = .rating
-        }
+        super.viewWillAppear(animated)
+        viewModel.checkStoredSort()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if badConnection { viewModel.getMyNFTs(nftIDs: nftsID) }
+        super.viewDidAppear(animated)
+        
+        if badConnection {
+            UIBlockingProgressHUD.show()
+            viewModel.getMyNFTs(nftIDs: nftsID)
+        }
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
     
@@ -132,9 +133,9 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     private func saveSortOrder(order: MyNFTViewModel.Sort) {
-            let data = try? PropertyListEncoder().encode(order)
-            UserDefaults.standard.set(data, forKey: "sortOrder")
-        }
+        let data = try? PropertyListEncoder().encode(order)
+        UserDefaults.standard.set(data, forKey: "sortOrder")
+    }
     
     private func setupView() {
         if nftsID.isEmpty {

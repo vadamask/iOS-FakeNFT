@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GetProfileRequest: NetworkRequest {
+struct ProfileRequest: NetworkRequest {
     var httpMethod: HttpMethod
     var dto: Encodable?
     var endpoint: URL? {
