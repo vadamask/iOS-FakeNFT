@@ -1,0 +1,29 @@
+[
+    {
+        "createdAt":"2023-04-20T02:22:27Z",
+        "name":"Beige",
+        "cover":"https://code.s3.yandex.net/Mobile/iOS/NFT/Обложки_коллекций/Beige.png",
+        "nfts":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21"],
+        "description":"A series of one-of-a-kind NFTs featuring historic moments in sports history.",
+        "author":"6",
+        "id":"1"
+    },
+    {
+        "createdAt":"2023-04-20T02:22:27Z",
+        "name":"Blue",
+        "cover":"https://code.s3.yandex.net/Mobile/iOS/NFT/Обложки_коллекций/Blue.png",
+        "nfts":["22","23","24","25","26"],
+        "description":"A collection of virtual trading cards featuring popular characters from movies and TV shows.",
+        "author":"9",
+        "id":"2"
+    },
+    {
+        "createdAt":"2023-04-20T02:22:27Z",
+        "name":"Gray",
+        "cover":"https://code.s3.yandex.net/Mobile/iOS/NFT/Обложки_коллекций/Gray.png",
+        "nfts":["27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45"],
+        "description":"A set of limited edition digital stamps featuring famous landmarks from around the world.",
+        "author":"12",
+        "id":"3"
+    }
+]
