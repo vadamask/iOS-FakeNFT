@@ -103,7 +103,6 @@ final class CollectionViewModel: CollectionViewModelProtocol {
             }
             .sink { [weak self] completion in
                 if case let .failure(error) = completion {
-                    print(error)
                     self?.state.value = .error(error)
                 }
                 self?.loadSubscription?.cancel()
