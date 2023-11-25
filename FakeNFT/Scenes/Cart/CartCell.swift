@@ -9,6 +9,9 @@ import UIKit
 
 final class CartCell: UITableViewCell, ReuseIdentifying {
     static var defaultReuseIdentifier: String = "CartCell"
+    var didTapDeleteButton: ((String) -> Void)?
+    
+    private var nftID = ""
     
     private lazy var nftImageView: UIImageView = {
         let imageView = UIImageView()
@@ -81,9 +84,17 @@ final class CartCell: UITableViewCell, ReuseIdentifying {
                 imageView.image = Asset.ratingInactive.image
             }
         }
+        
+        nftImageView.kf.cancelDownloadTask()
+        nftID = ""
+        nameLabel.text = ""
+        priceNameLabel.text = ""
+        priceAndCurrencyLabel.text = ""
+        didTapDeleteButton = nil
     }
 
     func setup(with model: Nft) {
+        nftID = model.id
         nftImageView.kf.setImage(with: model.images[0])
         nameLabel.text = model.name
         priceNameLabel.text = L10n.Cart.MainScreen.price
@@ -95,9 +106,18 @@ final class CartCell: UITableViewCell, ReuseIdentifying {
             }
         }
     }
+    
+    @objc private func deleteButtonTapped() {
+        didTapDeleteButton?(nftID)
+    }
 
     private func setupUI() {
         contentView.backgroundColor = .screenBackground
+        deleteButton.addTarget(
+            self,
+            action: #selector(deleteButtonTapped),
+            for: .touchUpInside
+        )
     }
 
     private func setupLayout() {

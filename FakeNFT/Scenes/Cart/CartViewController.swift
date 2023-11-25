@@ -8,14 +8,22 @@ import Combine
 import SnapKit
 import UIKit
 
-final class CartViewController: UIViewController {
-    private let cartView = CartView()
-    private let viewModel: CartViewModel
+protocol CartViewControllerProtocol {
+    var viewModel: CartViewModelProtocol { get }
+    var cartView: CartViewProtocol { get }
+    func viewDidLoad()
+    func viewDidAppear(_ animated: Bool)
+}
+
+final class CartViewController: UIViewController, CartViewControllerProtocol {
+    let viewModel: CartViewModelProtocol
+    var cartView: CartViewProtocol
     private var cancellables: Set<AnyCancellable> = []
     private var rightBarItem: UIBarButtonItem?
     
-    init(viewModel: CartViewModel) {
+    init(viewModel: CartViewModelProtocol, cartView: CartViewProtocol) {
         self.viewModel = viewModel
+        self.cartView = cartView
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -24,6 +32,7 @@ final class CartViewController: UIViewController {
     }
 
     override func loadView() {
+        guard let cartView = cartView as? UIView else { return }
         self.view = cartView
     }
 
@@ -35,7 +44,7 @@ final class CartViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //viewModel.fakeRequest()
+        // viewModel.fakeRequest()
         viewModel.loadOrder()
     }
     
@@ -65,7 +74,7 @@ final class CartViewController: UIViewController {
     }
     
     private func bind() {
-        viewModel.$nfts.sink { [weak self] nfts in
+        viewModel.nftsPublisher.sink { [weak self] nfts in
             guard let self else { return }
             
             DispatchQueue.main.async { [weak self] in
@@ -86,7 +95,7 @@ final class CartViewController: UIViewController {
         }
         .store(in: &cancellables)
         
-        viewModel.$error.sink { [weak self] error in
+        viewModel.errorPublisher.sink { [weak self] error in
             if let error {
                 let model = ErrorModel(
                     message: L10n.Error.network,
@@ -100,7 +109,7 @@ final class CartViewController: UIViewController {
         }
         .store(in: &cancellables)
         
-        viewModel.$emptyState.sink { [weak self] emptyState in
+        viewModel.emptyStatePublisher.sink { [weak self] emptyState in
             guard let self, let emptyState else { return }
             if emptyState {
                 cartView.emptyStateLabel.isHidden = false
@@ -111,7 +120,7 @@ final class CartViewController: UIViewController {
         }
         .store(in: &cancellables)
         
-        viewModel.$isLoading.sink { [weak self] isLoading in
+        viewModel.isLoadingPublisher.sink { [weak self] isLoading in
             guard let self, let isLoading else { return }
             if isLoading {
                 showLoading()
@@ -185,6 +194,9 @@ extension CartViewController: UITableViewDataSource {
     ) -> UITableViewCell {
         let cell = cartView.tableView.dequeueReusableCell() as CartCell
         cell.setup(with: viewModel.nfts[indexPath.row])
+        cell.didTapDeleteButton = { [weak self] id in
+            self?.viewModel.deleteButtonTapped(with: id)
+        }
         return cell
     }
 }

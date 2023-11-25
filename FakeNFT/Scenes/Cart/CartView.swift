@@ -8,7 +8,16 @@
 import SnapKit
 import UIKit
 
-final class CartView: UIView {
+protocol CartViewProtocol {
+    var onResponse: (() -> Void)? { get set }
+    var tableView: UITableView { get }
+    var countLabel: UILabel { get }
+    var priceLabel: UILabel { get }
+    var bottomView: BottomView { get }
+    var emptyStateLabel: UILabel { get }
+}
+
+final class CartView: UIView, CartViewProtocol {
     var onResponse: (() -> Void)?
     
     lazy var countLabel: UILabel = {

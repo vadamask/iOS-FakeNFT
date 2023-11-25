@@ -1,10 +1,10 @@
 import UIKit
 
 final class TestCatalogViewController: UIViewController {
-    let servicesAssembly: ServicesAssembly
+    let servicesAssembly: ServicesAssemblyProtocol
     let testNftButton = UIButton()
 
-    init(servicesAssembly: ServicesAssembly) {
+    init(servicesAssembly: ServicesAssemblyProtocol) {
         self.servicesAssembly = servicesAssembly
         super.init(nibName: nil, bundle: nil)
     }

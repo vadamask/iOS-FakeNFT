@@ -32,7 +32,7 @@ extension UIColor {
     // Secondary Colors
     private static let yaLightGrayDay = UIColor(hexString: "F7F7F8")
     private static let yaLightGrayNight = UIColor(hexString: "2C2C2E")
-    private static let yaBlue = UIColor(hexString: "0A84FF")
+    static let yaBlue = UIColor(hexString: "0A84FF")
     static let yaGray = UIColor(hexString: "625C5C")
     static let yaRed = UIColor(hexString: "F56B6C")
     static let yaGreen = UIColor(hexString: "1C9F00")

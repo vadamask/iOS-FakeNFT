@@ -11,7 +11,8 @@ protocol NftService {
     func loadOrder(id: String, completion: @escaping OrderCompletion)
     func loadCurrencies(completion: @escaping CurrencyCompletion)
     func verifyPayment(with currencyID: String, completion: @escaping PaymentCompletion)
-    func deleteNfts(_ dto: NftDto, completion: @escaping DeleteCompletion)
+    func clearOrder(_ dto: NftDto, completion: @escaping DeleteCompletion)
+    func deleteNft(_ id: String, from ids: [String], completion: @escaping DeleteCompletion)
     func fakeRequest()
 }
 
@@ -78,13 +79,28 @@ final class NftServiceImpl: NftService {
         }
     }
     
-    func deleteNfts(_ dto: NftDto, completion: @escaping DeleteCompletion) {
+    func clearOrder(_ dto: NftDto, completion: @escaping DeleteCompletion) {
         storage.clearStorage()
         
         let request = DeleteNftsRequest(dto: dto)
         networkClient.send(request: request) { result in
             switch result {
-            case .success(_):
+            case .success:
+                completion(.success(Void()))
+            case.failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func deleteNft(_ id: String, from ids: [String], completion: @escaping DeleteCompletion) {
+        storage.delete(id)
+        let dto = NftDto(id: "1", nfts: ids.filter { $0 != id })
+        
+        let request = DeleteNftsRequest(dto: dto)
+        networkClient.send(request: request) { result in
+            switch result {
+            case .success:
                 completion(.success(Void()))
             case.failure(let error):
                 completion(.failure(error))
@@ -97,9 +113,9 @@ final class NftServiceImpl: NftService {
         let request = DeleteNftsRequest(dto: dto)
         networkClient.send(request: request) { result in
             switch result {
-            case .success(_):
-               print("fake success")
-            case.failure(_):
+            case .success:
+                print("fake success")
+            case.failure:
                 print("fake fail")
             }
         }

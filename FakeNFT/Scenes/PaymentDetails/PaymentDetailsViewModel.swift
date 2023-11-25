@@ -14,10 +14,10 @@ final class PaymentDetailsViewModel {
     @Published var isPaymentSuccess: Bool?
     var currencies = CurrentValueSubject<[Currency], Never>([])
     
-    private let servicesAssembly: ServicesAssembly
+    private let servicesAssembly: ServicesAssemblyProtocol
     private var coordinator: CartCoordinator
     
-    init(serviceAssembly: ServicesAssembly, coordinator: CartCoordinator) {
+    init(serviceAssembly: ServicesAssemblyProtocol, coordinator: CartCoordinator) {
         self.servicesAssembly = serviceAssembly
         self.coordinator = coordinator
     }
@@ -53,19 +53,7 @@ final class PaymentDetailsViewModel {
         }
     }
     
-    private func deleteNfts() {
-        let dto = NftDto(id: "1", nfts: [])
-        servicesAssembly.nftService.deleteNfts(dto) { [weak self] result in
-            switch result {
-            case .success(_):
-                print("delete success")
-            case .failure(let error):
-                self?.error = error
-            }
-        }
-    }
-    
-    func goToSuccessPayment() {
+    func paymentDidTapped() {
         coordinator.goToSuccessPayment()
     }
     
@@ -73,7 +61,23 @@ final class PaymentDetailsViewModel {
         selectedCurrencyID = currencies.value[indexPath.row].id
     }
     
-    func backButtonTapped() {
+    func backButtonDidTapped() {
         coordinator.pop()
+    }
+    
+    func linkDidTapped() {
+        coordinator.goToTerms()
+    }
+    
+    private func deleteNfts() {
+        let dto = NftDto(id: "1", nfts: [])
+        servicesAssembly.nftService.clearOrder(dto) { [weak self] result in
+            switch result {
+            case .success:
+                NotificationCenter.default.post(name: .nftsDeleted, object: nil)
+            case .failure(let error):
+                self?.error = error
+            }
+        }
     }
 }

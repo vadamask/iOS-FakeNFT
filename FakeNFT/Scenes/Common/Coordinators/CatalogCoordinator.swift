@@ -18,7 +18,7 @@ final class CatalogCoordinator: Coordinator {
     
     func start() {
         let catalogController = TestCatalogViewController(
-            servicesAssembly: ServicesAssembly.shared
+            servicesAssembly: ServicesAssembly()
         )
         navigationController.pushViewController(catalogController, animated: true)
     }

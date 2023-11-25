@@ -124,7 +124,7 @@ final class PaymentDetailsViewController: UIViewController {
             guard let self, let isSuccess else { return }
             
             if isSuccess {
-                viewModel.goToSuccessPayment()
+                viewModel.paymentDidTapped()
             } else {
                 showAlertWithPaymentFail()
             }
@@ -139,7 +139,7 @@ final class PaymentDetailsViewController: UIViewController {
             image: Asset.backButton.image,
             style: .plain,
             target: self,
-            action: #selector(backButtonTapped)
+            action: #selector(backButtonDidTapped)
         )
         navigationItem.leftBarButtonItem?.tintColor = .borderColor
         tabBarController?.tabBar.isHidden = true
@@ -151,8 +151,8 @@ final class PaymentDetailsViewController: UIViewController {
         paymentView.delegate = self
     }
     
-    @objc private func backButtonTapped() {
-        viewModel.backButtonTapped()
+    @objc private func backButtonDidTapped() {
+        viewModel.backButtonDidTapped()
     }
 }
 
@@ -237,6 +237,10 @@ extension PaymentDetailsViewController {
 extension PaymentDetailsViewController: PaymentDetailsViewDelegate {
     func payButtonTapped() {
         viewModel.verifyPayment()
+    }
+    
+    func linkTapped() {
+        viewModel.linkDidTapped()
     }
 }
 
