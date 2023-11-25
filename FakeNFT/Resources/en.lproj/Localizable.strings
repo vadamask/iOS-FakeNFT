@@ -9,11 +9,6 @@
 
 "Tab.catalog" = "Catalog";
 "Catalog.openNft" = "Open Nft";
-"Error.network" = "A network error has occurred";
-"Error.unknown" = "An unknown error has occurred";
-"Error.repeat" = "Repeat";
-"Error.title" = "Error";
-"Error.unableToLoad" = "Unable to load";
 
 // Catalog
 "Catalog.sorting" = "Sorting";
@@ -22,3 +17,14 @@
 
 // Общие
 "close" = "Close";
+
+// Errors
+"error.network" = "A network error has occurred";
+"error.unknown" = "An unknown error has occurred";
+"error.repeat" = "Repeat";
+"error.title" = "Error";
+"error.unableToLoad" = "Unable to load";
+"error.urlSessionError" = "UrlSessionError: A connection error occurred";
+"error.parsingError" = "Parsing error: Error processing data from the server";
+"error.invalidRequest" = "Incorrect request";
+"error.errorJsonLoad" = "Unable to read JSON file";
