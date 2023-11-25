@@ -74,10 +74,6 @@ final class CartViewModel: CartViewModelProtocol {
         )
     }
     
-    func fakeRequest() {
-        servicesAssembly.nftService.fakeRequest()
-    }
-    
     func paymentDidTapped() {
         coordinator.goToPaymentDetails()
     }
