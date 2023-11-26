@@ -11,3 +11,4 @@
 "Sort.close" = "Закрыть";
 "User.visitWebSite" = "Перейти на сайт пользователя";
 "User.nftCollection" = "Коллекция NFT";
+"User.noNftError" = "У пользователя нет NFT";

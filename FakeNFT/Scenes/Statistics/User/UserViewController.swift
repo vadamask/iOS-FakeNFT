@@ -210,7 +210,7 @@ extension UserViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let nftCollection = nftCollection else { return }
         if nftCollection.isEmpty {
-            let error = ErrorModel(message: "У пользователя нет NFT", actionText: "ОК", action: {})
+            let error = ErrorModel(message: L10n.User.noNftError, actionText: "ОК", action: {})
             print("КОЛИЧЕСТВО НФТ: \(nftCollection)")
             showError(error)
         } else {

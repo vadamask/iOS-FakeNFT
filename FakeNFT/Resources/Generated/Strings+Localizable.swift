@@ -43,6 +43,8 @@ internal enum L10n {
   internal enum User {
     /// Коллекция NFT
     internal static let nftCollection = L10n.tr("Localizable", "User.nftCollection", fallback: "Коллекция NFT")
+    /// У пользователя нет NFT
+    internal static let noNftError = L10n.tr("Localizable", "User.noNftError", fallback: "У пользователя нет NFT")
     /// Перейти на сайт пользователя
     internal static let visitWebSite = L10n.tr("Localizable", "User.visitWebSite", fallback: "Перейти на сайт пользователя")
   }

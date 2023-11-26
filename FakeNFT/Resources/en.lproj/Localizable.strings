@@ -11,3 +11,4 @@
 "Sort.close" = "Close";
 "User.visitWebSite" = "Go to website";
 "User.nftCollection" = "NFT collection";
+"User.noNftError" = "User does not have NFT";
