@@ -8,8 +8,7 @@
 import UIKit
 
 final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate {
-    private var viewModel: ProfileViewModelProtocol
-    private var assetViewControllers: [UIViewController] = []
+    private let viewModel: ProfileViewModelProtocol
     
     private let assetNameLabel: [String] = [
         L10n.Profile.myNFT,
@@ -22,7 +21,6 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
         "\(viewModel.profile?.likes.count ?? 0)",
         nil
     ]
-    
     // MARK: - Layout view
     // картинка профиля
     private lazy var avatarImage: UIImageView = {
@@ -40,6 +38,9 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
         label.text = ""
         label.font = .headline22
         label.textColor = .textPrimary
+        label.numberOfLines = 1
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.7
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -97,6 +98,7 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
         setupNavBar()
         UIBlockingProgressHUD.show()
         viewModel.getProfileData()
+        UIBlockingProgressHUD.dismiss()
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         NotificationCenter.default.addObserver(
@@ -107,6 +109,7 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
     
@@ -143,7 +146,7 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     private func bind() {
-        if InternetConnectionManager.isConnectedToNetwork() {
+        if viewModel.isCheckConnectToInternet() {
             viewModel.onChange = { [weak self] in
                 self?.updateViews(profile: self?.viewModel.profile)
             }
@@ -180,6 +183,7 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
             // лейбл с именем юзера
             nameLabel.topAnchor.constraint(equalTo: avatarImage.topAnchor, constant: 21),
             nameLabel.leadingAnchor.constraint(equalTo: avatarImage.trailingAnchor, constant: 16),
+            nameLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             // описание интересов юзера
             descriptionLabel.topAnchor.constraint(equalTo: avatarImage.bottomAnchor, constant: 20),
             descriptionLabel.heightAnchor.constraint(equalToConstant: 72),
@@ -246,5 +250,6 @@ extension ProfileViewController: ProfileUpdateDelegate {
     func update() {
         viewModel.getProfileData()
         bind()
+        UIBlockingProgressHUD.dismiss()
     }
 }

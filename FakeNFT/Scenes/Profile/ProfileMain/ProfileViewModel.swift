@@ -16,13 +16,14 @@ protocol ProfileViewModelProtocol: AnyObject {
     var profile: ProfileModel? { get }
     
     func getProfileData()
+    func isCheckConnectToInternet() -> Bool
 }
 
 final class ProfileViewModel: ProfileViewModelProtocol {
     var onChange: (() -> Void)?
     var onError: (() -> Void)?
     
-    private var networkClient: NetworkClient = DefaultNetworkClient()
+    private var networkClient: NetworkClient
     private(set) var profile: ProfileModel? {
         didSet {
             onChange?()
@@ -37,8 +38,8 @@ final class ProfileViewModel: ProfileViewModelProtocol {
     
     private(set) var error: Error?
     
-    init(networkClient: NetworkClient? = nil) {
-        if let networkClient = networkClient { self.networkClient = networkClient }
+    init() {
+        self.networkClient = DefaultNetworkClient()
     }
     
     func getProfileData() {
@@ -47,11 +48,14 @@ final class ProfileViewModel: ProfileViewModelProtocol {
                 guard let self = self else { return }
                 do {
                     self.profile = try result.get()
-                    UIBlockingProgressHUD.dismiss()
                 } catch {
                     self.onError?()
                 }
             }
         }
     }
+    
+    func isCheckConnectToInternet() -> Bool {
+            InternetConnectionManager.isConnectedToNetwork()
+        }
 }

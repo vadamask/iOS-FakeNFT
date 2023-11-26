@@ -5,7 +5,7 @@
 //  Created by Ann Goncharova on 21.11.2023.
 //
 
-import Foundation
+import UIKit
 
 protocol FavoritesViewModelProtocol: AnyObject {
     var onChange: (() -> Void)? { get set }
@@ -15,25 +15,29 @@ protocol FavoritesViewModelProtocol: AnyObject {
     func getLikedNFTs(likedIDs: [String])
     func putLikedNFTs(likedIDs: [String])
     func favoriteUnliked(id: String)
+    func showAlert(_ model: AlertModel) -> UIAlertController
+    func setTitle() -> String
+    func checkNoNFT() -> Bool
 }
 
 final class FavoritesViewModel: FavoritesViewModelProtocol {
     var onChange: (() -> Void)?
     var onError: ((_ error: Error) -> Void)?
     
-    private var networkClient:NetworkClient = DefaultNetworkClient()
+    private var networkClient: NetworkClient
     private let dispatchGroup = DispatchGroup()
+    private var profile: ProfileModel?
     
-    private(set) var likedNFTs: [NFTNetworkModel]? {
+    private(set) var likedNFTs: [NFTNetworkModel]?{
         didSet {
             onChange?()
         }
     }
     
-    init(networkClient: NetworkClient? = nil, profile: ProfileModel){
-            if let networkClient = networkClient { self.networkClient = networkClient }
-            getLikedNFTs(likedIDs: profile.likes)
-            print(profile)
+    init(profile: ProfileModel){
+        self.networkClient = DefaultNetworkClient()
+        getLikedNFTs(likedIDs: profile.likes)
+        print(profile)
         
         NotificationCenter.default.addObserver(
             self,
@@ -45,7 +49,7 @@ final class FavoritesViewModel: FavoritesViewModelProtocol {
     
     func getLikedNFTs(likedIDs: [String]) {
         var loadedNFTs: [NFTNetworkModel] = []
-        print(likedIDs)
+        
         likedIDs.forEach { id in
             self.dispatchGroup.enter()
             networkClient.send(request: GetMyNFTRequest(id: id, item: .nft), type: NFTNetworkModel.self) { [weak self] result in
@@ -56,36 +60,22 @@ final class FavoritesViewModel: FavoritesViewModelProtocol {
                             loadedNFTs.append(nft)
                             self.likedNFTs = loadedNFTs
                             self.dispatchGroup.leave()
-                            UIBlockingProgressHUD.dismiss()
-                            if loadedNFTs.count == likedIDs.count {
-                                self.likedNFTs? = loadedNFTs
-                                UIBlockingProgressHUD.dismiss()
-                            }
                         case .failure(let error):
                             self.onError?(error)
-                            UIBlockingProgressHUD.dismiss()
+                            self.dispatchGroup.leave()
                     }
                 }
             }
         }
-        dispatchGroup.notify(queue: .main) {
-            print("OK")
-        }
     }
     
     func putLikedNFTs(likedIDs: [String]) {
-        let request = PutFavoritesRequest(likes: likedIDs)
-        UIBlockingProgressHUD.show()
-        networkClient.send(request: request, type: FavoritesNetworkModel.self) { [weak self] result in
+        networkClient.send(request: ProfileRequest(httpMethod: .put, dto: profile),
+                           type: ProfileModel.self
+        ) { _ in
+            
             DispatchQueue.main.async {
-                switch result {
-                    case .success(_):
-                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "likesUpdated"), object: likedIDs.count)
-                        UIBlockingProgressHUD.dismiss()
-                    case .failure(let error):
-                        self?.onError?(error)
-                        UIBlockingProgressHUD.dismiss()
-                }
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "likesUpdated"), object: likedIDs.count)
             }
         }
     }
@@ -97,6 +87,32 @@ final class FavoritesViewModel: FavoritesViewModelProtocol {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "favoriteUnliked"), object: id)
         let likedIDs = likedNFTs.map({ $0.id })
         self.putLikedNFTs(likedIDs: likedIDs)
+    }
+    
+    func showAlert(_ model: AlertModel) -> UIAlertController {
+        let alert = UIAlertController(
+            title: model.title,
+            message: model.message,
+            preferredStyle: .alert)
+        
+        let action = UIAlertAction(
+            title: model.buttonText,
+            style: model.styleAction,
+            handler: model.completion
+        )
+        
+        alert.addAction(action)
+        return alert
+    }
+    
+    func setTitle() -> String {
+        guard let nft = likedNFTs else { return "" }
+        return nft.isEmpty ? "" : "Избранные NFT"
+    }
+    
+    func checkNoNFT() -> Bool {
+        guard let nft = likedNFTs else { return false }
+        return nft.isEmpty
     }
     
     @objc
