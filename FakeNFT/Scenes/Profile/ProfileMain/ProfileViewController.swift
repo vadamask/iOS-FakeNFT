@@ -221,11 +221,12 @@ extension ProfileViewController: UITableViewDataSource {
 // навигация пользователя при выборе строк из таблицы: создание и отображение экранов в зависимости от выбора пользователя
 extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let profile = viewModel.profile else { return }
         switch indexPath.row {
         case 0:
-            navigationController?.pushViewController(MyNFTViewController(nftIDs: viewModel.nfts ?? [], likedIDs: viewModel.profile?.likes ?? []), animated: true)
+            navigationController?.pushViewController(MyNFTViewController(viewModel: MyNFTViewModel(profile: profile)), animated: true)
         case 1:
-            navigationController?.pushViewController(FavoritesViewController(likedIDs: viewModel.profile?.likes ?? []), animated: true)
+            navigationController?.pushViewController(FavoritesViewController(viewModel: FavoritesViewModel(profile: profile)), animated: true)
         case 2:
             navigationController?.pushViewController(WebsiteViewController(), animated: true)
         default:

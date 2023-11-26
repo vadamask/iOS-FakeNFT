@@ -147,10 +147,10 @@ final class EditProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupConstraints()
         getData()
-
+        
         view.backgroundColor = .screenBackground
     }
     
@@ -204,9 +204,9 @@ final class EditProfileViewController: UIViewController {
             preferredStyle: .alert
         )
         
-        alert.addTextField(configurationHandler: {(textField: UITextField) in
+        alert.addTextField { textField in
             textField.placeholder = "Введите ссылку: "
-        })
+        }
         
         alert.addAction(UIAlertAction(
             title: "Ок",
@@ -215,11 +215,12 @@ final class EditProfileViewController: UIViewController {
                 guard
                     let self = self,
                     let textField = alert.textFields?[0],
-                    let updateURL = textField.text
+                    let stringURL = textField.text,
+                    let updateURL = URL(string: stringURL)
                 else { return }
                 
-                if checkURL(urlString: updateURL) {
-                    self.avatarUpdateURLLabel.text = updateURL
+                if UIApplication.shared.canOpenURL(updateURL) {
+                    self.viewModel.updateAvatar(withLink: stringURL)
                 } else {
                     let wrongURLAlert = UIAlertController(
                         title: "Неверная ссылка",
