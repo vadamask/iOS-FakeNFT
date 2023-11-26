@@ -90,6 +90,14 @@ final class UserViewController: UIViewController {
         setupConstraints()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if self.traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            updateButtonBorderColor()
+        }
+    }
+
     @objc private func websiteButtonTapped() {
         guard let url = userWebSiteUrl else {
             print("Неверный URL")
@@ -175,6 +183,10 @@ final class UserViewController: UIViewController {
         nftCollection = user.nfts
         tableView.reloadData()
         makeVisible()
+    }
+
+    private func updateButtonBorderColor() {
+        websiteButton.layer.borderColor = UIColor.borderColor.cgColor
     }
 }
 

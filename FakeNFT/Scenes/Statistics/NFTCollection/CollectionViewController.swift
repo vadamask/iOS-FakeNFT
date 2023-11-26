@@ -67,9 +67,10 @@ final class CollectionViewController: UIViewController {
     }
 
     private func setupNavigationBar() {
-        navigationController?.navigationBar.tintColor = .yaBlack
+        let tabBarItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationController?.navigationBar.topItem?.backBarButtonItem = tabBarItem
         navigationItem.title = L10n.User.nftCollection
-        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationController?.navigationBar.tintColor = .segmentActive
     }
 
     private func setupCollectionView() {
