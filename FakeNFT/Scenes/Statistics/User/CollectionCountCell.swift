@@ -22,14 +22,13 @@ final class CollectionCountCell: UITableViewCell, ReuseIdentifying {
         let label = UILabel()
         label.font = UIFont.bodyBold17
         label.textColor = .textPrimary
-        label.text = "(112)"
         return label
     }()
 
     let customDisclosureIndicator: UIImageView = {
         let image = UIImage(systemName: "chevron.right")
         let imageView = UIImageView(image: image)
-        imageView.tintColor = .yaBlack
+        imageView.tintColor = .segmentActive
         return imageView
     }()
 
@@ -48,8 +47,9 @@ final class CollectionCountCell: UITableViewCell, ReuseIdentifying {
     // MARK: - Setup UI
     private func setupViews() {
         selectionStyle = .none
+        backgroundColor = .screenBackground
         accessoryView = customDisclosureIndicator
-        contentView.backgroundColor = .clear
+        contentView.backgroundColor = .screenBackground
         contentView.addSubview(titleLabel)
         contentView.addSubview(countLabel)
     }
