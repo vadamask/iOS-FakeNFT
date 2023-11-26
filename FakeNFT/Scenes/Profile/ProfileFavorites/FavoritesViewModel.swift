@@ -37,7 +37,6 @@ final class FavoritesViewModel: FavoritesViewModelProtocol {
     init(profile: ProfileModel){
         self.networkClient = DefaultNetworkClient()
         getLikedNFTs(likedIDs: profile.likes)
-        print(profile)
         
         NotificationCenter.default.addObserver(
             self,
@@ -49,7 +48,6 @@ final class FavoritesViewModel: FavoritesViewModelProtocol {
     
     func getLikedNFTs(likedIDs: [String]) {
         var loadedNFTs: [NFTNetworkModel] = []
-        
         likedIDs.forEach { id in
             self.dispatchGroup.enter()
             networkClient.send(request: GetMyNFTRequest(id: id, item: .nft), type: NFTNetworkModel.self) { [weak self] result in
