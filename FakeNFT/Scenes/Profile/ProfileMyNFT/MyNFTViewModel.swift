@@ -20,7 +20,6 @@ protocol MyNFTViewModelProtocol: AnyObject {
 }
 
 final class MyNFTViewModel: MyNFTViewModelProtocol {
-    
     var onChange: (() -> Void)?
     var onError: ((_ error: Error) -> Void)?
     
@@ -135,7 +134,6 @@ final class MyNFTViewModel: MyNFTViewModelProtocol {
 }
 
 extension MyNFTViewModel {
-    
     enum Sort: Codable {
         case price
         case rating

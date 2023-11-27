@@ -159,6 +159,5 @@ struct StubNetworkClient: NetworkClient {
                 "id": "1"
             }
 """.data(using: .utf8) ?? Data()
-
     }
 }

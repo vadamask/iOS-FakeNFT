@@ -116,4 +116,3 @@ extension FavoritesCell {
         let id: String
     }
 }
-
