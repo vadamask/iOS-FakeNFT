@@ -8,32 +8,19 @@
 import UIKit
 import WebKit
 
-final class WebsiteViewController: UIViewController, WKUIDelegate, UIGestureRecognizerDelegate {
-    let link: String?
+final class WebsiteViewController: UIViewController, WKUIDelegate {
+    private var webView: WKWebView?
+    private var websiteURL: String?
     
-    // кнопка назад
-    private lazy var backButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(
-            image: Asset.backButton.image,
-            style: .plain,
-            target: self,
-            action: #selector(didTapBackButton))
-        button.tintColor = .textPrimary
-        return button
-    }()
-    // вебвью
-    private lazy var webView: WKWebView = {
-        let prefs = WKWebpagePreferences()
-        let configuration = WKWebViewConfiguration()
-        configuration.defaultWebpagePreferences = prefs
-        let webView = WKWebView(frame: .zero, configuration: configuration)
-        webView.translatesAutoresizingMaskIntoConstraints = false
-        webView.backgroundColor = .white
-        return webView
-    }()
+    override func loadView() {
+        let webConfiguration = WKWebViewConfiguration()
+        webView = WKWebView(frame: .zero, configuration: webConfiguration)
+        webView?.uiDelegate = self
+        view = webView
+    }
     
-    init(link: String? = nil) {
-        self.link = link
+    init(websiteURL: String?) {
+        self.websiteURL = websiteURL
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -43,38 +30,12 @@ final class WebsiteViewController: UIViewController, WKUIDelegate, UIGestureReco
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupView()
-        addWebView()
         
-        guard let myURL = URL(string: link ?? NetworkConstants.linkYandexPracticum) else { return }
-        webView.load(URLRequest(url: myURL))
-        
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-    }
-    
-    @objc private func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
-    }
-    
-    private func setupView() {
-        navigationController?.navigationBar.tintColor = .yaBlack
-        navigationItem.leftBarButtonItem = backButton
-        
-        view.backgroundColor = .screenBackground
-    }
-    
-    private func addWebView() {
-        view.addSubview(webView)
-        
-        NSLayoutConstraint.activate([
-            webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            webView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
+        guard
+            let websiteURL = websiteURL,
+            let requestURL = URL(string: websiteURL)
+        else { return }
+        let request = URLRequest(url: requestURL)
+        webView?.load(request)
     }
 }

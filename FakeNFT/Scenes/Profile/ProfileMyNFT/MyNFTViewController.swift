@@ -9,29 +9,23 @@ import UIKit
 
 final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
     private let viewModel: MyNFTViewModelProtocol
-    
-    private lazy var myNFTTable: UITableView = {
-        let tableView = UITableView()
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(MyNFTCell.self)
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.backgroundColor = .white
-        tableView.separatorStyle = .none
-        tableView.allowsMultipleSelection = false
-        tableView.isUserInteractionEnabled = true
-        return tableView
-    }()
+    private let nftIDs: [String]
+    private let likedIDs: [String]
+    private var badConnection: Bool = false
+    // кнопка назад
+    private lazy var backButton = UIBarButtonItem(
+        image: Asset.backButton.image,
+        style: .plain,
+        target: self,
+        action: #selector(didTapBackButton)
+    )
     // кнопка сортировки
-    private lazy var sortButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(
-            image: Asset.sortButton.image,
-            style: .plain,
-            target: self,
-            action: #selector(didTapSortButton))
-        button.tintColor = .textPrimary
-        return button
-    }()
+    private lazy var sortButton = UIBarButtonItem(
+        image: Asset.sortButton.image,
+        style: .plain,
+        target: self,
+        action: #selector(didTapSortButton)
+    )
     // лейбл при отсутствии нфт
     private lazy var emptyLabel: UILabel = {
         let label = UILabel()
@@ -42,8 +36,20 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
         return label
     }()
     
-    init(viewModel: MyNFTViewModelProtocol) {
-        self.viewModel = viewModel
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        bind()
+        setupView()
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        view.backgroundColor = .screenBackground
+        addEdgeSwipeBackGesture()
+    }
+    
+    init(nftIDs: [String], likedIDs: [String]) {
+        self.nftIDs = nftIDs
+        self.likedIDs = likedIDs
+        self.viewModel = MyNFTViewModel(nftIDs: nftIDs, likedIDs: likedIDs)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -51,42 +57,32 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        bind()
-        setupView()
-        setupConstraints()
-        addEdgeSwipeBackGesture()
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
-        view.backgroundColor = .screenBackground
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        viewModel.checkStoredSort()
+        if let sortOrder = UserDefaults.standard.data(forKey: "sortOrder") {
+            let order = try? PropertyListDecoder().decode(MyNFTViewModel.Sort.self, from: sortOrder)
+            self.viewModel.sort = order
+        } else {
+            self.viewModel.sort = .rating
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        if badConnection { viewModel.getMyNFTs(nftIDs: nftIDs) }
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
     
     private func bind() {
         viewModel.onChange = { [weak self] in
-            guard let self = self else { return }
-            self.myNFTTable.reloadData()
-            myNFTTable.isHidden = viewModel.checkNoNFT()
-            emptyLabel.isHidden = !viewModel.checkNoNFT()
-            navigationItem.rightBarButtonItem?.isEnabled = !viewModel.checkNoNFT()
-            navigationItem.rightBarButtonItem?.image = viewModel.setImageForButton()
-            
-            title = viewModel.setTitle()
+            self?.badConnection = false
+            guard let view = self?.view as? MyNFTView,
+                  let nfts = self?.viewModel.myNFTs else { return }
+            view.updateNFT(nfts: nfts)
         }
         
         viewModel.onError = { [weak self] error in
+            self?.badConnection = true
             let alert = UIAlertController(
-                title: "Ошибка, нет интернета",
+                title: "Нет интернета",
                 message: error.localizedDescription,
                 preferredStyle: .alert)
             let action = UIAlertAction(title: "Ok", style: .cancel) { [weak self] _ in
@@ -107,17 +103,18 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
             message: "Сортировка",
             preferredStyle: .actionSheet
         )
+                
         let sortByPriceAction = UIAlertAction(title: "По цене", style: .default) { [weak self] _ in
             self?.viewModel.sort = .price
-            self?.viewModel.saveSortOrder(order: .price)
+            self?.saveSortOrder(order: .price)
         }
         let sortByRatingAction = UIAlertAction(title: "По рейтингу", style: .default) { [weak self] _ in
             self?.viewModel.sort = .rating
-            self?.viewModel.saveSortOrder(order: .rating)
+            self?.saveSortOrder(order: .rating)
         }
         let sortByNameAction = UIAlertAction(title: "По названию", style: .default) { [weak self] _ in
             self?.viewModel.sort = .name
-            self?.viewModel.saveSortOrder(order: .name)
+            self?.saveSortOrder(order: .name)
         }
         let closeAction = UIAlertAction(title: "Закрыть", style: .cancel)
         
@@ -129,12 +126,30 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
         present(alert, animated: true)
     }
     
-    private func setupView() {
-        navigationItem.rightBarButtonItem = sortButton
+    private func saveSortOrder(order: MyNFTViewModel.Sort) {
+        let data = try? PropertyListEncoder().encode(order)
+        UserDefaults.standard.set(data, forKey: "sortOrder")
+    }
+    
+    func setupView() {
+        if nftIDs.isEmpty {
+            view.backgroundColor = .white
+            setupNavBar(emptyNFTs: true)
+            setupEmptyLabel()
+        } else {
+            self.view = MyNFTView(frame: .zero, viewModel: self.viewModel)
+            setupNavBar(emptyNFTs: false)
+        }
+    }
+    
+    func setupNavBar(emptyNFTs: Bool) {
         navigationController?.navigationBar.tintColor = .black
-        navigationItem.title = "Мои NFT"
-        view.backgroundColor = .screenBackground
-        setupEmptyLabel()
+        navigationItem.leftBarButtonItem = backButton
+        backButton.accessibilityIdentifier = "backButton"
+        if !emptyNFTs {
+            navigationItem.rightBarButtonItem = sortButton
+            navigationItem.title = "Мои NFT"
+        }
     }
     
     func setupEmptyLabel() {
@@ -144,95 +159,5 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
             emptyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             emptyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
-    }
-    
-    private func setupConstraints() {
-        view.addSubview(myNFTTable)
-        
-        NSLayoutConstraint.activate([
-            myNFTTable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            myNFTTable.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            myNFTTable.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            myNFTTable.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-    }
-}
-
-extension MyNFTViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.myNFTs.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: MyNFTCell = tableView.dequeueReusableCell()
-        cell.backgroundColor = .white
-        cell.selectionStyle = .none
-        guard !viewModel.myNFTs.isEmpty else { return MyNFTCell() }
-        let myNFT = viewModel.myNFTs[indexPath.row]
-        
-        let model = MyNFTCell.CellModel(
-            image: myNFT.images.first ?? "",
-            name: myNFT.name,
-            rating: myNFT.rating,
-            author: viewModel.authors[myNFT.author] ?? "",
-            price: myNFT.price,
-            isFavorite: viewModel.likedIDs.contains(myNFT.id),
-            id: myNFT.id
-        )
-        
-        cell.tapAction = { [weak self] in
-            let tappedNFT = self?.viewModel.myNFTs.filter({ $0.id == myNFT.id }).first
-            if let tappedNFT = tappedNFT {
-                self?.viewModel.notificationMyNFTliked(myNFTs: tappedNFT)
-                self?.viewModel.toggleLikeFromMyNFT(id: tappedNFT.id) }
-        }
-        cell.configureCell(with: model)
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 140
-    }
-}
-
-extension MyNFTViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView,
-                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
-    ) -> UISwipeActionsConfiguration? {
-        let removeButton = UIContextualAction(style: .destructive,
-                                              title: "Удалить") { [weak self] _, _, _ in
-            guard let self else { return }
-            let alertController = UIAlertController(title: "Вы уверены что хотите удалить этот NFT?",
-                                                    message: nil,
-                                                    preferredStyle: .actionSheet)
-            let deleteAction = UIAlertAction(title: "Удалить", style: .destructive) { [weak self] _ in
-                guard let self else { return }
-                self.viewModel.deleteNFT(atRow: indexPath.row)
-            }
-            let cancelAction = UIAlertAction(title: "Отменить", style: .cancel) { _ in
-                tableView.reloadRows(at: [indexPath], with: .none)
-            }
-            alertController.addAction(deleteAction)
-            alertController.addAction(cancelAction)
-            self.present(alertController, animated: true)
-        }
-        removeButton.backgroundColor = UIColor.yaRed.withAlphaComponent(0)
-        let config = UISwipeActionsConfiguration(actions: [removeButton])
-        config.performsFirstActionWithFullSwipe = true
-        return config
-    }
-    
-    func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {
-        tableView.subviews.forEach { subview in
-            if String(describing: type(of: subview)) == "_UITableViewCellSwipeContainerView" {
-                if let actionView = subview.subviews.first,
-                   String(describing: type(of: actionView)) == "UISwipeActionPullView" {
-                    actionView.layer.cornerRadius = 12
-                    actionView.layer.masksToBounds = true
-                    actionView.backgroundColor = .yaRed
-                    (actionView.subviews.first as? UIButton)?.titleLabel?.font = .systemFont(ofSize: 17, weight: .bold)
-                }
-            }
-        }
     }
 }

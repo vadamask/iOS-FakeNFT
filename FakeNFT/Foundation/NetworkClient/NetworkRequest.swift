@@ -1,9 +1,8 @@
 import Foundation
 
 enum NetworkConstants {
-    static let baseURL = URL(string: "https://65450ba25a0b4b04436d87b8.mockapi.io/api/v1")!
+    static let baseUrl = URL(string: "https://65450ba25a0b4b04436d87b8.mockapi.io/api/v1")!
     static let profileEndpoint = "profile/1"
-    static let linkYandexPracticum = "https://practicum.yandex.ru/ios-developer"
 }
 
 enum HttpMethod: String {
@@ -15,12 +14,14 @@ enum HttpMethod: String {
 
 protocol NetworkRequest {
     var endpoint: URL? { get }
+    var queryParameters: [String: String]? { get }
+    var body: Data? { get }
     var httpMethod: HttpMethod { get }
-    var dto: Encodable? { get }
 }
 
 // default values
 extension NetworkRequest {
+    var queryParameters: [String: String]? { nil }
+    var body: Data? { nil }
     var httpMethod: HttpMethod { .get }
-    var dto: Encodable? { nil }
 }
