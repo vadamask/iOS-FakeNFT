@@ -1,14 +1,49 @@
-"Tab.catalog" = "Catalog";
-"Tab.cart" = "Cart";
-"Catalog.openNft" = "Open Nft";
-"Error.network" = "A network error has occurred";
-"Error.unknown" = "An unknown error has occurred";
-"Error.repeat" = "Repeat";
-"Error.title" = "Error";
-"Error.insufficientFunds" = "Failed to make payment";
-"Error.cancel" = "Cancel";
-"Error.ok" = "Ok";
+// Onboarding
+"Onboarding.title1" = "Explore";
+"Onboarding.title2" = "Collect";
+"Onboarding.title3" = "Compete";
+"Onboarding.description1" = "Join and discover a new world of unique NFT for collectors";
+"Onboarding.description2" = "Replenish your collection with exclusive pictures created by the neural network!";
+"Onboarding.description3" = "See the statistics of others and show everyone that you have the most valuable collection";
+"Onboarding.button" = "What's inside?";
 
+// TabBar
+"Tab.catalog" = "Catalog";
+"Tab.statistics" = "Statistics";
+"Tab.cart" = "Cart";
+
+// Catalog
+"Catalog.sorting" = "Sorting";
+"Catalog.sortByName" = "By name";
+"Catalog.sortByNftCount" = "By NFT count";
+
+// Общие
+"close" = "Close";
+
+// Errors
+"error.network" = "A network error has occurred";
+"error.unknown" = "An unknown error has occurred";
+"error.repeat" = "Repeat";
+"error.title" = "Error";
+"error.unableToLoad" = "Unable to load";
+"error.urlSessionError" = "UrlSessionError: A connection error occurred";
+"error.parsingError" = "Parsing error: Error processing data from the server";
+"error.invalidRequest" = "Incorrect request";
+"error.errorJsonLoad" = "Unable to read JSON file";
+"error.insufficientFunds" = "Failed to make payment";
+"error.cancel" = "Cancel";
+"error.ok" = "Ok";
+
+// Statistics
+"Sort.title" = "Sort by";
+"Sort.byName" = "Name";
+"Sort.byRating" = "Rating";
+"Sort.close" = "Close";
+"User.visitWebSite" = "Go to website";
+"User.nftCollection" = "NFT collection";
+"User.noNftError" = "User does not have NFT";
+
+// Cart
 "cart.main_screen.buyNft" = "To pay";
 "cart.main_screen.price" = "Price";
 "cart.main_screen.empty_state" = "Cart is empty";

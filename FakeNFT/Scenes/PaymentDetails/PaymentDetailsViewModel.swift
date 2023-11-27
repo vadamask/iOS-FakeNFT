@@ -70,7 +70,7 @@ final class PaymentDetailsViewModel {
     }
     
     private func deleteNfts() {
-        let dto = NftDto(id: "1", nfts: [])
+        let dto = OrderDto(nfts: [])
         servicesAssembly.nftService.clearOrder(dto) { [weak self] result in
             switch result {
             case .success:

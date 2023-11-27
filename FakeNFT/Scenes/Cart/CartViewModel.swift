@@ -26,12 +26,12 @@ protocol CartViewModelProtocol {
     
     func loadOrder()
     func paymentDidTapped()
-    func setSortOption(_ option: SortOption)
+    func setSortOption(_ option: CartSortOption)
     func didRefreshTableView()
     func deleteButtonTapped(with id: String)
 }
 
-enum SortOption: Int {
+enum CartSortOption: Int {
     case name
     case price
     case rating
@@ -57,7 +57,7 @@ final class CartViewModel: CartViewModelProtocol {
     let servicesAssembly: ServicesAssemblyProtocol
     
     private var coordinator: CartCoordinator
-    private var sortOption = SortOption.name
+    private var sortOption = CartSortOption.name
     private let userDefaults = UserDefaults.standard
     private let serialQueue = DispatchQueue(label: "loadNfts")
     
@@ -78,9 +78,9 @@ final class CartViewModel: CartViewModelProtocol {
         coordinator.goToPaymentDetails()
     }
     
-    func setSortOption(_ option: SortOption) {
+    func setSortOption(_ option: CartSortOption) {
         sortOption = option
-        userDefaults.set(option.rawValue, forKey: UserDefaultsKeys.sortCartKey)
+        userDefaults.sortCartOption = option
         nfts = sort(nfts)
     }
     
@@ -172,10 +172,7 @@ final class CartViewModel: CartViewModelProtocol {
     }
     
     private func getSortOption() {
-        let rawValue = userDefaults.integer(forKey: UserDefaultsKeys.sortCartKey)
-        if let sortOption = SortOption(rawValue: rawValue) {
-            self.sortOption = sortOption
-        }
+        sortOption = userDefaults.sortCartOption
     }
     
     @objc private func nftsDidDeleted() {

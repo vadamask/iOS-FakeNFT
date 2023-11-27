@@ -2,12 +2,22 @@ protocol ServicesAssemblyProtocol {
     var nftService: NftService { get }
 }
 
-final class ServicesAssembly: ServicesAssemblyProtocol { 
-    private let networkClient: NetworkClient = DefaultNetworkClient()
-    private let nftStorage: NftStorage = NftStorageImpl()
+final class ServicesAssembly: ServicesAssemblyProtocol {
+    static let shared = ServicesAssembly(
+        networkClient: DefaultNetworkClient(),
+        nftStorage: NftStorageImpl())
 
-    init() {}
+    private let networkClient: NetworkClient
+    private let nftStorage: NftStorage
 
+    init(
+        networkClient: NetworkClient,
+        nftStorage: NftStorage
+    ) {
+        self.networkClient = networkClient
+        self.nftStorage = nftStorage
+    }
+    
     var nftService: NftService {
         NftServiceImpl(
             networkClient: networkClient,

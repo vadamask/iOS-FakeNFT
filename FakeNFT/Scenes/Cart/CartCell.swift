@@ -25,7 +25,7 @@ final class CartCell: UITableViewCell, ReuseIdentifying {
         let button = UIButton(type: .system)
         button.tintColor = .borderColor
         button.setImage(
-            Asset.deleteFromCartButton.image,
+            Asset.deleteCartButton.image,
             for: .normal
         )
         return button

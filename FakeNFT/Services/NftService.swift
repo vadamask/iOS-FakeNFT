@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 typealias NftCompletion = (Result<Nft, Error>) -> Void
 typealias OrderCompletion = (Result<Order, Error>) -> Void
@@ -11,8 +12,16 @@ protocol NftService {
     func loadOrder(id: String, completion: @escaping OrderCompletion)
     func loadCurrencies(completion: @escaping CurrencyCompletion)
     func verifyPayment(with currencyID: String, completion: @escaping PaymentCompletion)
-    func clearOrder(_ dto: NftDto, completion: @escaping DeleteCompletion)
+    func clearOrder(_ dto: OrderDto, completion: @escaping DeleteCompletion)
     func deleteNft(_ id: String, from ids: [String], completion: @escaping DeleteCompletion)
+    func loadNftCollections() -> AnyPublisher<[Collection], NetworkClientError>
+    func loadCollection(by id: String) -> AnyPublisher<Collection, NetworkClientError>
+    func loadNft(by id: String) -> AnyPublisher<Nft, NetworkClientError>
+    func loadUser(by id: String) -> AnyPublisher<User, NetworkClientError>
+    func loadProfile() -> AnyPublisher<Profile, NetworkClientError>
+    func loadOrder(by id: String) -> AnyPublisher<Order, NetworkClientError>
+    func updateOrder(id: String, nftOrderDto: OrderDto) -> AnyPublisher<Order, NetworkClientError>
+    func updateProfile(nftProfileDto: ProfileDto) -> AnyPublisher<Profile, NetworkClientError>
 }
 
 final class NftServiceImpl: NftService {
@@ -78,7 +87,7 @@ final class NftServiceImpl: NftService {
         }
     }
     
-    func clearOrder(_ dto: NftDto, completion: @escaping DeleteCompletion) {
+    func clearOrder(_ dto: OrderDto, completion: @escaping DeleteCompletion) {
         storage.clearStorage()
         
         let request = DeleteNftsRequest(dto: dto)
@@ -94,7 +103,7 @@ final class NftServiceImpl: NftService {
     
     func deleteNft(_ id: String, from ids: [String], completion: @escaping DeleteCompletion) {
         storage.delete(id)
-        let dto = NftDto(id: "1", nfts: ids.filter { $0 != id })
+        let dto = OrderDto(nfts: ids.filter { $0 != id })
         
         let request = DeleteNftsRequest(dto: dto)
         networkClient.send(request: request) { result in
@@ -105,5 +114,49 @@ final class NftServiceImpl: NftService {
                 completion(.failure(error))
             }
         }
+    }
+
+    func loadNftCollections() -> AnyPublisher<[Collection], NetworkClientError> {
+        let request = NftCollectionRequest()
+        return networkClient.send(request: request)
+    }
+    func loadCollection(by id: String) -> AnyPublisher<Collection, NetworkClientError> {
+        let request = NftCollectionIdRequest(id: id)
+        return networkClient.send(request: request)
+    }
+    func loadNft(by id: String) -> AnyPublisher<Nft, NetworkClientError> {
+        if let nft = storage.getNft(with: id) {
+            return Future { promise in
+                promise(.success(nft))
+            }
+            .eraseToAnyPublisher()
+        }
+        let request = NFTRequest(id: id)
+        return networkClient.send(request: request)
+            .map { [weak self] nft in
+                self?.storage.saveNft(nft)
+                return nft
+            }
+        .eraseToAnyPublisher()
+    }
+    func loadUser(by id: String) -> AnyPublisher<User, NetworkClientError> {
+        let request = UserByIdRequest(id: id)
+        return networkClient.send(request: request)
+    }
+    func loadOrder(by id: String) -> AnyPublisher<Order, NetworkClientError> {
+        let request = NftOrderRequest(id: id)
+        return networkClient.send(request: request)
+    }
+    func updateOrder(id: String, nftOrderDto: OrderDto) -> AnyPublisher<Order, NetworkClientError> {
+        let request = NftOrderRequest(id: id, httpMethod: .put, dto: nftOrderDto)
+        return networkClient.send(request: request)
+    }
+    func loadProfile() -> AnyPublisher<Profile, NetworkClientError> {
+        let request = NftProfileRequest()
+        return networkClient.send(request: request)
+    }
+    func updateProfile(nftProfileDto: ProfileDto) -> AnyPublisher<Profile, NetworkClientError> {
+        let request = NftProfileRequest(httpMethod: .put, dto: nftProfileDto)
+        return networkClient.send(request: request)
     }
 }
