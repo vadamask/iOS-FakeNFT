@@ -6,7 +6,7 @@ final class TabBarController: UITabBarController {
         
         tabBar.isTranslucent = false
         tabBar.backgroundColor = .white
-        tabBar.tintColor = .blue
+        tabBar.tintColor = .textPrimary
         tabBar.unselectedItemTintColor = .black
         
         let profileViewModel = ProfileViewModel(networkClient: nil)
