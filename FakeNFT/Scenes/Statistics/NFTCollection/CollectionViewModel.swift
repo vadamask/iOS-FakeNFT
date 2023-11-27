@@ -39,7 +39,6 @@ final class CollectionViewModel {
         for nftId in nftIds {
             fetchGroup.enter()
             let request = NFTRequest(id: nftId)
-            print("Fetching NFT with ID: \(nftId)")
             networkClient.send(request: request, type: Nft.self) { [weak self] result in
                 defer { fetchGroup.leave() }
 
@@ -51,7 +50,6 @@ final class CollectionViewModel {
                 case .failure(let error):
                     DispatchQueue.main.async {
                         print("Error fetching NFT with id \(nftId): \(error.localizedDescription)")
-                        print("АДРЕС: \(request)")
                     }
                 }
             }

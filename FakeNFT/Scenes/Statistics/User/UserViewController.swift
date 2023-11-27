@@ -100,7 +100,6 @@ final class UserViewController: UIViewController {
 
     @objc private func websiteButtonTapped() {
         guard let url = userWebSiteUrl else {
-            print("Неверный URL")
             return
         }
         let userWebViewController = UserWebViewController(url: url)
@@ -200,7 +199,6 @@ extension UserViewController: UITableViewDataSource {
         let cell: CollectionCountCell = tableView.dequeueReusableCell()
 
         cell.set(count: nftCount)
-        print("nftCount: \(nftCount)")
         return cell
     }
 }
@@ -211,7 +209,6 @@ extension UserViewController: UITableViewDelegate {
         guard let nftCollection = nftCollection else { return }
         if nftCollection.isEmpty {
             let error = ErrorModel(message: L10n.User.noNftError, actionText: "ОК", action: {})
-            print("КОЛИЧЕСТВО НФТ: \(nftCollection)")
             showError(error)
         } else {
             let collectionVC = CollectionViewController(nftIds: nftCollection)
