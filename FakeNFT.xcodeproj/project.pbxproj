@@ -268,6 +268,7 @@
 		0CF2C2DF2A784C5600FDC837 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				AB9E975D2B14843000040DFE /* CollectionCell */,
 				0CF2C2E02A784C7000FDC837 /* LinePageControl.swift */,
 				AB30F7D62AF55DCE001F8A26 /* ActionButton.swift */,
 				AB4B6FF02B083F7D0088708B /* ProgressLinePageControl.swift */,
@@ -564,6 +565,15 @@
 			path = CatalogViewModelTests;
 			sourceTree = "<group>";
 		};
+		AB9E975D2B14843000040DFE /* CollectionCell */ = {
+			isa = PBXGroup;
+			children = (
+				ABFA0E4B2AFD9CD200451A6A /* CollectionCell.swift */,
+				ABFA0E502AFDD6D800451A6A /* CollectionCellViewModel.swift */,
+			);
+			path = CollectionCell;
+			sourceTree = "<group>";
+		};
 		ABA9EBD32B0C231C001FC2F8 /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
@@ -590,9 +600,7 @@
 		ABFA0E472AFD985600451A6A /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				ABFA0E4B2AFD9CD200451A6A /* CollectionCell.swift */,
 				ABE0F99C2B0D5C6B00A87025 /* CollectionCellPlaceholder.swift */,
-				ABFA0E502AFDD6D800451A6A /* CollectionCellViewModel.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
