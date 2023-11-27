@@ -36,8 +36,22 @@ final class TabBarCoordinator: Coordinator {
         )
         catalogNavigationController.tabBarItem = catalogTabBarItem
 
+        // MARK: Statistics
+
+        let statisticsNavigationController = UINavigationController()
+        let statisticsCoordinator = StatisticsCoordinator(navigationController: statisticsNavigationController)
+        statisticsCoordinator.parentCoordinator = self
+
+        let statisticsTabBarItem = UITabBarItem(
+            title: L10n.Tab.statistics,
+            image: Asset.statistics.image,
+            tag: 1
+        )
+        statisticsNavigationController.tabBarItem = statisticsTabBarItem
+
         tabBarController.viewControllers = [
-            catalogNavigationController
+            catalogNavigationController,
+            statisticsNavigationController
         ]
         tabBarController.selectedIndex = 0
 
@@ -45,7 +59,9 @@ final class TabBarCoordinator: Coordinator {
         navigationController.setNavigationBarHidden(true, animated: true)
 
         parentCoordinator?.children.append(catalogCoordinator)
+        parentCoordinator?.children.append(statisticsCoordinator)
 
         catalogCoordinator.start()
+        statisticsCoordinator.start()
     }
 }

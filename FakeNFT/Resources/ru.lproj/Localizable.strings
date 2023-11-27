@@ -7,8 +7,9 @@
 "Onboarding.description3" = "Смотрите статистику других и покажите всем, что у вас самая ценная коллекция";
 "Onboarding.button" = "Что внутри?";
 
+// TabBar
 "Tab.catalog" = "Каталог";
-"Catalog.openNft" = "Открыть Nft";
+"Tab.statistics" = "Статистика";
 
 // Catalog
 "Catalog.sorting" = "Сортировка";
@@ -28,3 +29,12 @@
 "error.parsingError" = "Parsing error: Ошибка при обработке данных с сервера";
 "error.invalidRequest" = "Неправильный запрос";
 "error.errorJsonLoad" = "Невозможно прочитать JSON файл";
+
+// Statistics
+"Sort.title" = "Сортировка";
+"Sort.byName" = "По имени";
+"Sort.byRating" = "По рейтингу";
+"Sort.close" = "Закрыть";
+"User.visitWebSite" = "Перейти на сайт пользователя";
+"User.nftCollection" = "Коллекция NFT";
+"User.noNftError" = "У пользователя нет NFT";

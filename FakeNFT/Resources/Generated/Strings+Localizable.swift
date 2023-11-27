@@ -13,26 +13,12 @@ internal enum L10n {
   /// Закрыть
   internal static let close = L10n.tr("Localizable", "close", fallback: "Закрыть")
   internal enum Catalog {
-    /// Открыть Nft
-    internal static let openNft = L10n.tr("Localizable", "Catalog.openNft", fallback: "Открыть Nft")
     /// По названию
     internal static let sortByName = L10n.tr("Localizable", "Catalog.sortByName", fallback: "По названию")
     /// По количеству NFT
     internal static let sortByNftCount = L10n.tr("Localizable", "Catalog.sortByNftCount", fallback: "По количеству NFT")
     /// Сортировка
     internal static let sorting = L10n.tr("Localizable", "Catalog.sorting", fallback: "Сортировка")
-  }
-  internal enum Error {
-    /// Произошла ошибка сети
-    internal static let network = L10n.tr("Localizable", "Error.network", fallback: "Произошла ошибка сети")
-    /// Повторить
-    internal static let `repeat` = L10n.tr("Localizable", "Error.repeat", fallback: "Повторить")
-    /// Ошибка
-    internal static let title = L10n.tr("Localizable", "Error.title", fallback: "Ошибка")
-    /// Не удалось загрузить данные
-    internal static let unableToLoad = L10n.tr("Localizable", "Error.unableToLoad", fallback: "Не удалось загрузить данные")
-    /// Произошла неизвестная ошибка
-    internal static let unknown = L10n.tr("Localizable", "Error.unknown", fallback: "Произошла неизвестная ошибка")
   }
   internal enum Onboarding {
     /// Что внутри?
@@ -50,9 +36,49 @@ internal enum L10n {
     /// Состязайтесь
     internal static let title3 = L10n.tr("Localizable", "Onboarding.title3", fallback: "Состязайтесь")
   }
+  internal enum Sort {
+    /// По имени
+    internal static let byName = L10n.tr("Localizable", "Sort.byName", fallback: "По имени")
+    /// По рейтингу
+    internal static let byRating = L10n.tr("Localizable", "Sort.byRating", fallback: "По рейтингу")
+    /// Закрыть
+    internal static let close = L10n.tr("Localizable", "Sort.close", fallback: "Закрыть")
+    /// Сортировка
+    internal static let title = L10n.tr("Localizable", "Sort.title", fallback: "Сортировка")
+  }
   internal enum Tab {
     /// Каталог
     internal static let catalog = L10n.tr("Localizable", "Tab.catalog", fallback: "Каталог")
+    /// Статистика
+    internal static let statistics = L10n.tr("Localizable", "Tab.statistics", fallback: "Статистика")
+  }
+  internal enum User {
+    /// Коллекция NFT
+    internal static let nftCollection = L10n.tr("Localizable", "User.nftCollection", fallback: "Коллекция NFT")
+    /// У пользователя нет NFT
+    internal static let noNftError = L10n.tr("Localizable", "User.noNftError", fallback: "У пользователя нет NFT")
+    /// Перейти на сайт пользователя
+    internal static let visitWebSite = L10n.tr("Localizable", "User.visitWebSite", fallback: "Перейти на сайт пользователя")
+  }
+  internal enum Error {
+    /// Невозможно прочитать JSON файл
+    internal static let errorJsonLoad = L10n.tr("Localizable", "error.errorJsonLoad", fallback: "Невозможно прочитать JSON файл")
+    /// Неправильный запрос
+    internal static let invalidRequest = L10n.tr("Localizable", "error.invalidRequest", fallback: "Неправильный запрос")
+    /// Произошла ошибка сети
+    internal static let network = L10n.tr("Localizable", "error.network", fallback: "Произошла ошибка сети")
+    /// Parsing error: Ошибка при обработке данных с сервера
+    internal static let parsingError = L10n.tr("Localizable", "error.parsingError", fallback: "Parsing error: Ошибка при обработке данных с сервера")
+    /// Повторить
+    internal static let `repeat` = L10n.tr("Localizable", "error.repeat", fallback: "Повторить")
+    /// Ошибка
+    internal static let title = L10n.tr("Localizable", "error.title", fallback: "Ошибка")
+    /// Не удалось загрузить данные
+    internal static let unableToLoad = L10n.tr("Localizable", "error.unableToLoad", fallback: "Не удалось загрузить данные")
+    /// Произошла неизвестная ошибка
+    internal static let unknown = L10n.tr("Localizable", "error.unknown", fallback: "Произошла неизвестная ошибка")
+    /// UrlSessionError: Произошла ошибка при соединении
+    internal static let urlSessionError = L10n.tr("Localizable", "error.urlSessionError", fallback: "UrlSessionError: Произошла ошибка при соединении")
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

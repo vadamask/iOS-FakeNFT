@@ -18,7 +18,6 @@ final class CollectionHeader: UICollectionReusableView, ReuseIdentifying {
     private(set) var authorAction = PassthroughSubject<URL, Never>()
     private let coverImageView = {
         let imageVIew = UIImageView()
-        imageVIew.image = Asset.blueBonnie.image
         imageVIew.contentMode = .scaleAspectFill
         imageVIew.layer.cornerRadius = 12
         imageVIew.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
