@@ -74,7 +74,7 @@ final class ProfileViewModel: ProfileViewModelProtocol {
     private(set) var id: String?
     private(set) var error: Error?
     
-    init(networkClient: NetworkClient?){
+    init(networkClient: NetworkClient?) {
         if let networkClient = networkClient { self.networkClient = networkClient }
     }
     
