@@ -32,7 +32,7 @@ final class ProfileViewModel: ProfileViewModelProtocol {
     var onError: (() -> Void)?
     
     private var networkClient: NetworkClient = DefaultNetworkClient()
-        
+    
     private(set) var avatarURL: URL? {
         didSet {
             onChange?()
@@ -85,15 +85,17 @@ final class ProfileViewModel: ProfileViewModelProtocol {
             
             DispatchQueue.main.async {
                 switch result {
-                case .success(let profile):
-                    self?.fillSelfFromResponse(response: profile)
-                    self?.nfts = profile.nfts
-                    self?.likes = profile.likes
-                    UIBlockingProgressHUD.dismiss()
-                case .failure(let error):
-                    self?.error = error
-                    self?.onError?()
-                    UIBlockingProgressHUD.dismiss()
+                    case .success(let profile):
+                        self?.fillSelfFromResponse(response: profile)
+                        self?.nfts = ["68","69","71","72","73","74"]
+                        self?.likes = profile.likes
+                        print("Success: \(profile)")
+                        UIBlockingProgressHUD.dismiss()
+                    case .failure(let error):
+                        self?.error = error
+                        self?.onError?()
+                        print("Failure: \(error)")
+                        UIBlockingProgressHUD.dismiss()
                 }
             }
         }
@@ -109,17 +111,17 @@ final class ProfileViewModel: ProfileViewModelProtocol {
             website: website,
             likes: likes
         )
-            
+        
         networkClient.send(request: request, type: ProfileNetworkModel.self) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
-                case .success(let profile):
-                    self?.fillSelfFromResponse(response: profile)
-                    UIBlockingProgressHUD.dismiss()
-                case .failure(let error):
-                    self?.error = error
-                    self?.onError?()
-                    UIBlockingProgressHUD.dismiss()
+                    case .success(let profile):
+                        self?.fillSelfFromResponse(response: profile)
+                        UIBlockingProgressHUD.dismiss()
+                    case .failure(let error):
+                        self?.error = error
+                        self?.onError?()
+                        UIBlockingProgressHUD.dismiss()
                 }
             }
         }
@@ -131,5 +133,6 @@ final class ProfileViewModel: ProfileViewModelProtocol {
         self.description = response.description
         self.website = response.website
         self.id = response.id
+        self.nfts = response.nfts
     }
 }
