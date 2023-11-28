@@ -12,16 +12,16 @@ final class NoInternetView: UIView {
     private lazy var noInternetLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Нет интернета"
+        label.text = L10n.Profile.noInternet // "Нет интернета"
         label.font = UIFont.boldSystemFont(ofSize: 17)
-        label.textColor = .black
+        label.textColor = .textPrimary
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
         
-        self.backgroundColor = .white
+        self.backgroundColor = .textPrimaryInvert
         addEmptyLabel()
     }
     
@@ -36,6 +36,5 @@ final class NoInternetView: UIView {
             noInternetLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             noInternetLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
-
     }
 }

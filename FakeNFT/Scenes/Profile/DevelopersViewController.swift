@@ -38,6 +38,7 @@ final class DevelopersViewController: UIViewController, WKUIDelegate, UIGestureR
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
     
@@ -46,11 +47,11 @@ final class DevelopersViewController: UIViewController, WKUIDelegate, UIGestureR
     }
     
     private func setupView() {
-        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.tintColor = .textPrimary
         navigationItem.leftBarButtonItem = backButton
         backButton.accessibilityIdentifier = "backButton"
         
-        view.backgroundColor = .white
+        view.backgroundColor = .screenBackground
     }
     
     private func addWebView() {

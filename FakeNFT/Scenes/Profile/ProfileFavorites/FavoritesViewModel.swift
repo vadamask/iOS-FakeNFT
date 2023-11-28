@@ -18,7 +18,6 @@ protocol FavoritesViewModelProtocol: AnyObject {
 }
 
 final class FavoritesViewModel: FavoritesViewModelProtocol {
-    
     var onChange: (() -> Void)?
     var onError: ((_ error: Error) -> Void)?
     
@@ -100,7 +99,7 @@ final class FavoritesViewModel: FavoritesViewModelProtocol {
         }
         self.likedNFTs = likedNFTs
         
-        let likedIDs = likedNFTs.map ({ $0.id })
+        let likedIDs = likedNFTs.map({ $0.id })
         putLikedNFTs(likedIDs: likedIDs)
     }
 }

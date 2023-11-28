@@ -5,9 +5,9 @@ final class TabBarController: UITabBarController {
         super.viewDidLoad()
         
         tabBar.isTranslucent = false
-        tabBar.backgroundColor = .white
+        tabBar.backgroundColor = .screenBackground
         tabBar.tintColor = .textPrimary
-        tabBar.unselectedItemTintColor = .black
+        tabBar.unselectedItemTintColor = .tabInactive
         
         let profileViewModel = ProfileViewModel(networkClient: nil)
         let profileViewController = UINavigationController(
@@ -19,7 +19,7 @@ final class TabBarController: UITabBarController {
         )
         
         profileViewController.tabBarItem = UITabBarItem(
-            title: "Профиль",
+            title: L10n.Tab.profile,
             image: Asset.profile.image,
             selectedImage: nil
         )

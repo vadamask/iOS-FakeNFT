@@ -19,7 +19,7 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
             style: .plain,
             target: self,
             action: #selector(didTapBackButton))
-        button.tintColor = .textPrimary
+        button.tintColor = .borderColor
         return button
     }()
     // лейбл при отсутствии нфт
@@ -27,7 +27,7 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
         let label = UILabel()
         label.text = L10n.Profile.emptyFavouriteNFTLabel // У вас ещё нет избранных NFT
         label.font = .bodyBold17
-        label.textColor = .textPrimary
+        label.textColor = .borderColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -53,6 +53,7 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         if badConnection { viewModel.getLikedNFTs(likedIDs: likedIDs) }
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
@@ -69,10 +70,10 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
         viewModel.onError = { [weak self] error in
             self?.badConnection = true
             let alert = UIAlertController(
-                title: "Нет интернета",
+                title: L10n.Profile.noInternet,
                 message: error.localizedDescription,
                 preferredStyle: .alert)
-            let action = UIAlertAction(title: "Ok", style: .cancel) { [weak self] _ in
+            let action = UIAlertAction(title: "OK", style: .cancel) { [weak self] _ in
                 self?.navigationController?.popViewController(animated: true)
             }
             alert.addAction(action)
@@ -88,7 +89,7 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
     // MARK: - Layout methods
     private func setupView() {
         if likedIDs.isEmpty {
-            view.backgroundColor = .white
+            view.backgroundColor = .screenBackground
             setupNavBar(emptyNFTs: true)
             addEmptyLabel()
         } else {
@@ -102,7 +103,7 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
         navigationItem.leftBarButtonItem = backButton
         backButton.accessibilityIdentifier = "backButton"
         if !emptyNFTs {
-            navigationItem.title = "Избранные NFT"
+            navigationItem.title = L10n.Profile.nftFavorites
         }
     }
     
@@ -113,6 +114,5 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
             emptyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             emptyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
-        
     }
 }

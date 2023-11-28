@@ -13,12 +13,15 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
     private let likedIDs: [String]
     private var badConnection: Bool = false
     // кнопка назад
-    private lazy var backButton = UIBarButtonItem(
-        image: Asset.backButton.image,
-        style: .plain,
-        target: self,
-        action: #selector(didTapBackButton)
-    )
+    private lazy var backButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(
+            image: Asset.backButton.image,
+            style: .plain,
+            target: self,
+            action: #selector(didTapBackButton))
+        button.tintColor = .borderColor
+        return button
+    }()
     // кнопка сортировки
     private lazy var sortButton = UIBarButtonItem(
         image: Asset.sortButton.image,
@@ -44,6 +47,7 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         view.backgroundColor = .screenBackground
         addEdgeSwipeBackGesture()
+
     }
     
     init(nftIDs: [String], likedIDs: [String]) {
@@ -58,6 +62,7 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         if let sortOrder = UserDefaults.standard.data(forKey: "sortOrder") {
             let order = try? PropertyListDecoder().decode(MyNFTViewModel.Sort.self, from: sortOrder)
             self.viewModel.sort = order
@@ -67,6 +72,7 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         if badConnection { viewModel.getMyNFTs(nftIDs: nftIDs) }
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
@@ -82,10 +88,10 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
         viewModel.onError = { [weak self] error in
             self?.badConnection = true
             let alert = UIAlertController(
-                title: "Нет интернета",
+                title: L10n.Profile.noInternet,
                 message: error.localizedDescription,
                 preferredStyle: .alert)
-            let action = UIAlertAction(title: "Ok", style: .cancel) { [weak self] _ in
+            let action = UIAlertAction(title: "OK", style: .cancel) { [weak self] _ in
                 self?.navigationController?.popViewController(animated: true)
             }
             alert.addAction(action)
@@ -100,23 +106,23 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
     @objc private func didTapSortButton() {
         let alert = UIAlertController(
             title: nil,
-            message: "Сортировка",
+            message: L10n.Profile.sort, // Сортировка
             preferredStyle: .actionSheet
         )
                 
-        let sortByPriceAction = UIAlertAction(title: "По цене", style: .default) { [weak self] _ in
+        let sortByPriceAction = UIAlertAction(title: L10n.Profile.byPrice, style: .default) { [weak self] _ in
             self?.viewModel.sort = .price
             self?.saveSortOrder(order: .price)
         }
-        let sortByRatingAction = UIAlertAction(title: "По рейтингу", style: .default) { [weak self] _ in
+        let sortByRatingAction = UIAlertAction(title: L10n.Profile.byRaiting, style: .default) { [weak self] _ in
             self?.viewModel.sort = .rating
             self?.saveSortOrder(order: .rating)
         }
-        let sortByNameAction = UIAlertAction(title: "По названию", style: .default) { [weak self] _ in
+        let sortByNameAction = UIAlertAction(title: L10n.Profile.byName, style: .default) { [weak self] _ in
             self?.viewModel.sort = .name
             self?.saveSortOrder(order: .name)
         }
-        let closeAction = UIAlertAction(title: "Закрыть", style: .cancel)
+        let closeAction = UIAlertAction(title: L10n.Profile.close, style: .cancel)
         
         alert.addAction(sortByPriceAction)
         alert.addAction(sortByRatingAction)
@@ -143,12 +149,13 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func setupNavBar(emptyNFTs: Bool) {
-        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.tintColor = .borderColor
         navigationItem.leftBarButtonItem = backButton
         backButton.accessibilityIdentifier = "backButton"
         if !emptyNFTs {
             navigationItem.rightBarButtonItem = sortButton
-            navigationItem.title = "Мои NFT"
+            navigationItem.title = L10n.Profile.myNFT
+            sortButton.tintColor = .borderColor
         }
     }
     

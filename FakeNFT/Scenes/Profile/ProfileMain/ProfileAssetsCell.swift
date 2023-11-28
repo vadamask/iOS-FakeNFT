@@ -12,16 +12,16 @@ final class ProfileAssetsCell: UITableViewCell, ReuseIdentifying {
     private lazy var assetLabel: UILabel = {
         var label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .boldSystemFont(ofSize: 17)
-        label.textColor = .black
+        label.font = .bodyBold17
+        label.textColor = .textPrimary
         return label
     }()
     // числовое значение ячейки главного профиля
     private lazy var assetValue: UILabel = {
         var label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .boldSystemFont(ofSize: 17)
-        label.textColor = .black
+        label.font = .headline17
+        label.textColor = .textPrimary
         return label
     }()
     // >
@@ -29,7 +29,7 @@ final class ProfileAssetsCell: UITableViewCell, ReuseIdentifying {
         var imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(systemName: "chevron.forward")
-        imageView.tintColor = .black
+        imageView.tintColor = .buttonBackground
         imageView.preferredSymbolConfiguration = UIImage.SymbolConfiguration(font: .boldSystemFont(ofSize: 17))
         return imageView
     }()

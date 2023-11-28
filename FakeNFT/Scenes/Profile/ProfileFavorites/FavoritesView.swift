@@ -14,15 +14,16 @@ final class FavoritesView: UIView {
     private(set) var likedNFTs: [NFTNetworkModel]?
     
     private lazy var favoriteNFTCollection: UICollectionView = {
-        let favoriteNFTCollection = UICollectionView(
+        let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout()
         )
-        favoriteNFTCollection.translatesAutoresizingMaskIntoConstraints = false
-        favoriteNFTCollection.register(FavoritesCell.self)
-        favoriteNFTCollection.dataSource = self
-        favoriteNFTCollection.delegate = self
-        return favoriteNFTCollection
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.register(FavoritesCell.self)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.backgroundColor = .screenBackground
+        return collectionView
     }()
     
     init(frame: CGRect, viewModel: FavoritesViewModelProtocol) {
@@ -30,7 +31,7 @@ final class FavoritesView: UIView {
         self.likedNFTs = viewModel.likedNFTs
         super.init(frame: frame)
         
-        self.backgroundColor = .white
+        self.backgroundColor = .screenBackground
         addCollection()
     }
     
@@ -67,7 +68,7 @@ extension FavoritesView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: FavoritesCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-        cell.backgroundColor = .white
+        cell.backgroundColor = .screenBackground
         guard let likedNFTs = likedNFTs,
               !likedNFTs.isEmpty else { return FavoritesCell() }
         let likedNFT = likedNFTs[indexPath.row]
@@ -106,6 +107,4 @@ extension FavoritesView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 12, left: 16, bottom: 16, right: 16)
     }
-    
 }
-

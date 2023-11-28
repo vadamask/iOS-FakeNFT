@@ -23,12 +23,13 @@ final class FavoritesCell: UICollectionViewCell, ReuseIdentifying {
         stackView.distribution = .equalSpacing
         stackView.alignment = .leading
         stackView.spacing = 4
+        stackView.backgroundColor = .screenBackground
         return stackView
     }()
 
     private lazy var nftName: UILabel = {
         let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 17)
+        label.font = .bodyBold17
         label.textColor = .textPrimary
         return label
     }()
@@ -41,7 +42,8 @@ final class FavoritesCell: UICollectionViewCell, ReuseIdentifying {
 
     private lazy var nftPriceValue: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 15)
+        label.font = .bodyRegular15
+        label.textColor = .textPrimary
         label.text = "0 ETH"
         return label
     }()

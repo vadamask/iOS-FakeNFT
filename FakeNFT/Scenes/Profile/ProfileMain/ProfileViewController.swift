@@ -8,17 +8,19 @@
 import UIKit
 
 final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate {
-    
     private var profileView: ProfileView?
     private var viewModel: ProfileViewModelProtocol
     private var badConnection: Bool = false
     
-    private lazy var editButton = UIBarButtonItem(
-        image: Asset.editButton.image,
-        style: .plain,
-        target: self,
-        action: #selector(didTapEditButton)
-    )
+    private lazy var editButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(
+            image: Asset.editButton.image,
+            style: .plain,
+            target: self,
+            action: #selector(didTapEditButton))
+        button.tintColor = .borderColor
+        return button
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +32,7 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         if badConnection { viewModel.getProfileData() }
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
@@ -77,7 +80,7 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     private func setupNavBar() {
-        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.tintColor = .screenBackground
         navigationItem.rightBarButtonItem = editButton
         self.navigationController?.navigationBar.isHidden = false
     }

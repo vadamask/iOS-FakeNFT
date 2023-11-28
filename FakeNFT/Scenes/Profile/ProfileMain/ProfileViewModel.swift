@@ -26,7 +26,6 @@ protocol ProfileViewModelProtocol: AnyObject {
 }
 
 final class ProfileViewModel: ProfileViewModelProtocol {
-    
     var onChange: (() -> Void)?
     var onLoaded: (() -> Void)?
     var onError: (() -> Void)?
@@ -82,7 +81,6 @@ final class ProfileViewModel: ProfileViewModelProtocol {
         UIBlockingProgressHUD.show()
         
         networkClient.send(request: GetProfileRequest(), type: ProfileNetworkModel.self) { [weak self] result in
-            
             DispatchQueue.main.async {
                 switch result {
                     case .success(let profile):
