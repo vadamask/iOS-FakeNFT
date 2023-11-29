@@ -88,9 +88,7 @@ final class NftServiceImpl: NftService {
     }
     
     func clearOrder(_ dto: OrderDto, completion: @escaping DeleteCompletion) {
-        storage.clearStorage()
-        
-        let request = DeleteNftsRequest(dto: dto)
+        let request = OrderRequest(id: "1", httpMethod: .put, dto: dto)
         networkClient.send(request: request) { result in
             switch result {
             case .success:
@@ -102,10 +100,8 @@ final class NftServiceImpl: NftService {
     }
     
     func deleteNft(_ id: String, from ids: [String], completion: @escaping DeleteCompletion) {
-        storage.delete(id)
         let dto = OrderDto(nfts: ids.filter { $0 != id })
-        
-        let request = DeleteNftsRequest(dto: dto)
+        let request = OrderRequest(id: "1", httpMethod: .put, dto: dto)
         networkClient.send(request: request) { result in
             switch result {
             case .success:
@@ -144,19 +140,19 @@ final class NftServiceImpl: NftService {
         return networkClient.send(request: request)
     }
     func loadOrder(by id: String) -> AnyPublisher<Order, NetworkClientError> {
-        let request = NftOrderRequest(id: id)
+        let request = OrderRequest(id: id)
         return networkClient.send(request: request)
     }
     func updateOrder(id: String, nftOrderDto: OrderDto) -> AnyPublisher<Order, NetworkClientError> {
-        let request = NftOrderRequest(id: id, httpMethod: .put, dto: nftOrderDto)
+        let request = OrderRequest(id: id, httpMethod: .put, dto: nftOrderDto)
         return networkClient.send(request: request)
     }
     func loadProfile() -> AnyPublisher<Profile, NetworkClientError> {
-        let request = NftProfileRequest()
+        let request = ProfileRequest()
         return networkClient.send(request: request)
     }
     func updateProfile(nftProfileDto: ProfileDto) -> AnyPublisher<Profile, NetworkClientError> {
-        let request = NftProfileRequest(httpMethod: .put, dto: nftProfileDto)
+        let request = ProfileRequest(httpMethod: .put, dto: nftProfileDto)
         return networkClient.send(request: request)
     }
 }

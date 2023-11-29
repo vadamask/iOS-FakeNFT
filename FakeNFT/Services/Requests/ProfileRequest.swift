@@ -1,5 +1,5 @@
 //
-//  NftOrderRequest.swift
+//  NftProfileRequest.swift
 //  FakeNFT
 //
 //  Created by Виктор on 14.11.2023.
@@ -7,12 +7,11 @@
 
 import Foundation
 
-struct NftOrderRequest: NetworkRequest {
-    let id: String
+struct ProfileRequest: NetworkRequest {
     var httpMethod: HttpMethod = .get
     var dto: Encodable?
 
     var endpoint: URL? {
-        URL(string: "\(RequestConstants.baseURL)/api/v1/orders/\(id)")
+        URL(string: "\(RequestConstants.baseURL)/api/v1/profile/1")
     }
 }
