@@ -109,7 +109,6 @@
 		DDB95B422B0FB7C700F24F77 /* NetworkClientStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB95B412B0FB7C700F24F77 /* NetworkClientStub.swift */; };
 		DDB95B442B0FBA7C00F24F77 /* ServicesAssemblyStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB95B432B0FBA7C00F24F77 /* ServicesAssemblyStub.swift */; };
 		DDB95B462B0FBF2900F24F77 /* CartTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB95B452B0FBF2900F24F77 /* CartTests.swift */; };
-		DDB95B482B0FC11300F24F77 /* NftServiceStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB95B472B0FC11300F24F77 /* NftServiceStub.swift */; };
 		DDB95B4B2B0FDA6E00F24F77 /* CartViewModelSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB95B4A2B0FDA6E00F24F77 /* CartViewModelSpy.swift */; };
 		DDB95B4D2B0FDD0500F24F77 /* CartViewControllerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB95B4C2B0FDD0500F24F77 /* CartViewControllerSpy.swift */; };
 		DDB95B4F2B0FE67900F24F77 /* CartViewSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB95B4E2B0FE67900F24F77 /* CartViewSpy.swift */; };
@@ -258,7 +257,6 @@
 		DDB95B412B0FB7C700F24F77 /* NetworkClientStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClientStub.swift; sourceTree = "<group>"; };
 		DDB95B432B0FBA7C00F24F77 /* ServicesAssemblyStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesAssemblyStub.swift; sourceTree = "<group>"; };
 		DDB95B452B0FBF2900F24F77 /* CartTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartTests.swift; sourceTree = "<group>"; };
-		DDB95B472B0FC11300F24F77 /* NftServiceStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftServiceStub.swift; sourceTree = "<group>"; };
 		DDB95B4A2B0FDA6E00F24F77 /* CartViewModelSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewModelSpy.swift; sourceTree = "<group>"; };
 		DDB95B4C2B0FDD0500F24F77 /* CartViewControllerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewControllerSpy.swift; sourceTree = "<group>"; };
 		DDB95B4E2B0FE67900F24F77 /* CartViewSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewSpy.swift; sourceTree = "<group>"; };
@@ -427,7 +425,7 @@
 				AB71BADF2B10140900C1E7B5 /* CatalogUnitTests */,
 				DDB95B492B0FDA4B00F24F77 /* Cart */,
 				DDB95B432B0FBA7C00F24F77 /* ServicesAssemblyStub.swift */,
-				DDB95B472B0FC11300F24F77 /* NftServiceStub.swift */,
+				AB71BAE42B101D7C00C1E7B5 /* NftServiceStub.swift */,
 				DDB95B412B0FB7C700F24F77 /* NetworkClientStub.swift */,
 			);
 			path = FakeNFTTests;
@@ -695,7 +693,6 @@
 				AB6D30742B10DF9F00C6286E /* Json */,
 				AB71BAE62B1027CB00C1E7B5 /* CatalogViewModelTests */,
 				AB6D308E2B111BDE00C6286E /* CollectionViewModelTests */,
-				AB71BAE42B101D7C00C1E7B5 /* NftServiceStub.swift */,
 			);
 			path = CatalogUnitTests;
 			sourceTree = "<group>";
@@ -1140,7 +1137,6 @@
 				AB6D30922B111C6500C6286E /* CollectionViewModelSpy.swift in Sources */,
 				DDB95B4B2B0FDA6E00F24F77 /* CartViewModelSpy.swift in Sources */,
 				DDB95B442B0FBA7C00F24F77 /* ServicesAssemblyStub.swift in Sources */,
-				DDB95B482B0FC11300F24F77 /* NftServiceStub.swift in Sources */,
 				DDB95B422B0FB7C700F24F77 /* NetworkClientStub.swift in Sources */,
 				DDB95B4F2B0FE67900F24F77 /* CartViewSpy.swift in Sources */,
 				DDB95B4D2B0FDD0500F24F77 /* CartViewControllerSpy.swift in Sources */,

@@ -43,7 +43,7 @@ final class CartViewModelSpy: CartViewModelProtocol {
         paymentDidTappedCalled = true
     }
     
-    func setSortOption(_ option: SortOption) {}
+    func setSortOption(_ option: CartSortOption) {}
     
     func didRefreshTableView() {}
     

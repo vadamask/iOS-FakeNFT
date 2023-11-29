@@ -14,9 +14,6 @@ final class ServicesAssemblyStub: ServicesAssemblyProtocol {
     init() {}
     
     var nftService: NftService {
-        NftServiceStub(
-            networkClient: networkClient,
-            storage: nftStorage
-        )
+        NftServiceStub()
     }
 }
