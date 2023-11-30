@@ -1,5 +1,11 @@
 # ТЗ мобильного приложения FakeNFT
 
+# Скринкасты
+- [Все видео](https://dreamcloud.pro:7777/mo/sharing/jn3FuMQuW)
+  - [Каталог](https://dreamcloud.pro:7777/mo/sharing/jn3FuMQuW#/item/26396)
+  - [Корзина](https://dreamcloud.pro:7777/mo/sharing/jn3FuMQuW#/item/26395)
+  - [Статистика](https://dreamcloud.pro:7777/mo/sharing/jn3FuMQuW#/item/26397)
+
 # Ссылки
 
 [Дизайн Figma](https://www.figma.com/file/k1LcgXHGTHIeiCv4XuPbND/FakeNFT-(YP)?node-id=96-5542&t=YdNbOI8EcqdYmDeg-0)
