@@ -85,7 +85,7 @@ final class ProfileViewModel: ProfileViewModelProtocol {
                 switch result {
                     case .success(let profile):
                         self?.fillSelfFromResponse(response: profile)
-                        self?.nfts = ["68","69","71","72","73","74"]
+                        self?.nfts = ["75","76","77","78","79","80","81"]
                         self?.likes = profile.likes
                         print("Success: \(profile)")
                         UIBlockingProgressHUD.dismiss()

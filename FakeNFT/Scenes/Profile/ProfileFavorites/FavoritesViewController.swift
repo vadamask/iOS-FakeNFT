@@ -22,15 +22,6 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
         button.tintColor = .borderColor
         return button
     }()
-    // лейбл при отсутствии нфт
-    private lazy var emptyLabel: UILabel = {
-        let label = UILabel()
-        label.text = L10n.Profile.emptyFavouriteNFTLabel // У вас ещё нет избранных NFT
-        label.font = .bodyBold17
-        label.textColor = .borderColor
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,7 +82,6 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
         if likedIDs.isEmpty {
             view.backgroundColor = .screenBackground
             setupNavBar(emptyNFTs: true)
-            addEmptyLabel()
         } else {
             self.view = FavoritesView(frame: .zero, viewModel: self.viewModel)
             setupNavBar(emptyNFTs: false)
@@ -105,14 +95,5 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
         if !emptyNFTs {
             navigationItem.title = L10n.Profile.nftFavorites
         }
-    }
-    
-    private func addEmptyLabel() {
-        view.addSubview(emptyLabel)
-        
-        NSLayoutConstraint.activate([
-            emptyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            emptyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
     }
 }

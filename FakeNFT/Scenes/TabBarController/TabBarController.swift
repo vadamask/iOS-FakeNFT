@@ -25,7 +25,7 @@ final class TabBarController: UITabBarController {
         )
 
         let controllers = [
-            profileViewController,
+            profileViewController
         ]
         
         viewControllers = controllers

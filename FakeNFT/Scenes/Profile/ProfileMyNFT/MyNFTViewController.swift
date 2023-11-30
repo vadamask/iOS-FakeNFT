@@ -139,7 +139,7 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func setupView() {
         if nftIDs.isEmpty {
-            view.backgroundColor = .white
+            view.backgroundColor = .screenBackground
             setupNavBar(emptyNFTs: true)
             setupEmptyLabel()
         } else {
