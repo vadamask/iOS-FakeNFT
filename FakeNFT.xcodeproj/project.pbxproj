@@ -12,7 +12,6 @@
 		0CF2C2DD2A783CE600FDC837 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF2C2DC2A783CE600FDC837 /* ErrorView.swift */; };
 		0CF2C2E12A784C7000FDC837 /* LinePageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF2C2E02A784C7000FDC837 /* LinePageControl.swift */; };
 		0CFCB7422A78013E0009A829 /* NFTModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFCB7412A78013E0009A829 /* NFTModel.swift */; };
-		0CFCB7492A7808900009A829 /* TestCatalogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFCB7482A7808900009A829 /* TestCatalogController.swift */; };
 		0CFCB74B2A780EA80009A829 /* UIView+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFCB74A2A780EA80009A829 /* UIView+Constraints.swift */; };
 		3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ECE29DB474E00F6D39E /* Colors.swift */; };
 		3F478ED129DB476500F6D39E /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ED029DB476500F6D39E /* Fonts.swift */; };
@@ -51,7 +50,6 @@
 		899E086D2B150AF90048FB91 /* PutFavoritesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899E086C2B150AF90048FB91 /* PutFavoritesRequest.swift */; };
 		899E086F2B150C100048FB91 /* AuthorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899E086E2B150C100048FB91 /* AuthorModel.swift */; };
 		899E08712B150C500048FB91 /* FavoritesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899E08702B150C500048FB91 /* FavoritesModel.swift */; };
-		899E08732B150DC80048FB91 /* ExampleNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899E08722B150DC80048FB91 /* ExampleNetworkModel.swift */; };
 		899E08752B150F130048FB91 /* GetNFTByIdRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899E08742B150F130048FB91 /* GetNFTByIdRequest.swift */; };
 		899E08772B150F600048FB91 /* GetFavoritesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899E08762B150F600048FB91 /* GetFavoritesRequest.swift */; };
 		899E08792B150FE80048FB91 /* GetUserByIdRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899E08782B150FE80048FB91 /* GetUserByIdRequest.swift */; };
@@ -108,7 +106,6 @@
 		0CF2C2DC2A783CE600FDC837 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		0CF2C2E02A784C7000FDC837 /* LinePageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinePageControl.swift; sourceTree = "<group>"; };
 		0CFCB7412A78013E0009A829 /* NFTModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTModel.swift; sourceTree = "<group>"; };
-		0CFCB7482A7808900009A829 /* TestCatalogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCatalogController.swift; sourceTree = "<group>"; };
 		0CFCB74A2A780EA80009A829 /* UIView+Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Constraints.swift"; sourceTree = "<group>"; };
 		3F478ECE29DB474E00F6D39E /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		3F478ED029DB476500F6D39E /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
@@ -149,7 +146,6 @@
 		899E086C2B150AF90048FB91 /* PutFavoritesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutFavoritesRequest.swift; sourceTree = "<group>"; };
 		899E086E2B150C100048FB91 /* AuthorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorModel.swift; sourceTree = "<group>"; };
 		899E08702B150C500048FB91 /* FavoritesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesModel.swift; sourceTree = "<group>"; };
-		899E08722B150DC80048FB91 /* ExampleNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleNetworkModel.swift; sourceTree = "<group>"; };
 		899E08742B150F130048FB91 /* GetNFTByIdRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetNFTByIdRequest.swift; sourceTree = "<group>"; };
 		899E08762B150F600048FB91 /* GetFavoritesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetFavoritesRequest.swift; sourceTree = "<group>"; };
 		899E08782B150FE80048FB91 /* GetUserByIdRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUserByIdRequest.swift; sourceTree = "<group>"; };
@@ -245,7 +241,6 @@
 		0CFCB7472A7808870009A829 /* Catalog */ = {
 			isa = PBXGroup;
 			children = (
-				0CFCB7482A7808900009A829 /* TestCatalogController.swift */,
 			);
 			path = Catalog;
 			sourceTree = "<group>";
@@ -481,7 +476,6 @@
 				89CB727E2B0A5F7100E2ED39 /* AuthorNetworkModel.swift */,
 				899E08702B150C500048FB91 /* FavoritesModel.swift */,
 				89A85A722B0F5BA3007068C9 /* FavoritesNetworkModel.swift */,
-				899E08722B150DC80048FB91 /* ExampleNetworkModel.swift */,
 			);
 			path = "Epic Profile";
 			sourceTree = "<group>";
@@ -788,7 +782,6 @@
 				0CFCB7422A78013E0009A829 /* NFTModel.swift in Sources */,
 				899E08592B14FB9D0048FB91 /* TextField.swift in Sources */,
 				0CF2C2DD2A783CE600FDC837 /* ErrorView.swift in Sources */,
-				899E08732B150DC80048FB91 /* ExampleNetworkModel.swift in Sources */,
 				89A85A832B0F79EF007068C9 /* FavoritesViewController.swift in Sources */,
 				3F68069B29CBBAF100B4F915 /* ProductDetailsTableViewController.swift in Sources */,
 				3F6806D529CBBEC700B4F915 /* NetworkTask.swift in Sources */,
@@ -810,7 +803,6 @@
 				0CF2C2E12A784C7000FDC837 /* LinePageControl.swift in Sources */,
 				3F6806D329CBBE9600B4F915 /* NetworkRequest.swift in Sources */,
 				890140F72AFEAEE90031A22D /* ProfileViewModel.swift in Sources */,
-				0CFCB7492A7808900009A829 /* TestCatalogController.swift in Sources */,
 				89CB727A2B0A561900E2ED39 /* FavoriteButton.swift in Sources */,
 				899E086D2B150AF90048FB91 /* PutFavoritesRequest.swift in Sources */,
 				3F6806D129CBBE6B00B4F915 /* NetworkClient.swift in Sources */,
