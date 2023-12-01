@@ -141,7 +141,7 @@ final class EditProfileView: UIView {
         self.viewController = viewController
         self.viewModel = viewModel
         super.init(frame: frame)
-
+        
         self.backgroundColor = .screenBackground
         setupConstraints()
         getData()
@@ -270,54 +270,54 @@ final class EditProfileView: UIView {
             $0.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview($0)
         }
-            NSLayoutConstraint.activate([
-                // кнопка закрыть
-                closeButton.heightAnchor.constraint(equalToConstant: 42),
-                closeButton.widthAnchor.constraint(equalToConstant: 42),
-                closeButton.topAnchor.constraint(equalTo: topAnchor, constant: 30),
-                closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-                // аватарка профиля
-                avatarImage.heightAnchor.constraint(equalToConstant: 70),
-                avatarImage.widthAnchor.constraint(equalToConstant: 70),
-                avatarImage.topAnchor.constraint(equalTo: topAnchor, constant: 94),
-                avatarImage.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
-                // смена аватарки
-                changeAvatarLabel.heightAnchor.constraint(equalToConstant: 70),
-                changeAvatarLabel.widthAnchor.constraint(equalToConstant: 70),
-                changeAvatarLabel.topAnchor.constraint(equalTo: topAnchor, constant: 94),
-                changeAvatarLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
-                // лейбл "Загрузить изображение"
-                avatarUpdateURLLabel.topAnchor.constraint(equalTo: changeAvatarLabel.bottomAnchor, constant: 4),
-                avatarUpdateURLLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-                avatarUpdateURLLabel.heightAnchor.constraint(equalToConstant: 44),
-                avatarUpdateURLLabel.widthAnchor.constraint(equalToConstant: 250),
-                // лейбл "Имя"
-                nameLabel.topAnchor.constraint(equalTo: avatarImage.bottomAnchor, constant: 24),
-                nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-                // поле для редактирования юзернейма
-                nameTextField.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
-                nameTextField.heightAnchor.constraint(equalToConstant: 46),
-                nameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-                nameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-                // лейбл "Описание"
-                descriptionLabel.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 22),
-                descriptionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-                // поле редактирования текста описания
-                descriptionTextView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 8),
-                descriptionTextView.heightAnchor.constraint(equalToConstant: 132),
-                descriptionTextView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-                descriptionTextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-                // лейбл "Сайт"
-                websiteLabel.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: 24),
-                websiteLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-                // поле редактирования веб-сайта
-                websiteTextField.topAnchor.constraint(equalTo: websiteLabel.bottomAnchor, constant: 8),
-                websiteTextField.heightAnchor.constraint(equalToConstant: 46),
-                websiteTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-                websiteTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
-            ])
-        }
+        NSLayoutConstraint.activate([
+            // кнопка закрыть
+            closeButton.heightAnchor.constraint(equalToConstant: 42),
+            closeButton.widthAnchor.constraint(equalToConstant: 42),
+            closeButton.topAnchor.constraint(equalTo: topAnchor, constant: 30),
+            closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            // аватарка профиля
+            avatarImage.heightAnchor.constraint(equalToConstant: 70),
+            avatarImage.widthAnchor.constraint(equalToConstant: 70),
+            avatarImage.topAnchor.constraint(equalTo: topAnchor, constant: 94),
+            avatarImage.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
+            // смена аватарки
+            changeAvatarLabel.heightAnchor.constraint(equalToConstant: 70),
+            changeAvatarLabel.widthAnchor.constraint(equalToConstant: 70),
+            changeAvatarLabel.topAnchor.constraint(equalTo: topAnchor, constant: 94),
+            changeAvatarLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
+            // лейбл "Загрузить изображение"
+            avatarUpdateURLLabel.topAnchor.constraint(equalTo: changeAvatarLabel.bottomAnchor, constant: 4),
+            avatarUpdateURLLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            avatarUpdateURLLabel.heightAnchor.constraint(equalToConstant: 44),
+            avatarUpdateURLLabel.widthAnchor.constraint(equalToConstant: 250),
+            // лейбл "Имя"
+            nameLabel.topAnchor.constraint(equalTo: avatarImage.bottomAnchor, constant: 24),
+            nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            // поле для редактирования юзернейма
+            nameTextField.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
+            nameTextField.heightAnchor.constraint(equalToConstant: 46),
+            nameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            nameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            // лейбл "Описание"
+            descriptionLabel.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 22),
+            descriptionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            // поле редактирования текста описания
+            descriptionTextView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 8),
+            descriptionTextView.heightAnchor.constraint(equalToConstant: 132),
+            descriptionTextView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            descriptionTextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            // лейбл "Сайт"
+            websiteLabel.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: 24),
+            websiteLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            // поле редактирования веб-сайта
+            websiteTextField.topAnchor.constraint(equalTo: websiteLabel.bottomAnchor, constant: 8),
+            websiteTextField.heightAnchor.constraint(equalToConstant: 46),
+            websiteTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            websiteTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
+        ])
     }
+}
 
 extension EditProfileView: UITextFieldDelegate, UITextViewDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

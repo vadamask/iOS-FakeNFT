@@ -36,7 +36,7 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
         if badConnection { viewModel.getProfileData() }
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
-
+    
     init(viewModel: ProfileViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)

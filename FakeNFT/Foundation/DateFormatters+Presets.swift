@@ -1,6 +1,6 @@
 import Foundation
 
+//Расширение для создания одного экземпляра DateFormatter для дальнейшего использования в операциях форматирования даты и времени
 extension DateFormatter {
-    // We use static var because creating a dateFormatter is an expensive operation and we should do it once
     static var defaultDateFormatter: ISO8601DateFormatter = ISO8601DateFormatter()
 }

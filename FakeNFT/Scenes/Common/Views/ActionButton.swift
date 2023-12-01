@@ -53,9 +53,10 @@ class ActionButton: UIControl {
     /// - Parameters:
     ///   - title: Заголовок
     ///   - type: Тип кнопки (.primary, .secondary)
-    init(title: String, type: ButtonType) {
+    init(title: String, type: ButtonType, action: ((ActionButton) -> Void)? = nil) {
         self.type = type
         self.title = title
+        self.action = action
         super.init(frame: .zero)
         configure()
         setupViews()

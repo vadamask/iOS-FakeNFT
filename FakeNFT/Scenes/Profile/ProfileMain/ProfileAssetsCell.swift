@@ -42,17 +42,17 @@ final class ProfileAssetsCell: UITableViewCell, ReuseIdentifying {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     func setAssets(label: String?, value: String?) {
         if let label = label { assetLabel.text = label }
         if let value = value { assetValue.text = value }
     }
     
     private func setupConstraint() {
-            [assetLabel, assetValue, disclosureIndicator].forEach {
-                $0.translatesAutoresizingMaskIntoConstraints = false
-                addSubview($0)
-            }
+        [assetLabel, assetValue, disclosureIndicator].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            addSubview($0)
+        }
         
         NSLayoutConstraint.activate([
             // текст ячейки таблицы

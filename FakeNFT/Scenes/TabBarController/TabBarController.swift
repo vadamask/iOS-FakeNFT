@@ -23,7 +23,7 @@ final class TabBarController: UITabBarController {
             image: Asset.profile.image,
             selectedImage: nil
         )
-
+        
         let controllers = [
             profileViewController
         ]
