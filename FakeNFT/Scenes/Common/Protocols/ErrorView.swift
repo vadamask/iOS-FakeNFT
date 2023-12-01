@@ -12,7 +12,7 @@ protocol ErrorView {
 
 extension ErrorView where Self: UIViewController {
     func showError(_ model: ErrorModel) {
-        //let title = L10n.Error.title
+        let title = L10n.Error.title
         let alert = UIAlertController(
             title: title,
             message: model.message,

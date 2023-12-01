@@ -66,7 +66,7 @@ extension MyNFTView: UITableViewDataSource, UITableViewDelegate {
         cell.backgroundColor = .screenBackground
         cell.selectionStyle = .none
         guard let myNFTs = myNFTs,
-              !myNFTs.isEmpty else { return MyNFTCell() }
+        !myNFTs.isEmpty else { return MyNFTCell() }
         
         let myNFT = myNFTs[indexPath.row]
         

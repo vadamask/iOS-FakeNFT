@@ -30,10 +30,11 @@ final class FavoritesView: UIView {
         collectionView.backgroundColor = .screenBackground
         return collectionView
     }()
+    
     // лейбл при отсутствии нфт
     private lazy var emptyLabel: UILabel = {
         let label = UILabel()
-        label.text = L10n.Profile.emptyFavouriteNFTLabel
+        label.text = L10n.Profile.emptyFavouriteNFTLabel // У вас ещё нет избранных NFT
         label.font = .bodyBold17
         label.textColor = .borderColor
         label.translatesAutoresizingMaskIntoConstraints = false

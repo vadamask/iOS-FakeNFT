@@ -10,6 +10,7 @@ import UIKit
 final class FavoritesViewController: UIViewController, UIGestureRecognizerDelegate {
     private let likedIDs: [String]
     private var viewModel: FavoritesViewModelProtocol
+    
     private var badConnection: Bool = false
     // кнопка назад
     private lazy var backButton: UIBarButtonItem = {
@@ -71,7 +72,8 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
         }
     }
     
-    @objc private func didTapBackButton() {
+    @objc
+    private func didTapBackButton() {
         self.navigationController?.popViewController(animated: true)
     }
     

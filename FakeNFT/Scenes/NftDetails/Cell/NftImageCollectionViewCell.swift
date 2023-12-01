@@ -23,14 +23,10 @@ final class NftImageCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         super.init(frame: frame)
 
         contentView.addSubview(scrollView)
-        scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        scrollView.constraintEdges(to: contentView)
 
         scrollView.addSubview(imageView)
-        imageView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
+        imageView.constraintCenters(to: scrollView)
         imageView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
         imageView.heightAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
     }
