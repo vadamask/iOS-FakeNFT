@@ -17,3 +17,13 @@
 "Profile.aboutDeveloper" = "About developer";
 "Profile.noInternet" = "No internet";
 "Profile.priceText" = "Price";
+"Profile.sort" = "Sort";
+"Profile.byPrice" = "By price";
+"Profile.byRaiting" = "By raiting";
+"Profile.byName" = "By name";
+"Profile.close" = "Close";
+"Profile.linkToTheAvatar" = "Link to the avatar";
+"Profile.enterTheLink" = "Enter the link: ";
+"Profile.invalidLink" = "Invalid link";
+"Profile.checkTheLinkFormat" = "Check the link format";
+

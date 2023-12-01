@@ -10,8 +10,14 @@ import Kingfisher
 
 final class FavoritesView: UIView {
     private let viewModel: FavoritesViewModelProtocol
-    private(set) var likedNFTs: [NFTNetworkModel]?
     
+    private(set) var likedNFTs: [NFTNetworkModel]? {
+        didSet {
+            emptyLabel.isHidden = !(likedNFTs?.isEmpty ?? true)
+            favoriteNFTCollection.reloadData()
+        }
+    }
+    // коллекция избранных NFT
     private lazy var favoriteNFTCollection: UICollectionView = {
         let collectionView = UICollectionView(
             frame: .zero,
@@ -21,7 +27,18 @@ final class FavoritesView: UIView {
         collectionView.register(FavoritesCell.self)
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.backgroundColor = .screenBackground
         return collectionView
+    }()
+    
+    // лейбл при отсутствии нфт
+    private lazy var emptyLabel: UILabel = {
+        let label = UILabel()
+        label.text = L10n.Profile.emptyFavouriteNFTLabel // У вас ещё нет избранных NFT
+        label.font = .bodyBold17
+        label.textColor = .borderColor
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     init(frame: CGRect, viewModel: FavoritesViewModelProtocol) {
@@ -29,8 +46,8 @@ final class FavoritesView: UIView {
         self.likedNFTs = viewModel.likedNFTs
         super.init(frame: frame)
         
-        self.backgroundColor = .white
-        setupConstraints()
+        self.backgroundColor = .screenBackground
+        addCollection()
     }
     
     required init?(coder: NSCoder) {
@@ -39,10 +56,11 @@ final class FavoritesView: UIView {
     
     func updateNFT(nfts: [NFTNetworkModel]) {
         self.likedNFTs = nfts
+        addEmptyLabel()
         favoriteNFTCollection.reloadData()
     }
     
-    private func setupConstraints() {
+    private func addCollection() {
         addSubview(favoriteNFTCollection)
         
         NSLayoutConstraint.activate([
@@ -50,6 +68,15 @@ final class FavoritesView: UIView {
             favoriteNFTCollection.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
             favoriteNFTCollection.leadingAnchor.constraint(equalTo: leadingAnchor),
             favoriteNFTCollection.trailingAnchor.constraint(equalTo: trailingAnchor)
+        ])
+    }
+    
+    private func addEmptyLabel() {
+        addSubview(emptyLabel)
+        
+        NSLayoutConstraint.activate([
+            emptyLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            emptyLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
     }
 }
@@ -66,9 +93,8 @@ extension FavoritesView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: FavoritesCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-        cell.backgroundColor = .white
-        guard let
-                likedNFTs = likedNFTs,
+        cell.backgroundColor = .screenBackground
+        guard let likedNFTs = likedNFTs,
               !likedNFTs.isEmpty else { return FavoritesCell() }
         let likedNFT = likedNFTs[indexPath.row]
         

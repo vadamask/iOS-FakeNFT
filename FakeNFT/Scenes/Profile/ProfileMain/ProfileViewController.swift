@@ -9,41 +9,41 @@ import UIKit
 
 final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     private var profileView: ProfileView?
-    private var badConnection: Bool = false
     private var viewModel: ProfileViewModelProtocol
-    // кнопка редактирования
+    private var badConnection: Bool = false
+    
     private lazy var editButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
             image: Asset.editButton.image,
             style: .plain,
             target: self,
             action: #selector(didTapEditButton))
-        button.tintColor = .textPrimary
+        button.tintColor = .borderColor
         return button
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view = profileView
         bind()
+        self.view = profileView
         setupNavBar()
-        view.backgroundColor = .screenBackground
         viewModel.getProfileData()
         navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         if badConnection { viewModel.getProfileData() }
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
-    
-    init(viewModel: ProfileViewModelProtocol) {
+
+    init(viewModel: ProfileViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        self.profileView = ProfileView(frame: .zero, viewModel: viewModel, viewController: self)
+        self.profileView = ProfileView(frame: .zero, viewModel: self.viewModel, viewController: self)
     }
     
-    required init?(coder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -55,6 +55,7 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
     
     private func bind() {
         viewModel.onChange = { [weak self] in
+            self?.badConnection = false
             let view = self?.view as? ProfileView
             view?.updateViews(
                 avatarURL: self?.viewModel.avatarURL,
@@ -65,20 +66,21 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
                 likesCount: "(\(String(self?.viewModel.likes?.count ?? 0)))"
             )
         }
+        
         viewModel.onLoaded = { [weak self] in
             let view = self?.view as? ProfileView
-            view?.initialViewControllers()
+            view?.initiateViewControllers()
         }
         
         viewModel.onError = { [weak self] in
             self?.badConnection = true
-            self?.view = NoContentView(frame: .zero, noContent: .noInternet)
+            self?.view = NoInternetView()
             self?.navigationController?.navigationBar.isHidden = true
         }
     }
     
-    func setupNavBar() {
-        navigationController?.navigationBar.tintColor = .yaBlack
+    private func setupNavBar() {
+        navigationController?.navigationBar.tintColor = .screenBackground
         navigationItem.rightBarButtonItem = editButton
         self.navigationController?.navigationBar.isHidden = false
     }

@@ -18,7 +18,7 @@ final class MyNFTView: UIView {
         tableView.register(MyNFTCell.self)
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = .screenBackground
         tableView.separatorStyle = .none
         tableView.allowsMultipleSelection = false
         tableView.isUserInteractionEnabled = true
@@ -63,14 +63,14 @@ extension MyNFTView: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: MyNFTCell = tableView.dequeueReusableCell()
-        cell.backgroundColor = .white
+        cell.backgroundColor = .screenBackground
         cell.selectionStyle = .none
         guard let myNFTs = myNFTs,
         !myNFTs.isEmpty else { return MyNFTCell() }
         
         let myNFT = myNFTs[indexPath.row]
         
-        let model = MyNFTCell.CellModel(
+        let model = MyNFTCell.Model(
             image: myNFT.images.first ?? "",
             name: myNFT.name,
             rating: myNFT.rating,

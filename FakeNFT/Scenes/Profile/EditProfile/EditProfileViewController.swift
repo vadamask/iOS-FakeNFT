@@ -6,9 +6,8 @@
 //
 
 import UIKit
-
 final class EditProfileViewController: UIViewController {
-    var viewModel: ProfileViewModelProtocol
+    private let viewModel: ProfileViewModelProtocol
     
     override func viewDidLoad() {
         super.viewDidLoad()

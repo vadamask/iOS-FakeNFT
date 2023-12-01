@@ -5,7 +5,7 @@
 //  Created by Ann Goncharova on 21.11.2023.
 //
 
-import Foundation
+import UIKit
 
 protocol FavoritesViewModelProtocol: AnyObject {
     var onChange: (() -> Void)? { get set }
@@ -29,7 +29,7 @@ final class FavoritesViewModel: FavoritesViewModelProtocol {
         }
     }
     
-    init(likedIDs: [String]) {
+    init(likedIDs: [String]){
         self.likedNFTs = []
         getLikedNFTs(likedIDs: likedIDs)
         NotificationCenter.default.addObserver(
@@ -44,18 +44,18 @@ final class FavoritesViewModel: FavoritesViewModelProtocol {
         var loadedNFTs: [NFTNetworkModel] = []
         
         likedIDs.forEach { id in
-            networkClient.send(request: GetMyNFTRequest(id: id, item: .nft), type: NFTNetworkModel.self) { [weak self] result in
+            networkClient.send(request: GetItemByIdRequest(id: id, item: .nft), type: NFTNetworkModel.self) { [weak self] result in
                 DispatchQueue.main.async {
                     switch result {
-                        case .success(let nft):
-                            loadedNFTs.append(nft)
-                            if loadedNFTs.count == likedIDs.count {
-                                self?.likedNFTs? = loadedNFTs
-                                UIBlockingProgressHUD.dismiss()
-                            }
-                        case .failure(let error):
-                            self?.onError?(error)
+                    case .success(let nft):
+                        loadedNFTs.append(nft)
+                        if loadedNFTs.count == likedIDs.count {
+                            self?.likedNFTs? = loadedNFTs
                             UIBlockingProgressHUD.dismiss()
+                        }
+                    case .failure(let error):
+                        self?.onError?(error)
+                        UIBlockingProgressHUD.dismiss()
                     }
                 }
             }
@@ -68,12 +68,12 @@ final class FavoritesViewModel: FavoritesViewModelProtocol {
         networkClient.send(request: request, type: FavoritesNetworkModel.self) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
-                    case .success(_):
-                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "likesUpdated"), object: likedIDs.count)
-                        UIBlockingProgressHUD.dismiss()
-                    case .failure(let error):
-                        self?.onError?(error)
-                        UIBlockingProgressHUD.dismiss()
+                case .success(_):
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "likesUpdated"), object: likedIDs.count)
+                    UIBlockingProgressHUD.dismiss()
+                case .failure(let error):
+                    self?.onError?(error)
+                    UIBlockingProgressHUD.dismiss()
                 }
             }
         }
@@ -103,4 +103,3 @@ final class FavoritesViewModel: FavoritesViewModelProtocol {
         putLikedNFTs(likedIDs: likedIDs)
     }
 }
-

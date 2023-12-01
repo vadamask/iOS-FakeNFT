@@ -11,18 +11,18 @@ protocol ProfileViewModelProtocol: AnyObject {
     var onChange: (() -> Void)? { get set }
     var onLoaded: (() -> Void)? { get set }
     var onError: (() -> Void)? { get set }
-    
     var avatarURL: URL? { get }
     var name: String? { get }
     var description: String? { get }
     var website: String? { get }
-    var likes: [String]? { get }
     var nfts: [String]? { get }
+    var likes: [String]? { get }
     var id: String? { get }
     var error: Error? { get }
     
     func getProfileData()
     func putProfileData(name: String, avatar: String, description: String, website: String, likes: [String])
+    func fillSelfFromResponse(response: ProfileNetworkModel)
 }
 
 final class ProfileViewModel: ProfileViewModelProtocol {
@@ -69,28 +69,30 @@ final class ProfileViewModel: ProfileViewModelProtocol {
             onLoaded?()
         }
     }
+    
     private(set) var id: String?
     private(set) var error: Error?
     
-    init(networkClient: NetworkClient? = nil) {
+    init(networkClient: NetworkClient?) {
         if let networkClient = networkClient { self.networkClient = networkClient }
     }
     
     func getProfileData() {
         UIBlockingProgressHUD.show()
         
-        networkClient.send(request: GetProfileRequest(httpMethod: .get), type: ProfileNetworkModel.self) { [weak self] result in
+        networkClient.send(request: GetProfileRequest(), type: ProfileNetworkModel.self) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                     case .success(let profile):
-                        self?.fillFrom(response: profile)
-                        self?.name = profile.name
-                        self?.nfts = profile.nfts
+                        self?.fillSelfFromResponse(response: profile)
+                        self?.nfts = ["75","76","77","78","79","80","81"]
                         self?.likes = profile.likes
+                        print("Success: \(profile)")
                         UIBlockingProgressHUD.dismiss()
-                    case .failure(let failure):
-                        self?.error = failure
+                    case .failure(let error):
+                        self?.error = error
                         self?.onError?()
+                        print("Failure: \(error)")
                         UIBlockingProgressHUD.dismiss()
                 }
             }
@@ -98,34 +100,37 @@ final class ProfileViewModel: ProfileViewModelProtocol {
     }
     
     func putProfileData(name: String, avatar: String, description: String, website: String, likes: [String]) {
-        UIBlockingProgressHUD.dismiss()
+        UIBlockingProgressHUD.show()
+        
         let request = PutProfileRequest(
             name: name,
             avatar: avatar,
             description: description,
             website: website,
-            likes: likes)
+            likes: likes
+        )
         
         networkClient.send(request: request, type: ProfileNetworkModel.self) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                     case .success(let profile):
-                        self?.fillFrom(response: profile)
+                        self?.fillSelfFromResponse(response: profile)
                         UIBlockingProgressHUD.dismiss()
-                    case .failure(let failure):
-                        self?.error = failure
+                    case .failure(let error):
+                        self?.error = error
                         self?.onError?()
                         UIBlockingProgressHUD.dismiss()
                 }
             }
         }
     }
-    // получение и заполнение данными из сетевого запроса
-    private func fillFrom(response: ProfileNetworkModel){
+    
+    func fillSelfFromResponse(response: ProfileNetworkModel) {
         self.avatarURL = URL(string: response.avatar)
         self.name = response.name
         self.description = response.description
         self.website = response.website
         self.id = response.id
+        self.nfts = response.nfts
     }
 }

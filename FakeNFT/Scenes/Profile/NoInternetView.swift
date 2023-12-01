@@ -7,34 +7,34 @@
 
 import UIKit
 
-final class NoContentView: UIView {
-    private let noContent: NoContent
-    private lazy var noContentLabel: UILabel = {
+final class NoInternetView: UIView {
+    // лейбл показывается при отсутствии интернета
+    private lazy var noInternetLabel: UILabel = {
         let label = UILabel()
-        label.text = L10n.Profile.noInternet
-        label.font = .bodyBold17
-        label.textColor = .textPrimary
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = L10n.Profile.noInternet // "Нет интернета"
+        label.font = UIFont.boldSystemFont(ofSize: 17)
+        label.textColor = .textPrimary
         return label
     }()
     
-    init(frame: CGRect, noContent: NoContent) {
-        self.noContent = noContent
+    override init(frame: CGRect) {
         super.init(frame: .zero)
-        self.backgroundColor = .screenBackground
-        setupConstraints()
+        
+        self.backgroundColor = .textPrimaryInvert
+        addEmptyLabel()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupConstraints() {
-        addSubview(noContentLabel)
+    func addEmptyLabel() {
+        addSubview(noInternetLabel)
         
         NSLayoutConstraint.activate([
-            noContentLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            noContentLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
+            noInternetLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            noInternetLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
     }
 }

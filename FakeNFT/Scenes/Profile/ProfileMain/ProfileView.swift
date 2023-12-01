@@ -25,7 +25,6 @@ final class ProfileView: UIView {
         nil
     ]
     
-    // MARK: - Layout view
     // картинка профиля
     private lazy var avatarImage: UIImageView = {
         let imageView = UIImageView()
@@ -101,7 +100,7 @@ final class ProfileView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func initialViewControllers() {
+    func initiateViewControllers() {
         let myNFTViewController = MyNFTViewController(nftIDs: viewModel.nfts ?? [], likedIDs: viewModel.likes ?? [])
         let favoritesViewController = FavoritesViewController(likedIDs: viewModel.likes ?? [])
         let developersViewController = DevelopersViewController()
@@ -115,7 +114,7 @@ final class ProfileView: UIView {
     
     @objc private func likesUpdated(notification: Notification) {
         guard let likesUpdated = notification.object as? Int else { return }
-        let cell = profileAssetsTable.cellForRow(at: [0,1]) as? ProfileAssetsCell
+        let cell = profileAssetsTable.cellForRow(at: [0, 1]) as? ProfileAssetsCell
         cell?.setAssets(label: nil, value: "(\(likesUpdated))")
     }
     
@@ -129,16 +128,16 @@ final class ProfileView: UIView {
     ) {
         avatarImage.kf.setImage(
             with: avatarURL,
-            placeholder: UIImage(named: "Profile"),
+            placeholder: Asset.profile.image,
             options: [.processor(RoundCornerImageProcessor(cornerRadius: 35))])
         nameLabel.text = userName
         descriptionLabel.text = description
         websiteLabel.text = website
         
-        let myNFTCell = profileAssetsTable.cellForRow(at: [0,0]) as? ProfileAssetsCell
+        let myNFTCell = profileAssetsTable.cellForRow(at: [0, 0]) as? ProfileAssetsCell
         myNFTCell?.setAssets(label: nil, value: nftCount)
         
-        let likesCell = profileAssetsTable.cellForRow(at: [0,1]) as? ProfileAssetsCell
+        let likesCell = profileAssetsTable.cellForRow(at: [0, 1]) as? ProfileAssetsCell
         likesCell?.setAssets(label: nil, value: likesCount)
     }
     
@@ -178,7 +177,6 @@ final class ProfileView: UIView {
     }
 }
 
-// MARK: - Extensions
 // возвращаем кол-во строк в таблице
 extension ProfileView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

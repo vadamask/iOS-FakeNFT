@@ -9,9 +9,8 @@ import UIKit
 
 final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
     private let viewModel: MyNFTViewModelProtocol
-    
-    private let nftsID: [String]
-    private let likedsID: [String]
+    private let nftIDs: [String]
+    private let likedIDs: [String]
     private var badConnection: Bool = false
     // кнопка назад
     private lazy var backButton: UIBarButtonItem = {
@@ -20,19 +19,16 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
             style: .plain,
             target: self,
             action: #selector(didTapBackButton))
-        button.tintColor = .textPrimary
+        button.tintColor = .borderColor
         return button
     }()
     // кнопка сортировки
-    private lazy var sortButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(
-            image: Asset.sortButton.image,
-            style: .plain,
-            target: self,
-            action: #selector(didTapSortButton))
-        button.tintColor = .textPrimary
-        return button
-    }()
+    private lazy var sortButton = UIBarButtonItem(
+        image: Asset.sortButton.image,
+        style: .plain,
+        target: self,
+        action: #selector(didTapSortButton)
+    )
     // лейбл при отсутствии нфт
     private lazy var emptyLabel: UILabel = {
         let label = UILabel()
@@ -43,9 +39,20 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
         return label
     }()
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        bind()
+        setupView()
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        view.backgroundColor = .screenBackground
+        addEdgeSwipeBackGesture()
+
+    }
+    
     init(nftIDs: [String], likedIDs: [String]) {
-        self.nftsID = nftIDs
-        self.likedsID = likedIDs
+        self.nftIDs = nftIDs
+        self.likedIDs = likedIDs
         self.viewModel = MyNFTViewModel(nftIDs: nftIDs, likedIDs: likedIDs)
         super.init(nibName: nil, bundle: nil)
     }
@@ -54,16 +61,8 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        bind()
-        setupView()
-        addEdgeSwipeBackGesture()
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         if let sortOrder = UserDefaults.standard.data(forKey: "sortOrder") {
             let order = try? PropertyListDecoder().decode(MyNFTViewModel.Sort.self, from: sortOrder)
             self.viewModel.sort = order
@@ -73,7 +72,8 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if badConnection { viewModel.getMyNFTs(nftIDs: nftsID) }
+        super.viewDidAppear(animated)
+        if badConnection { viewModel.getMyNFTs(nftIDs: nftIDs) }
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
     
@@ -88,10 +88,10 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
         viewModel.onError = { [weak self] error in
             self?.badConnection = true
             let alert = UIAlertController(
-                title: "Нет интернета",
+                title: L10n.Profile.noInternet,
                 message: error.localizedDescription,
                 preferredStyle: .alert)
-            let action = UIAlertAction(title: "Ok", style: .cancel) { [weak self] _ in
+            let action = UIAlertAction(title: "OK", style: .cancel) { [weak self] _ in
                 self?.navigationController?.popViewController(animated: true)
             }
             alert.addAction(action)
@@ -106,22 +106,23 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
     @objc private func didTapSortButton() {
         let alert = UIAlertController(
             title: nil,
-            message: "Сортировка",
+            message: L10n.Profile.sort, // Сортировка
             preferredStyle: .actionSheet
         )
-        let sortByPriceAction = UIAlertAction(title: "По цене", style: .default) { [weak self] _ in
+                
+        let sortByPriceAction = UIAlertAction(title: L10n.Profile.byPrice, style: .default) { [weak self] _ in
             self?.viewModel.sort = .price
             self?.saveSortOrder(order: .price)
         }
-        let sortByRatingAction = UIAlertAction(title: "По рейтингу", style: .default) { [weak self] _ in
+        let sortByRatingAction = UIAlertAction(title: L10n.Profile.byRaiting, style: .default) { [weak self] _ in
             self?.viewModel.sort = .rating
             self?.saveSortOrder(order: .rating)
         }
-        let sortByNameAction = UIAlertAction(title: "По названию", style: .default) { [weak self] _ in
+        let sortByNameAction = UIAlertAction(title: L10n.Profile.byName, style: .default) { [weak self] _ in
             self?.viewModel.sort = .name
             self?.saveSortOrder(order: .name)
         }
-        let closeAction = UIAlertAction(title: "Закрыть", style: .cancel)
+        let closeAction = UIAlertAction(title: L10n.Profile.close, style: .cancel)
         
         alert.addAction(sortByPriceAction)
         alert.addAction(sortByRatingAction)
@@ -132,12 +133,12 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     private func saveSortOrder(order: MyNFTViewModel.Sort) {
-            let data = try? PropertyListEncoder().encode(order)
-            UserDefaults.standard.set(data, forKey: "sortOrder")
-        }
+        let data = try? PropertyListEncoder().encode(order)
+        UserDefaults.standard.set(data, forKey: "sortOrder")
+    }
     
-    private func setupView() {
-        if nftsID.isEmpty {
+    func setupView() {
+        if nftIDs.isEmpty {
             view.backgroundColor = .screenBackground
             setupNavBar(emptyNFTs: true)
             setupEmptyLabel()
@@ -148,13 +149,13 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func setupNavBar(emptyNFTs: Bool) {
-        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.tintColor = .borderColor
         navigationItem.leftBarButtonItem = backButton
-        view.backgroundColor = .screenBackground
         backButton.accessibilityIdentifier = "backButton"
         if !emptyNFTs {
             navigationItem.rightBarButtonItem = sortButton
-            navigationItem.title = "Мои NFT"
+            navigationItem.title = L10n.Profile.myNFT
+            sortButton.tintColor = .borderColor
         }
     }
     

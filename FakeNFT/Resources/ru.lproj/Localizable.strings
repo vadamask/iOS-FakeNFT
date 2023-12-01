@@ -16,4 +16,13 @@
 "Profile.NFTFavorites" = "Избранные NFT";
 "Profile.aboutDeveloper" = "О разработчике";
 "Profile.noInternet" = "Нет интернета";
+"Profile.sort" = "Сортировка";
 "Profile.priceText" = "Цена";
+"Profile.byPrice" = "По цене";
+"Profile.byRaiting" = "По рейтингу";
+"Profile.byName" = "По названию";
+"Profile.close" = "Закрыть";
+"Profile.linkToTheAvatar" = "Укажите ссылку на аватар";
+"Profile.enterTheLink" = "Введите ссылку: ";
+"Profile.invalidLink" = "Неверная ссылка";
+"Profile.checkTheLinkFormat" = "Проверьте формат ссылки";
