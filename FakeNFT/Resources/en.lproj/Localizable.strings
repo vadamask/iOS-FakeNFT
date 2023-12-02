@@ -1,10 +1,8 @@
 "Tab.catalog" = "Catalog";
 "Catalog.openNft" = "Open Nft";
-"Error.network" = "A network error has occurred";
-"Error.unknown" = "An unknown error has occurred";
-"Error.repeat" = "Repeat";
-"Error.title" = "Error";
 "Tab.profile" = "Profile";
+
+// Profile
 "Profile.changePhoto" = "Change picture";
 "Profile.loadPicture" = "Load picture";
 "Profile.emptyNFTLabel" = "You don't have any NFT favorites yet";
@@ -26,4 +24,3 @@
 "Profile.enterTheLink" = "Enter the link: ";
 "Profile.invalidLink" = "Invalid link";
 "Profile.checkTheLinkFormat" = "Check the link format";
-

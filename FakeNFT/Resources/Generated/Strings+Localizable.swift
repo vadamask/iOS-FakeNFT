@@ -14,16 +14,6 @@ internal enum L10n {
     /// Открыть Nft
     internal static let openNft = L10n.tr("Localizable", "Catalog.openNft", fallback: "Открыть Nft")
   }
-  internal enum Error {
-    /// Произошла ошибка сети
-    internal static let network = L10n.tr("Localizable", "Error.network", fallback: "Произошла ошибка сети")
-    /// Повторить
-    internal static let `repeat` = L10n.tr("Localizable", "Error.repeat", fallback: "Повторить")
-    /// Ошибка
-    internal static let title = L10n.tr("Localizable", "Error.title", fallback: "Ошибка")
-    /// Произошла неизвестная ошибка
-    internal static let unknown = L10n.tr("Localizable", "Error.unknown", fallback: "Произошла неизвестная ошибка")
-  }
   internal enum Profile {
     /// О разработчике
     internal static let aboutDeveloper = L10n.tr("Localizable", "Profile.aboutDeveloper", fallback: "О разработчике")
