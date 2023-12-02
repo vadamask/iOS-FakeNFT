@@ -58,7 +58,7 @@ final class CartCoordinator: Coordinator {
         let controller = parentCoordinator?
             .navigationController
             .viewControllers.first as? TabBarController
-        controller?.selectedIndex = 0
+        controller?.selectedIndex = 1
         controller?.tabBar.isHidden = false
         navigationController.popToRootViewController(animated: false)
         navigationController.dismiss(animated: true)

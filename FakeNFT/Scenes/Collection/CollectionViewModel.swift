@@ -120,6 +120,7 @@ final class CollectionViewModel: CollectionViewModelProtocol {
                 isLiked ? likes.append(id) : likes.removeAll { $0 == id }
                 let profileDto = ProfileDto(
                     name: profile.name,
+                    avatar: profile.avatar.description,
                     description: profile.description,
                     website: profile.website.description,
                     likes: likes

@@ -22,6 +22,19 @@ final class TabBarCoordinator: Coordinator {
 
     private func initializeTabBar() {
         let tabBarController = TabBarController()
+        
+        // MARK: Profile
+
+        let profileNavigationController = UINavigationController()
+        let profileCoordinator = ProfileCoordinator(navigationController: profileNavigationController)
+        profileCoordinator.parentCoordinator = self
+
+        let profileTabBarItem = UITabBarItem(
+            title: L10n.Tab.profile,
+            image: Asset.profile.image,
+            tag: 0
+        )
+        profileNavigationController.tabBarItem = profileTabBarItem
 
         // MARK: Catalog
 
@@ -32,7 +45,7 @@ final class TabBarCoordinator: Coordinator {
         let catalogTabBarItem = UITabBarItem(
             title: L10n.Tab.catalog,
             image: Asset.catalog.image,
-            tag: 0
+            tag: 1
         )
         catalogNavigationController.tabBarItem = catalogTabBarItem
 
@@ -45,7 +58,7 @@ final class TabBarCoordinator: Coordinator {
         let cartTabBarItem = UITabBarItem(
             title: L10n.Tab.cart,
             image: Asset.cart.image,
-            tag: 1
+            tag: 2
         )
         cartNavigationController.tabBarItem = cartTabBarItem
         
@@ -58,24 +71,27 @@ final class TabBarCoordinator: Coordinator {
         let statisticsTabBarItem = UITabBarItem(
             title: L10n.Tab.statistics,
             image: Asset.statistics.image,
-            tag: 2
+            tag: 3
         )
         statisticsNavigationController.tabBarItem = statisticsTabBarItem
 
         tabBarController.viewControllers = [
+            profileNavigationController,
             catalogNavigationController,
             cartNavigationController,
             statisticsNavigationController
         ]
-        tabBarController.selectedIndex = 0
+        tabBarController.selectedIndex = 1
 
         navigationController.pushViewController(tabBarController, animated: true)
         navigationController.setNavigationBarHidden(true, animated: true)
 
+        parentCoordinator?.children.append(profileCoordinator)
         parentCoordinator?.children.append(catalogCoordinator)
         parentCoordinator?.children.append(cartCoordinator)
         parentCoordinator?.children.append(statisticsCoordinator)
 
+        profileCoordinator.start()
         catalogCoordinator.start()
         statisticsCoordinator.start()
         cartCoordinator.start()

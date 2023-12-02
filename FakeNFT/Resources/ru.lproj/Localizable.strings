@@ -11,6 +11,7 @@
 "Tab.catalog" = "Каталог";
 "Tab.statistics" = "Статистика";
 "Tab.cart" = "Корзина";
+"Tab.profile" = "Профиль";
 
 // Catalog
 "Catalog.sorting" = "Сортировка";
@@ -63,3 +64,26 @@
 "cart.delete_screen.approveDelete" = "Вы уверены, что хотите удалить объект из корзины?";
 "cart.delete_screen.delete" = "Удалить";
 "cart.delete_screen.goBack" = "Вернуться";
+
+// Profile
+"Profile.changePhoto" = "Сменить фото";
+"Profile.loadPicture" = "Загрузить изображение";
+"Profile.emptyNFTLabel" = "У вас ещё нет NFT";
+"Profile.emptyFavouriteNFTLabel" = "У Вас ещё нет избранных NFT";
+"Profile.username" = "Имя";
+"Profile.description" = "Описание";
+"Profile.website" = "Сайт";
+"Profile.myNFT" = "Мои NFT";
+"Profile.NFTFavorites" = "Избранные NFT";
+"Profile.aboutDeveloper" = "О разработчике";
+"Profile.noInternet" = "Нет интернета";
+"Profile.sort" = "Сортировка";
+"Profile.priceText" = "Цена";
+"Profile.byPrice" = "По цене";
+"Profile.byRaiting" = "По рейтингу";
+"Profile.byName" = "По названию";
+"Profile.close" = "Закрыть";
+"Profile.linkToTheAvatar" = "Укажите ссылку на аватар";
+"Profile.enterTheLink" = "Введите ссылку: ";
+"Profile.invalidLink" = "Неверная ссылка";
+"Profile.checkTheLinkFormat" = "Проверьте формат ссылки";

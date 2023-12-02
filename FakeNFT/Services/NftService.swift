@@ -6,6 +6,8 @@ typealias OrderCompletion = (Result<Order, Error>) -> Void
 typealias CurrencyCompletion = (Result<[Currency], Error>) -> Void
 typealias PaymentCompletion = (Result<OrderPayment, Error>) -> Void
 typealias DeleteCompletion = (Result<Void, Error>) -> Void
+typealias ProfileCompletion = (Result<Profile, Error>) -> Void
+typealias UserCompletion = (Result<User, Error>) -> Void
 
 protocol NftService {
     func loadNft(id: String, completion: @escaping NftCompletion)
@@ -14,6 +16,11 @@ protocol NftService {
     func verifyPayment(with currencyID: String, completion: @escaping PaymentCompletion)
     func clearOrder(_ dto: OrderDto, completion: @escaping DeleteCompletion)
     func deleteNft(_ id: String, from ids: [String], completion: @escaping DeleteCompletion)
+    
+    func loadProfile(completion: @escaping ProfileCompletion)
+    func updateProfile(nftProfileDto: ProfileDto, completion: @escaping ProfileCompletion)
+    func updateLikes(likesProfileDto: ProfileLikesDto, completion: @escaping ProfileCompletion)
+    
     func loadNftCollections() -> AnyPublisher<[Collection], NetworkClientError>
     func loadCollection(by id: String) -> AnyPublisher<Collection, NetworkClientError>
     func loadNft(by id: String) -> AnyPublisher<Nft, NetworkClientError>
@@ -22,9 +29,11 @@ protocol NftService {
     func loadOrder(by id: String) -> AnyPublisher<Order, NetworkClientError>
     func updateOrder(id: String, nftOrderDto: OrderDto) -> AnyPublisher<Order, NetworkClientError>
     func updateProfile(nftProfileDto: ProfileDto) -> AnyPublisher<Profile, NetworkClientError>
+    func loadUser(by id: String, completion: @escaping UserCompletion)
 }
 
 final class NftServiceImpl: NftService {
+    
     private let networkClient: NetworkClient
     private let storage: NftStorage
 
@@ -111,6 +120,54 @@ final class NftServiceImpl: NftService {
             }
         }
     }
+    
+    func loadProfile(completion: @escaping ProfileCompletion) {
+        networkClient.send(request: ProfileRequest(), type: Profile.self) { result in
+            switch result {
+                case .success(let profile):
+                    completion(.success(profile))
+                case .failure(let error):
+                    completion(.failure(error))
+            }
+        }
+    }
+    
+    func loadUser(by id: String, completion: @escaping UserCompletion) {
+        networkClient.send(request: UserByIdRequest(id: id), type: User.self) { result in
+            switch result {
+                case .success(let user):
+                    completion(.success(user))
+                case .failure(let error):
+                    completion(.failure(error))
+            }
+        }
+    }
+    
+    func updateProfile(nftProfileDto: ProfileDto, completion: @escaping ProfileCompletion) {
+        let request = ProfileRequest(httpMethod: .put, dto: nftProfileDto)
+        networkClient.send(request: request, type: Profile.self) { result in
+            switch result {
+                case .success(let profile):
+                    completion(.success(profile))
+                case .failure(let error):
+                    completion(.failure(error))
+            }
+        }
+    }
+    
+    func updateLikes(likesProfileDto: ProfileLikesDto, completion: @escaping ProfileCompletion) {
+        let request = ProfileRequest(httpMethod: .put, dto: likesProfileDto)
+        networkClient.send(request: request, type: Profile.self) { result in
+            switch result {
+                case .success(let profile):
+                    completion(.success(profile))
+                case .failure(let error):
+                    completion(.failure(error))
+            }
+        }
+    }
+    
+    
 
     func loadNftCollections() -> AnyPublisher<[Collection], NetworkClientError> {
         let request = NftCollectionRequest()

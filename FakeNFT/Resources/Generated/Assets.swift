@@ -30,7 +30,10 @@ internal enum Asset {
   internal static let closeButton = ImageAsset(name: "closeButton")
   internal static let deleteCartButton = ImageAsset(name: "deleteCartButton")
   internal static let editButton = ImageAsset(name: "editButton")
+  internal static let heartEmpty = ImageAsset(name: "heartEmpty")
+  internal static let heartFilled = ImageAsset(name: "heartFilled")
   internal static let sortButton = ImageAsset(name: "sortButton")
+  internal static let userImageMock = ImageAsset(name: "userImageMock")
   internal static let onboarding1BG = ImageAsset(name: "Onboarding1_BG")
   internal static let onboarding2BG = ImageAsset(name: "Onboarding2_BG")
   internal static let onboarding3BG = ImageAsset(name: "Onboarding3_BG")
@@ -42,6 +45,7 @@ internal enum Asset {
   internal static let ratingInactive = ImageAsset(name: "ratingInactive")
   internal static let cart = ImageAsset(name: "Cart")
   internal static let catalog = ImageAsset(name: "Catalog")
+  internal static let profile = ImageAsset(name: "Profile")
   internal static let statistics = ImageAsset(name: "Statistics")
   internal static let logo = ImageAsset(name: "logo")
 }

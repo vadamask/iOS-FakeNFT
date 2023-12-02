@@ -11,6 +11,7 @@
 "Tab.catalog" = "Catalog";
 "Tab.statistics" = "Statistics";
 "Tab.cart" = "Cart";
+"Tab.profile" = "Profile";
 
 // Catalog
 "Catalog.sorting" = "Sorting";
@@ -63,3 +64,26 @@
 "cart.delete_screen.approveDelete" = "Are you sure you want to remove the item from the cart?";
 "cart.delete_screen.delete" = "Delete";
 "cart.delete_screen.goBack" = "Return";
+
+// Profile
+"Profile.changePhoto" = "Change picture";
+"Profile.loadPicture" = "Load picture";
+"Profile.emptyNFTLabel" = "You don't have any NFT favorites yet";
+"Profile.emptyFavouriteNFTLabel" = "You don't have NFT yet";
+"Profile.username" = "Name";
+"Profile.description" = "Description";
+"Profile.website" = "Website";
+"Profile.myNFT" = "My NFT";
+"Profile.NFTFavorites" = "NFT Favorites";
+"Profile.aboutDeveloper" = "About developer";
+"Profile.noInternet" = "No internet";
+"Profile.priceText" = "Price";
+"Profile.sort" = "Sort";
+"Profile.byPrice" = "By price";
+"Profile.byRaiting" = "By raiting";
+"Profile.byName" = "By name";
+"Profile.close" = "Close";
+"Profile.linkToTheAvatar" = "Link to the avatar";
+"Profile.enterTheLink" = "Enter the link: ";
+"Profile.invalidLink" = "Invalid link";
+"Profile.checkTheLinkFormat" = "Check the link format";

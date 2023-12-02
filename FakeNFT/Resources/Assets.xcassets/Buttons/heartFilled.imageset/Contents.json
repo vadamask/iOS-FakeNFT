@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Dark@1x.png",
+      "filename" : "heartFilled@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Dark-1.png",
+      "filename" : "heartFilled@2x.png.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Dark.png",
+      "filename" : "heartFilled@3x.png.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
@@ -19,8 +19,5 @@
   "info" : {
     "author" : "xcode",
     "version" : 1
-  },
-  "properties" : {
-    "template-rendering-intent" : "template"
   }
 }
