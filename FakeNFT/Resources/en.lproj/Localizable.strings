@@ -1,6 +1,69 @@
+// Onboarding
+"Onboarding.title1" = "Explore";
+"Onboarding.title2" = "Collect";
+"Onboarding.title3" = "Compete";
+"Onboarding.description1" = "Join and discover a new world of unique NFT for collectors";
+"Onboarding.description2" = "Replenish your collection with exclusive pictures created by the neural network!";
+"Onboarding.description3" = "See the statistics of others and show everyone that you have the most valuable collection";
+"Onboarding.button" = "What's inside?";
+
+// TabBar
 "Tab.catalog" = "Catalog";
-"Catalog.openNft" = "Open Nft";
+"Tab.statistics" = "Statistics";
+"Tab.cart" = "Cart";
 "Tab.profile" = "Profile";
+
+// Catalog
+"Catalog.sorting" = "Sorting";
+"Catalog.sortByName" = "By name";
+"Catalog.sortByNftCount" = "By NFT count";
+
+// Общие
+"close" = "Close";
+
+// Errors
+"error.network" = "A network error has occurred";
+"error.unknown" = "An unknown error has occurred";
+"error.repeat" = "Repeat";
+"error.title" = "Error";
+"error.unableToLoad" = "Unable to load";
+"error.urlSessionError" = "UrlSessionError: A connection error occurred";
+"error.parsingError" = "Parsing error: Error processing data from the server";
+"error.invalidRequest" = "Incorrect request";
+"error.errorJsonLoad" = "Unable to read JSON file";
+"error.insufficientFunds" = "Failed to make payment";
+"error.cancel" = "Cancel";
+"error.ok" = "Ok";
+
+// Statistics
+"Sort.title" = "Sort by";
+"Sort.byName" = "Name";
+"Sort.byRating" = "Rating";
+"Sort.close" = "Close";
+"User.visitWebSite" = "Go to website";
+"User.nftCollection" = "NFT collection";
+"User.noNftError" = "User does not have NFT";
+
+// Cart
+"cart.main_screen.buyNft" = "To pay";
+"cart.main_screen.price" = "Price";
+"cart.main_screen.empty_state" = "Cart is empty";
+"cart.main_screen.alert_controller.title" = "Sorting";
+"cart.main_screen.alert_controller.close" = "Close";
+"cart.main_screen.sort_option.price" = "By price";
+"cart.main_screen.sort_option.rating" = "By rating";
+"cart.main_screen.sort_option.name" = "By name";
+
+"cart.payment_screen.top_bar_title" = "Select a payment method";
+"cart.payment_screen.pay_button" = "Pay";
+"cart.payment_screen.terms" = "By making a purchase, you agree to the\nTerms of use";
+
+"cart.successful_payment.backToCatatlog" = "Return to the catalog";
+"cart.successful_payment.label" = "Success! The payment has passed, congratulations on your purchase!";
+
+"cart.delete_screen.approveDelete" = "Are you sure you want to remove the item from the cart?";
+"cart.delete_screen.delete" = "Delete";
+"cart.delete_screen.goBack" = "Return";
 
 // Profile
 "Profile.changePhoto" = "Change picture";

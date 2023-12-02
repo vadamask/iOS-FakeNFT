@@ -10,7 +10,7 @@ import UIKit
 protocol FavoritesViewModelProtocol: AnyObject {
     var onChange: (() -> Void)? { get set }
     var onError: ((_ error: Error) -> Void)? { get set }
-    var likedNFTs: [NFTNetworkModel]? { get }
+    var likedNFTs: [Nft]? { get }
     
     func getLikedNFTs(likedIDs: [String])
     func putLikedNFTs(likedIDs: [String])
@@ -21,15 +21,15 @@ final class FavoritesViewModel: FavoritesViewModelProtocol {
     var onChange: (() -> Void)?
     var onError: ((_ error: Error) -> Void)?
     
-    private let networkClient = DefaultNetworkClient()
+    private let service = ServicesAssembly.shared.nftService
     
-    private(set) var likedNFTs: [NFTNetworkModel]? {
+    private(set) var likedNFTs: [Nft]? {
         didSet {
             onChange?()
         }
     }
     
-    init(likedIDs: [String]){
+    init(likedIDs: [String]) {
         self.likedNFTs = []
         getLikedNFTs(likedIDs: likedIDs)
         NotificationCenter.default.addObserver(
@@ -41,12 +41,10 @@ final class FavoritesViewModel: FavoritesViewModelProtocol {
     }
     
     func getLikedNFTs(likedIDs: [String]) {
-        var loadedNFTs: [NFTNetworkModel] = []
-        
+        var loadedNFTs: [Nft] = []
         likedIDs.forEach { id in
-            networkClient.send(request: GetItemByIdRequest(id: id, item: .nft), type: NFTNetworkModel.self) { [weak self] result in
-                DispatchQueue.main.async {
-                    switch result {
+            service.loadNft(id: id) { [weak self] result in
+                switch result {
                     case .success(let nft):
                         loadedNFTs.append(nft)
                         if loadedNFTs.count == likedIDs.count {
@@ -57,24 +55,23 @@ final class FavoritesViewModel: FavoritesViewModelProtocol {
                         self?.onError?(error)
                         UIBlockingProgressHUD.dismiss()
                     }
-                }
             }
         }
     }
     
     func putLikedNFTs(likedIDs: [String]) {
-        let request = PutFavoritesRequest(likes: likedIDs)
+        let profileLikesDto = ProfileLikesDto(likes: likedIDs)
         UIBlockingProgressHUD.show()
-        networkClient.send(request: request, type: FavoritesNetworkModel.self) { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(_):
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "likesUpdated"), object: likedIDs.count)
-                    UIBlockingProgressHUD.dismiss()
-                case .failure(let error):
-                    self?.onError?(error)
-                    UIBlockingProgressHUD.dismiss()
-                }
+        service.updateLikes(likesProfileDto: profileLikesDto) { [weak self] result in
+            switch result {
+            case .success(let result):
+                    print("like success", result.likes)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "likesUpdated"), object: likedIDs.count)
+                UIBlockingProgressHUD.dismiss()
+            case .failure(let error):
+                    print("like failure", error)
+                self?.onError?(error)
+                UIBlockingProgressHUD.dismiss()
             }
         }
     }
@@ -91,7 +88,7 @@ final class FavoritesViewModel: FavoritesViewModelProtocol {
     @objc
     private func myNFTliked(notification: Notification) {
         guard var likedNFTs = likedNFTs,
-              let myNFTid = notification.object as? NFTNetworkModel else { return }
+              let myNFTid = notification.object as? Nft else { return }
         if !likedNFTs.contains(where: { $0.id == myNFTid.id }) {
             likedNFTs.append(myNFTid)
         } else {

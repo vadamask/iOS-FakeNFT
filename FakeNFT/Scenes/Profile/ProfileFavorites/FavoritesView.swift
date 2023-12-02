@@ -11,7 +11,7 @@ import Kingfisher
 final class FavoritesView: UIView {
     private let viewModel: FavoritesViewModelProtocol
     
-    private(set) var likedNFTs: [NFTNetworkModel]? {
+    private(set) var likedNFTs: [Nft]? {
         didSet {
             emptyLabel.isHidden = !(likedNFTs?.isEmpty ?? true)
             favoriteNFTCollection.reloadData()
@@ -54,7 +54,7 @@ final class FavoritesView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func updateNFT(nfts: [NFTNetworkModel]) {
+    func updateNFT(nfts: [Nft]) {
         self.likedNFTs = nfts
         addEmptyLabel()
         favoriteNFTCollection.reloadData()
@@ -99,7 +99,7 @@ extension FavoritesView: UICollectionViewDataSource {
         let likedNFT = likedNFTs[indexPath.row]
         
         let model = FavoritesCell.Model(
-            image: likedNFT.images.first ?? "",
+            image: likedNFT.images.first?.description ?? "",
             name: likedNFT.name,
             rating: likedNFT.rating,
             price: likedNFT.price,

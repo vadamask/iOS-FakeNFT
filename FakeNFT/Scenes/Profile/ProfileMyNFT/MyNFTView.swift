@@ -10,7 +10,7 @@ import UIKit
 
 final class MyNFTView: UIView {
     private let viewModel: MyNFTViewModelProtocol
-    private(set) var myNFTs: [NFTNetworkModel]?
+    private(set) var myNFTs: [Nft]?
     
     private lazy var myNFTTable: UITableView = {
         let tableView = UITableView()
@@ -27,7 +27,7 @@ final class MyNFTView: UIView {
     
     init(frame: CGRect, viewModel: MyNFTViewModelProtocol) {
         self.viewModel = viewModel
-        self.myNFTs = viewModel.myNFTs
+        //self.myNFTs = viewModel.myNFTs
         super.init(frame: .zero)
         
         self.backgroundColor = .screenBackground
@@ -38,7 +38,7 @@ final class MyNFTView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func updateNFT(nfts: [NFTNetworkModel]) {
+    func updateNFT(nfts: [Nft]) {
         self.myNFTs = nfts
         myNFTTable.reloadData()
     }
@@ -65,13 +65,13 @@ extension MyNFTView: UITableViewDataSource, UITableViewDelegate {
         let cell: MyNFTCell = tableView.dequeueReusableCell()
         cell.backgroundColor = .screenBackground
         cell.selectionStyle = .none
-        guard let myNFTs = myNFTs,
+        guard let myNFTs = viewModel.myNFTs,
         !myNFTs.isEmpty else { return MyNFTCell() }
         
         let myNFT = myNFTs[indexPath.row]
         
         let model = MyNFTCell.Model(
-            image: myNFT.images.first ?? "",
+            image: myNFT.images.first?.description ?? "",
             name: myNFT.name,
             rating: myNFT.rating,
             author: viewModel.authors[myNFT.author] ?? "",
@@ -82,7 +82,7 @@ extension MyNFTView: UITableViewDataSource, UITableViewDelegate {
         
         cell.tapAction = { [weak self] in
             let tappedNFT = self?.myNFTs?.filter({ $0.id == myNFT.id }).first
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "myNFTliked"), object: tappedNFT)
+           
             if let tappedNFTid = tappedNFT?.id { self?.viewModel.toggleLikeFromMyNFT(id: tappedNFTid) }
         }
         cell.configureCell(with: model)

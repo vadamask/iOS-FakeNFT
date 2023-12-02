@@ -42,12 +42,11 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        bind()
         setupView()
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         view.backgroundColor = .screenBackground
         addEdgeSwipeBackGesture()
-
+        bind()
     }
     
     init(nftIDs: [String], likedIDs: [String]) {

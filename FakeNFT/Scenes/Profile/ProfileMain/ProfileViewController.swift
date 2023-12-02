@@ -24,17 +24,18 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bind()
         self.view = profileView
         setupNavBar()
-        viewModel.getProfileData()
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        bind()
+        //viewModel.getProfileData()
+        //navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if badConnection { viewModel.getProfileData() }
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        //if badConnection { viewModel.getProfileData() }
+        viewModel.getProfileData()
+        //navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
 
     init(viewModel: ProfileViewModel) {
@@ -56,8 +57,8 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
     private func bind() {
         viewModel.onChange = { [weak self] in
             self?.badConnection = false
-            let view = self?.view as? ProfileView
-            view?.updateViews(
+            
+            self?.profileView?.updateViews(
                 avatarURL: self?.viewModel.avatarURL,
                 userName: self?.viewModel.name,
                 description: self?.viewModel.description,
@@ -65,11 +66,6 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
                 nftCount: "(\(String(self?.viewModel.nfts?.count ?? 0)))",
                 likesCount: "(\(String(self?.viewModel.likes?.count ?? 0)))"
             )
-        }
-        
-        viewModel.onLoaded = { [weak self] in
-            let view = self?.view as? ProfileView
-            view?.initiateViewControllers()
         }
         
         viewModel.onError = { [weak self] in

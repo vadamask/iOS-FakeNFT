@@ -25,10 +25,10 @@ internal typealias AssetImageTypeAlias = ImageAsset.Image
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 internal enum Asset {
   internal static let accentColor = ColorAsset(name: "AccentColor")
+  internal static let addCartButton = ImageAsset(name: "addCartButton")
   internal static let backButton = ImageAsset(name: "backButton")
   internal static let closeButton = ImageAsset(name: "closeButton")
   internal static let deleteCartButton = ImageAsset(name: "deleteCartButton")
-  internal static let deleteFromCartButton = ImageAsset(name: "deleteFromCartButton")
   internal static let editButton = ImageAsset(name: "editButton")
   internal static let heartEmpty = ImageAsset(name: "heartEmpty")
   internal static let heartFilled = ImageAsset(name: "heartFilled")
@@ -37,13 +37,16 @@ internal enum Asset {
   internal static let onboarding1BG = ImageAsset(name: "Onboarding1_BG")
   internal static let onboarding2BG = ImageAsset(name: "Onboarding2_BG")
   internal static let onboarding3BG = ImageAsset(name: "Onboarding3_BG")
+  internal static let approveDeleteNft = ImageAsset(name: "approveDeleteNft")
   internal static let successfulPayment = ImageAsset(name: "successfulPayment")
   internal static let liked = ImageAsset(name: "liked")
   internal static let notLiked = ImageAsset(name: "notLiked")
   internal static let ratingActive = ImageAsset(name: "ratingActive")
   internal static let ratingInactive = ImageAsset(name: "ratingInactive")
+  internal static let cart = ImageAsset(name: "Cart")
   internal static let catalog = ImageAsset(name: "Catalog")
   internal static let profile = ImageAsset(name: "Profile")
+  internal static let statistics = ImageAsset(name: "Statistics")
   internal static let logo = ImageAsset(name: "logo")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name

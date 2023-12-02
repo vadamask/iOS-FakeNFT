@@ -156,7 +156,7 @@ extension MyNFTCell {
         let name: String
         let rating: Int
         let author: String
-        let price: Float
+        let price: Double
         let isFavorite: Bool
         let id: String
     }

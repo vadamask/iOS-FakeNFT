@@ -1,6 +1,69 @@
+// Onboarding
+"Onboarding.title1" = "Исследуйте";
+"Onboarding.title2" = "Коллекционируйте";
+"Onboarding.title3" = "Состязайтесь";
+"Onboarding.description1" = "Присоединяйтесь и откройте новый мир уникальных NFT для коллекционеров";
+"Onboarding.description2" = "Пополняйте свою коллекцию эксклюзивными картинками, созданными нейросетью!";
+"Onboarding.description3" = "Смотрите статистику других и покажите всем, что у вас самая ценная коллекция";
+"Onboarding.button" = "Что внутри?";
+
+// TabBar
 "Tab.catalog" = "Каталог";
-"Catalog.openNft" = "Открыть Nft";
+"Tab.statistics" = "Статистика";
+"Tab.cart" = "Корзина";
 "Tab.profile" = "Профиль";
+
+// Catalog
+"Catalog.sorting" = "Сортировка";
+"Catalog.sortByName" = "По названию";
+"Catalog.sortByNftCount" = "По количеству NFT";
+
+// Общие
+"close" = "Закрыть";
+
+// Errors
+"error.network" = "Произошла ошибка сети";
+"error.unknown" = "Произошла неизвестная ошибка";
+"error.repeat" = "Повторить";
+"error.title" = "Ошибка";
+"error.unableToLoad" = "Не удалось загрузить данные";
+"error.urlSessionError" = "UrlSessionError: Произошла ошибка при соединении";
+"error.parsingError" = "Parsing error: Ошибка при обработке данных с сервера";
+"error.invalidRequest" = "Неправильный запрос";
+"error.errorJsonLoad" = "Невозможно прочитать JSON файл";
+"error.insufficientFunds" = "Не удалось произвести оплату";
+"error.cancel" = "Отменить";
+"error.ok" = "Ок";
+
+// Statistics
+"Sort.title" = "Сортировка";
+"Sort.byName" = "По имени";
+"Sort.byRating" = "По рейтингу";
+"Sort.close" = "Закрыть";
+"User.visitWebSite" = "Перейти на сайт пользователя";
+"User.nftCollection" = "Коллекция NFT";
+"User.noNftError" = "У пользователя нет NFT";
+
+// Cart
+"cart.main_screen.buyNft" = "К оплате";
+"cart.main_screen.price" = "Цена";
+"cart.main_screen.empty_state" = "Корзина пуста";
+"cart.main_screen.alert_controller.title" = "Сортировка";
+"cart.main_screen.alert_controller.close" = "Закрыть";
+"cart.main_screen.sort_option.price" = "По цене";
+"cart.main_screen.sort_option.rating" = "По рейтингу";
+"cart.main_screen.sort_option.name" = "По названию";
+
+"cart.payment_screen.top_bar_title" = "Выберите способ оплаты";
+"cart.payment_screen.pay_button" = "Оплатить";
+"cart.payment_screen.terms" = "Совершая покупку, вы соглашаетесь с условиями\nПользовательского соглашения";
+
+"cart.successful_payment.backToCatatlog" = "Вернуться в каталог";
+"cart.successful_payment.label" = "Успех! Оплата прошла, поздравляем с покупкой!";
+
+"cart.delete_screen.approveDelete" = "Вы уверены, что хотите удалить объект из корзины?";
+"cart.delete_screen.delete" = "Удалить";
+"cart.delete_screen.goBack" = "Вернуться";
 
 // Profile
 "Profile.changePhoto" = "Сменить фото";

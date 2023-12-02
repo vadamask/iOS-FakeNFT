@@ -11,7 +11,6 @@ import UIKit
 final class ProfileView: UIView {
     private var viewModel: ProfileViewModelProtocol
     private var viewController: ProfileViewController
-    private var assetViewControllers: [UIViewController] = []
     
     private let assetNameLabel: [String] = [
         L10n.Profile.myNFT,
@@ -98,14 +97,6 @@ final class ProfileView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func initiateViewControllers() {
-        let myNFTViewController = MyNFTViewController(nftIDs: viewModel.nfts ?? [], likedIDs: viewModel.likes ?? [])
-        let favoritesViewController = FavoritesViewController(likedIDs: viewModel.likes ?? [])
-        let developersViewController = DevelopersViewController()
-        
-        assetViewControllers = [myNFTViewController, favoritesViewController, developersViewController]
     }
     
     @objc private func websiteDidTap(_ sender: UITapGestureRecognizer) {
@@ -201,6 +192,18 @@ extension ProfileView: UITableViewDataSource {
 
 extension ProfileView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewController.navigationController?.pushViewController(self.assetViewControllers[indexPath.row], animated: true)
+        switch indexPath.row {
+            case 0:
+                let controller = MyNFTViewController(nftIDs: viewModel.nfts ?? [], likedIDs: viewModel.likes ?? [])
+                viewController.navigationController?.pushViewController(controller, animated: true)
+            case 1:
+                let controller = FavoritesViewController(likedIDs: viewModel.likes ?? [])
+                viewController.navigationController?.pushViewController(controller, animated: true)
+            case 2:
+                let controller = DevelopersViewController()
+                viewController.navigationController?.pushViewController(controller, animated: true)
+            default:
+                break
+        }
     }
 }

@@ -113,7 +113,7 @@ extension FavoritesCell {
         let image: String
         let name: String
         let rating: Int
-        let price: Float
+        let price: Double
         let isFavorite: Bool
         let id: String
     }

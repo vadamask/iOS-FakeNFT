@@ -10,7 +10,7 @@ import UIKit
 protocol MyNFTViewModelProtocol: AnyObject {
     var onChange: (() -> Void)? { get set }
     var onError: ((_ error: Error) -> Void)? { get set }
-    var myNFTs: [NFTNetworkModel]? { get }
+    var myNFTs: [Nft]? { get }
     var likedIDs: [String]? { get }
     var authors: [String: String] { get }
     var sort: MyNFTViewModel.Sort? { get set }
@@ -23,9 +23,9 @@ final class MyNFTViewModel: MyNFTViewModelProtocol {
     var onChange: (() -> Void)?
     var onError: ((_ error: Error) -> Void)?
     
-    private let networkClient = DefaultNetworkClient()
+    private var service = ServicesAssembly.shared.nftService
         
-    private(set) var myNFTs: [NFTNetworkModel]? {
+    private(set) var myNFTs: [Nft]? {
         didSet {
             onChange?()
         }
@@ -37,7 +37,11 @@ final class MyNFTViewModel: MyNFTViewModelProtocol {
         }
     }
     
-    private(set) var authors: [String: String] = [:]
+    private(set) var authors: [String: String] = [:] {
+        didSet {
+            onChange?()
+        }
+    }
     
     var sort: Sort? {
         didSet {
@@ -46,7 +50,7 @@ final class MyNFTViewModel: MyNFTViewModelProtocol {
         }
     }
     
-    init(nftIDs: [String], likedIDs: [String]){
+    init(nftIDs: [String], likedIDs: [String]) {
         self.myNFTs = []
         self.likedIDs = likedIDs
         getMyNFTs(nftIDs: nftIDs)
@@ -61,23 +65,22 @@ final class MyNFTViewModel: MyNFTViewModelProtocol {
     
     func getMyNFTs(nftIDs: [String]) {
         UIBlockingProgressHUD.show()
-        var loadedNFTs: [NFTNetworkModel] = []
-        
+        var loadedNFTs: [Nft] = []
         nftIDs.forEach { id in
-            networkClient.send(request: GetItemByIdRequest(id: id, item: .nft), type: NFTNetworkModel.self) { [weak self] result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let nft):
-                        loadedNFTs.append(nft)
-                        if loadedNFTs.count == nftIDs.count {
-                            self?.getAuthors(nfts: loadedNFTs)
-                            self?.myNFTs? = loadedNFTs
-                            UIBlockingProgressHUD.dismiss()
-                        }
-                    case .failure(let error):
-                        self?.onError?(error)
+            service.loadNft(id: id) { [weak self] result in
+                switch result {
+                case .success(let nft):
+                    loadedNFTs.append(nft)
+                        print(nft.id)
+                    if loadedNFTs.count == nftIDs.count {
+                        print("=====")
+                       self?.getAuthors(nfts: loadedNFTs)
+                       self?.myNFTs? = loadedNFTs
                         UIBlockingProgressHUD.dismiss()
                     }
+                case .failure(let error):
+                    self?.onError?(error)
+                    UIBlockingProgressHUD.dismiss()
                 }
             }
         }
@@ -86,32 +89,44 @@ final class MyNFTViewModel: MyNFTViewModelProtocol {
     func toggleLikeFromMyNFT(id: String) {
         guard var likedIDs = self.likedIDs else { return }
         if likedIDs.contains(id) {
-            self.likedIDs = likedIDs.filter({ $0 != id })
+        likedIDs = likedIDs.filter({ $0 != id })
         } else {
             likedIDs.append(id)
-            self.likedIDs = likedIDs
+        }
+        let profileLikesDto = ProfileLikesDto(likes: likedIDs)
+        service.updateLikes(likesProfileDto: profileLikesDto) { [weak self] result in
+            switch result {
+                case .success(let profile):
+                    self?.likedIDs = profile.likes
+                case .failure(let error):
+                    
+                    print("Failure", error)
+                    self?.onError?(error)
+                    return
+            }
         }
     }
 
-    private func getAuthors(nfts: [NFTNetworkModel]){
-        var authorsSet: Set<String> = []
+    private func getAuthors(nfts: [Nft]){
+        print(Thread.current)
+        var authorsSet: [String] = []
         nfts.forEach { nft in
-            authorsSet.insert(nft.author)
+            print(nft.author)
+            authorsSet.append(nft.author)
         }
-        let semaphore = DispatchSemaphore(value: 0)
+        print(nfts.count)
+        print(authorsSet.count)
         authorsSet.forEach { author in
-            networkClient.send(request: GetItemByIdRequest(id: author, item: .author), type: AuthorNetworkModel.self) { [weak self] result in
+            service.loadUser(by: author) { [weak self] result in
                 switch result {
                 case .success(let author):
                     self?.authors.updateValue(author.name, forKey: author.id)
-                    if self?.authors.count == authorsSet.count { semaphore.signal() }
                 case .failure(let error):
                     self?.onError?(error)
                     return
                 }
             }
         }
-        semaphore.wait()
     }
     
     @objc
@@ -120,7 +135,7 @@ final class MyNFTViewModel: MyNFTViewModelProtocol {
         self.likedIDs = likedIDs?.filter({ $0 != nftID })
     }
     
-    private func applySort(by value: Sort) -> [NFTNetworkModel] {
+    private func applySort(by value: Sort) -> [Nft] {
         guard let myNFTs = myNFTs else { return [] }
         switch value {
         case .price:
