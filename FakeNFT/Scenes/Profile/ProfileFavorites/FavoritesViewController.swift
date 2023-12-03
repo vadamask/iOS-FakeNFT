@@ -11,8 +11,8 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
     private let likedIDs: [String]
     private var viewModel: FavoritesViewModelProtocol
     
-    private var badConnection: Bool = false
-    // кнопка назад
+    private var badConnection = false
+    
     private lazy var backButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
             image: Asset.backButton.image,
@@ -52,9 +52,10 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
     // MARK: - Private Methods
     private func bind() {
         viewModel.onChange = { [weak self] in
+            guard
+                let view = self?.view as? FavoritesView,
+                let nfts = self?.viewModel.likedNFTs else { return }
             self?.badConnection = false
-            guard let view = self?.view as? FavoritesView,
-                  let nfts = self?.viewModel.likedNFTs else { return }
             view.updateNFT(nfts: nfts)
         }
         
@@ -72,8 +73,7 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
         }
     }
     
-    @objc
-    private func didTapBackButton() {
+    @objc private func didTapBackButton() {
         self.navigationController?.popViewController(animated: true)
     }
     

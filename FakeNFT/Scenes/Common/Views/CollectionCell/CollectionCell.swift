@@ -142,7 +142,11 @@ final class CollectionCell: UICollectionViewCell, ReuseIdentifying {
         guard let viewModel = viewModel else { return }
         nameLabel.text = viewModel.name
         priceLabel.text = "\(viewModel.price) ETH"
-        addToCartButton.setImage(viewModel.inOrder ? Asset.deleteCartButton.image : Asset.addCartButton.image, for: .normal)
+        addToCartButton.setImage(
+            viewModel.inOrder
+            ? Asset.deleteCartButton.image
+            : Asset.addCartButton.image, for: .normal
+        )
         likeButton.setImage(viewModel.isLiked ? Asset.liked.image : Asset.notLiked.image, for: .normal)
         imageView.kf.setImage(with: viewModel.imageUrls[0])
         for i in 1...5 {

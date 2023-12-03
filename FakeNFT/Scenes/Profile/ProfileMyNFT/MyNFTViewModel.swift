@@ -71,11 +71,9 @@ final class MyNFTViewModel: MyNFTViewModelProtocol {
                 switch result {
                 case .success(let nft):
                     loadedNFTs.append(nft)
-                        print(nft.id)
                     if loadedNFTs.count == nftIDs.count {
-                        print("=====")
-                       self?.getAuthors(nfts: loadedNFTs)
-                       self?.myNFTs? = loadedNFTs
+                        self?.getAuthors(nfts: loadedNFTs)
+                        self?.myNFTs? = loadedNFTs
                         UIBlockingProgressHUD.dismiss()
                     }
                 case .failure(let error):
@@ -89,33 +87,27 @@ final class MyNFTViewModel: MyNFTViewModelProtocol {
     func toggleLikeFromMyNFT(id: String) {
         guard var likedIDs = self.likedIDs else { return }
         if likedIDs.contains(id) {
-        likedIDs = likedIDs.filter({ $0 != id })
+        likedIDs = likedIDs.filter { $0 != id }
         } else {
             likedIDs.append(id)
         }
         let profileLikesDto = ProfileLikesDto(likes: likedIDs)
         service.updateLikes(likesProfileDto: profileLikesDto) { [weak self] result in
             switch result {
-                case .success(let profile):
-                    self?.likedIDs = profile.likes
-                case .failure(let error):
-                    
-                    print("Failure", error)
-                    self?.onError?(error)
-                    return
+            case .success(let profile):
+                self?.likedIDs = profile.likes
+            case .failure(let error):
+                self?.onError?(error)
+                return
             }
         }
     }
 
-    private func getAuthors(nfts: [Nft]){
-        print(Thread.current)
+    private func getAuthors(nfts: [Nft]) {
         var authorsSet: [String] = []
         nfts.forEach { nft in
-            print(nft.author)
             authorsSet.append(nft.author)
         }
-        print(nfts.count)
-        print(authorsSet.count)
         authorsSet.forEach { author in
             service.loadUser(by: author) { [weak self] result in
                 switch result {
@@ -129,10 +121,9 @@ final class MyNFTViewModel: MyNFTViewModelProtocol {
         }
     }
     
-    @objc
-    private func unlikeMyNFTfromFavorites(notification: Notification) {
+    @objc private func unlikeMyNFTfromFavorites(notification: Notification) {
         let nftID = notification.object as? String
-        self.likedIDs = likedIDs?.filter({ $0 != nftID })
+        self.likedIDs = likedIDs?.filter { $0 != nftID }
     }
     
     private func applySort(by value: Sort) -> [Nft] {

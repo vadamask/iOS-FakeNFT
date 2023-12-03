@@ -45,16 +45,16 @@ final class FavoritesViewModel: FavoritesViewModelProtocol {
         likedIDs.forEach { id in
             service.loadNft(id: id) { [weak self] result in
                 switch result {
-                    case .success(let nft):
-                        loadedNFTs.append(nft)
-                        if loadedNFTs.count == likedIDs.count {
-                            self?.likedNFTs? = loadedNFTs
-                            UIBlockingProgressHUD.dismiss()
-                        }
-                    case .failure(let error):
-                        self?.onError?(error)
+                case .success(let nft):
+                    loadedNFTs.append(nft)
+                    if loadedNFTs.count == likedIDs.count {
+                        self?.likedNFTs? = loadedNFTs
                         UIBlockingProgressHUD.dismiss()
                     }
+                case .failure(let error):
+                    self?.onError?(error)
+                    UIBlockingProgressHUD.dismiss()
+                }
             }
         }
     }
@@ -64,12 +64,13 @@ final class FavoritesViewModel: FavoritesViewModelProtocol {
         UIBlockingProgressHUD.show()
         service.updateLikes(likesProfileDto: profileLikesDto) { [weak self] result in
             switch result {
-            case .success(let result):
-                    print("like success", result.likes)
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "likesUpdated"), object: likedIDs.count)
+            case .success:
+                NotificationCenter.default.post(
+                    name: NSNotification.Name(rawValue: "likesUpdated"),
+                    object: likedIDs.count
+                )
                 UIBlockingProgressHUD.dismiss()
             case .failure(let error):
-                    print("like failure", error)
                 self?.onError?(error)
                 UIBlockingProgressHUD.dismiss()
             }
@@ -78,17 +79,17 @@ final class FavoritesViewModel: FavoritesViewModelProtocol {
     
     func favoriteUnliked(id: String) {
         guard var likedNFTs = self.likedNFTs else { return }
-        likedNFTs = likedNFTs.filter({ $0.id != id })
+        likedNFTs = likedNFTs.filter { $0.id != id }
         self.likedNFTs = likedNFTs
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "favoriteUnliked"), object: id)
-        let likedIDs = likedNFTs.map({ $0.id })
+        let likedIDs = likedNFTs.map { $0.id }
         self.putLikedNFTs(likedIDs: likedIDs)
     }
     
-    @objc
-    private func myNFTliked(notification: Notification) {
-        guard var likedNFTs = likedNFTs,
-              let myNFTid = notification.object as? Nft else { return }
+    @objc private func myNFTliked(notification: Notification) {
+        guard
+            var likedNFTs = likedNFTs,
+            let myNFTid = notification.object as? Nft else { return }
         if !likedNFTs.contains(where: { $0.id == myNFTid.id }) {
             likedNFTs.append(myNFTid)
         } else {
@@ -96,7 +97,7 @@ final class FavoritesViewModel: FavoritesViewModelProtocol {
         }
         self.likedNFTs = likedNFTs
         
-        let likedIDs = likedNFTs.map({ $0.id })
+        let likedIDs = likedNFTs.map { $0.id }
         putLikedNFTs(likedIDs: likedIDs)
     }
 }

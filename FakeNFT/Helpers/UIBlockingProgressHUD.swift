@@ -8,8 +8,7 @@
 import UIKit
 import ProgressHUD
 
-// управление блокировкой пользовательского интерфейса (отображение индикатора загрузки)
-final class UIBlockingProgressHUD {
+enum UIBlockingProgressHUD {
     private static var window: UIWindow? {
         return UIApplication.shared.windows.first
     }

@@ -17,12 +17,4 @@ final class ProfileCoordinator: Coordinator {
         let profileController = ProfileViewController(viewModel: profileViewModel)
         navigationController.pushViewController(profileController, animated: true)
     }
-    
-    func pop() {
-        let controller = parentCoordinator?
-            .navigationController
-            .viewControllers.first as? TabBarController
-        controller?.tabBar.isHidden = false
-        navigationController.popViewController(animated: true)
-    }
 }

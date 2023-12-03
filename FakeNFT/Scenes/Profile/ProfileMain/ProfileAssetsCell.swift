@@ -49,10 +49,10 @@ final class ProfileAssetsCell: UITableViewCell, ReuseIdentifying {
     }
     
     private func setupConstraint() {
-            [assetLabel, assetValue, disclosureIndicator].forEach {
-                $0.translatesAutoresizingMaskIntoConstraints = false
-                addSubview($0)
-            }
+        [assetLabel, assetValue, disclosureIndicator].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            addSubview($0)
+        }
         
         NSLayoutConstraint.activate([
             // текст ячейки таблицы

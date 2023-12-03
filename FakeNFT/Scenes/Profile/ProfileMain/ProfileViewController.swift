@@ -10,7 +10,7 @@ import UIKit
 final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     private var profileView: ProfileView?
     private var viewModel: ProfileViewModelProtocol
-    private var badConnection: Bool = false
+    private var badConnection = false
     
     private lazy var editButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
@@ -27,15 +27,14 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
         self.view = profileView
         setupNavBar()
         bind()
-        //viewModel.getProfileData()
-        //navigationController?.interactivePopGestureRecognizer?.delegate = self
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //if badConnection { viewModel.getProfileData() }
+        if badConnection { viewModel.getProfileData() }
         viewModel.getProfileData()
-        //navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
 
     init(viewModel: ProfileViewModel) {

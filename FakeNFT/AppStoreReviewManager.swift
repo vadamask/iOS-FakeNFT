@@ -15,15 +15,15 @@ enum AppStoreReviewManager {
         var actionCount = defaults.reviewWorthyActionCount
         actionCount += 1
         defaults.reviewWorthyActionCount = actionCount
-        guard actionCount >= minimumReviewWorthyActionCount else {
-            return
-        }
+        
+        guard actionCount >= minimumReviewWorthyActionCount else { return }
+        
         let bundleVersionKey = kCFBundleVersionKey as String
         let currentVersion = bundle.object(forInfoDictionaryKey: bundleVersionKey) as? String
         let lastVersion = defaults.lastReviewRequestAppVersion
-        guard lastVersion == nil || lastVersion != currentVersion else {
-            return
-        }
+        
+        guard lastVersion == nil || lastVersion != currentVersion else { return }
+        
         SKStoreReviewController.requestReview()
         defaults.reviewWorthyActionCount = 0
         defaults.lastReviewRequestAppVersion = currentVersion

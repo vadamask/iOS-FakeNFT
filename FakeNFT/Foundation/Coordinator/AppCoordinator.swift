@@ -25,7 +25,11 @@ final class AppCoordinator: Coordinator {
     }
 
     func start() {
-        UserDefaults.standard.isOnBoarded ? goToHome() : goToOnboarding()
+        if UserDefaults.standard.isOnBoarded {
+            goToHome()
+        } else {
+            goToOnboarding()
+        }
     }
 
     func goToOnboarding() {

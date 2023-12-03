@@ -42,15 +42,15 @@ final class NftDetailPresenterImpl: NftDetailPresenter {
         case .initial:
             assertionFailure("can't move to initial state")
         case .loading:
-            view?.showLoading()
+            UIBlockingProgressHUD.show()
             loadNft()
         case .data(let nft):
-            view?.hideLoading()
+            UIBlockingProgressHUD.dismiss()
             let cellModels = nft.images.map { NftDetailCellModel(url: $0) }
             view?.displayCells(cellModels)
         case .failed(let error):
             let errorModel = makeErrorModel(error)
-            view?.hideLoading()
+            UIBlockingProgressHUD.dismiss()
             view?.showError(errorModel)
         }
     }

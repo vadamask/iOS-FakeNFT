@@ -2,7 +2,7 @@ import UIKit
 import SnapKit
 import Combine
 
-final class CatalogViewController: UICollectionViewController, LoadingView, ErrorView {
+final class CatalogViewController: UICollectionViewController, ErrorView {
     enum Section {
         case main
     }
@@ -95,13 +95,13 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
                     self?.applySnapshot()
                 case .loading:
                     self?.sortButtonItem.isEnabled = false
-                    self?.showLoading()
+                    UIBlockingProgressHUD.show()
                 case .refreshing, .sorting:
                     self?.sortButtonItem.isEnabled = false
                 case .error(let error):
                     self?.sortButtonItem.isEnabled = false
                     self?.collectionView.isUserInteractionEnabled = true
-                    self?.hideLoading()
+                    UIBlockingProgressHUD.dismiss()
                     var description: String
                     switch error {
                     case let error as NetworkClientError:
@@ -120,7 +120,7 @@ final class CatalogViewController: UICollectionViewController, LoadingView, Erro
                 case .ready:
                     self?.collectionView.isUserInteractionEnabled = true
                     self?.sortButtonItem.isEnabled = true
-                    self?.hideLoading()
+                    UIBlockingProgressHUD.dismiss()
                     self?.applySnapshot()
                     self?.collectionView.refreshControl?.endRefreshing()
                 }

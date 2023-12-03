@@ -2,7 +2,7 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-protocol NftDetailView: AnyObject, ErrorView, LoadingView {
+protocol NftDetailView: AnyObject, ErrorView {
     func displayCells(_ cellModels: [NftDetailCellModel])
 }
 

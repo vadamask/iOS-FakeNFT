@@ -77,24 +77,21 @@ final class ProfileViewModel: ProfileViewModelProtocol {
     }
     
     func getProfileData() {
-        //UIBlockingProgressHUD.show()
+        UIBlockingProgressHUD.show()
         service.loadProfile { [weak self] result in
             switch result {
-                case .success(let profile):
-                    self?.fillSelfFromResponse(response: profile)
-                    self?.nfts = profile.nfts
-                    self?.likes = profile.likes
-                    print("Success: \(profile)")
-                    //UIBlockingProgressHUD.dismiss()
-                case .failure(let error):
-                    self?.error = error
-                    self?.onError?()
-                    print("Failure: \(error)")
-                    // UIBlockingProgressHUD.dismiss()
+            case .success(let profile):
+                self?.fillSelfFromResponse(response: profile)
+                self?.nfts = profile.nfts
+                self?.likes = profile.likes
+                UIBlockingProgressHUD.dismiss()
+            case .failure(let error):
+                self?.error = error
+                self?.onError?()
+                UIBlockingProgressHUD.dismiss()
             }
         }
     }
-    
     
     func putProfileData(name: String, avatar: String, description: String, website: String, likes: [String]) {
         UIBlockingProgressHUD.show()
@@ -107,13 +104,13 @@ final class ProfileViewModel: ProfileViewModelProtocol {
         
         service.updateProfile(nftProfileDto: profileDTO) { [weak self] result in
             switch result {
-                case .success(let profile):
-                    self?.fillSelfFromResponse(response: profile)
-                    UIBlockingProgressHUD.dismiss()
-                case .failure(let error):
-                    self?.error = error
-                    self?.onError?()
-                    UIBlockingProgressHUD.dismiss()
+            case .success(let profile):
+                self?.fillSelfFromResponse(response: profile)
+                UIBlockingProgressHUD.dismiss()
+            case .failure(let error):
+                self?.error = error
+                self?.onError?()
+                UIBlockingProgressHUD.dismiss()
             }
         }
     }

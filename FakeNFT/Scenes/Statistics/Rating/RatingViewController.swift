@@ -43,11 +43,11 @@ final class RatingViewController: UIViewController {
         }
 
         viewModel.showLoading = {
-            self.showLoading()
+            UIBlockingProgressHUD.show()
         }
 
         viewModel.hideLoading = {
-            self.hideLoading()
+            UIBlockingProgressHUD.dismiss()
         }
 
         setupUI()
@@ -134,6 +134,3 @@ extension RatingViewController: UITableViewDelegate {
         viewModel.navigateToUserPage(userId: user.id)
     }
 }
-
-// MARK: - Extensions
-extension RatingViewController: LoadingView {}

@@ -72,8 +72,7 @@ final class FavoritesCell: UICollectionViewCell, ReuseIdentifying {
         nftFavorite.nftID = model.id
     }
 
-    @objc
-    private func didTapFavoriteButton(sender: FavoriteButton) {
+    @objc private func didTapFavoriteButton(sender: FavoriteButton) {
         sender.isFavorite.toggle()
         if let tapAction = tapAction { tapAction() }
     }

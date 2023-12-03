@@ -8,11 +8,10 @@
 import UIKit
 
 final class NoInternetView: UIView {
-    // лейбл показывается при отсутствии интернета
     private lazy var noInternetLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = L10n.Profile.noInternet // "Нет интернета"
+        label.text = L10n.Profile.noInternet
         label.font = UIFont.boldSystemFont(ofSize: 17)
         label.textColor = .textPrimary
         return label

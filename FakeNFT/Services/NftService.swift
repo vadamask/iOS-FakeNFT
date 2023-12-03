@@ -33,7 +33,6 @@ protocol NftService {
 }
 
 final class NftServiceImpl: NftService {
-    
     private let networkClient: NetworkClient
     private let storage: NftStorage
 
@@ -124,10 +123,10 @@ final class NftServiceImpl: NftService {
     func loadProfile(completion: @escaping ProfileCompletion) {
         networkClient.send(request: ProfileRequest(), type: Profile.self) { result in
             switch result {
-                case .success(let profile):
-                    completion(.success(profile))
-                case .failure(let error):
-                    completion(.failure(error))
+            case .success(let profile):
+                completion(.success(profile))
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }
@@ -135,10 +134,10 @@ final class NftServiceImpl: NftService {
     func loadUser(by id: String, completion: @escaping UserCompletion) {
         networkClient.send(request: UserByIdRequest(id: id), type: User.self) { result in
             switch result {
-                case .success(let user):
-                    completion(.success(user))
-                case .failure(let error):
-                    completion(.failure(error))
+            case .success(let user):
+                completion(.success(user))
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }
@@ -147,10 +146,10 @@ final class NftServiceImpl: NftService {
         let request = ProfileRequest(httpMethod: .put, dto: nftProfileDto)
         networkClient.send(request: request, type: Profile.self) { result in
             switch result {
-                case .success(let profile):
-                    completion(.success(profile))
-                case .failure(let error):
-                    completion(.failure(error))
+            case .success(let profile):
+                completion(.success(profile))
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }
@@ -159,16 +158,14 @@ final class NftServiceImpl: NftService {
         let request = ProfileRequest(httpMethod: .put, dto: likesProfileDto)
         networkClient.send(request: request, type: Profile.self) { result in
             switch result {
-                case .success(let profile):
-                    completion(.success(profile))
-                case .failure(let error):
-                    completion(.failure(error))
+            case .success(let profile):
+                completion(.success(profile))
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }
     
-    
-
     func loadNftCollections() -> AnyPublisher<[Collection], NetworkClientError> {
         let request = NftCollectionRequest()
         return networkClient.send(request: request)

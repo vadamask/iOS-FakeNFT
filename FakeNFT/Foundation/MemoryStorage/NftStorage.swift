@@ -7,7 +7,6 @@ protocol NftStorage: AnyObject {
 
 final class NftStorageImpl: NftStorage {
     private var storage: [String: Nft] = [:]
-
     private let syncQueue = DispatchQueue(label: "sync-nft-queue")
 
     func saveNft(_ nft: Nft) {

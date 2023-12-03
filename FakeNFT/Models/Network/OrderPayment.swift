@@ -1,10 +1,3 @@
-//
-//  OrderPayment.swift
-//  FakeNFT
-//
-//  Created by Вадим Шишков on 11.11.2023.
-//
-
 import Foundation
 
 struct OrderPayment: Decodable {

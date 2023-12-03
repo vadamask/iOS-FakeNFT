@@ -6,10 +6,10 @@
 //
 
 import UIKit
-// лайк или дизлайк
+
 final class FavoriteButton: UIButton {
     var nftID: String?
-    var isFavorite: Bool = false {
+    var isFavorite = false {
         didSet {
             let image = self.isFavorite ? Asset.heartFilled.image : Asset.heartEmpty.image
             self.setImage(image, for: .normal)

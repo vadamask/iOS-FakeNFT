@@ -10,13 +10,14 @@ import Foundation
 import Combine
 
 final class NftServiceStub: NftService {
-    func loadCurrencies(completion: @escaping FakeNFT.CurrencyCompletion) {}
-    
-    func verifyPayment(with currencyID: String, completion: @escaping FakeNFT.PaymentCompletion) {}
-    
-    func clearOrder(_ dto: FakeNFT.OrderDto, completion: @escaping FakeNFT.DeleteCompletion) {}
-    
-    func deleteNft(_ id: String, from ids: [String], completion: @escaping FakeNFT.DeleteCompletion) {}
+    func loadProfile(completion: @escaping ProfileCompletion) {}
+    func updateProfile(nftProfileDto: ProfileDto, completion: @escaping ProfileCompletion) {}
+    func updateLikes(likesProfileDto: ProfileLikesDto, completion: @escaping ProfileCompletion) {}
+    func loadUser(by id: String, completion: @escaping UserCompletion) {}
+    func loadCurrencies(completion: @escaping CurrencyCompletion) {}
+    func verifyPayment(with currencyID: String, completion: @escaping PaymentCompletion) {}
+    func clearOrder(_ dto: OrderDto, completion: @escaping DeleteCompletion) {}
+    func deleteNft(_ id: String, from ids: [String], completion: @escaping DeleteCompletion) {}
     
     func loadNft(id: String, completion: @escaping NftCompletion) {
         completion(
@@ -66,7 +67,7 @@ final class NftServiceStub: NftService {
         }.eraseToAnyPublisher()
     }
     
-    func loadNft(by id: String) -> AnyPublisher<FakeNFT.Nft, NetworkClientError> {
+    func loadNft(by id: String) -> AnyPublisher<Nft, NetworkClientError> {
         return Future { [weak self] promise in
             guard let data = self?.loadJson(filename: "Nft") else {
                 promise(.failure(NetworkClientError.errorJsonLoad))

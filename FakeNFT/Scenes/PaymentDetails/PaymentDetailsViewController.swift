@@ -100,9 +100,9 @@ final class PaymentDetailsViewController: UIViewController {
         viewModel.$isLoading.sink { [weak self] isLoading in
             guard let isLoading else { return }
             if isLoading {
-                self?.showLoading()
+                UIBlockingProgressHUD.show()
             } else {
-                self?.hideLoading()
+                UIBlockingProgressHUD.dismiss()
             }
         }
         .store(in: &cancellables)
@@ -269,6 +269,3 @@ extension PaymentDetailsViewController: ErrorView {
         present(alertController, animated: true)
     }
 }
-
-
-extension PaymentDetailsViewController: LoadingView {}

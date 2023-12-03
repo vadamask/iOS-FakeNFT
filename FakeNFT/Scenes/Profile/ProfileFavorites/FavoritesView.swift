@@ -94,8 +94,9 @@ extension FavoritesView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: FavoritesCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         cell.backgroundColor = .screenBackground
-        guard let likedNFTs = likedNFTs,
-              !likedNFTs.isEmpty else { return FavoritesCell() }
+        guard let
+            likedNFTs = likedNFTs,
+            !likedNFTs.isEmpty else { return FavoritesCell() }
         let likedNFT = likedNFTs[indexPath.row]
         
         let model = FavoritesCell.Model(

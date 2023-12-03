@@ -122,9 +122,9 @@ final class CartViewController: UIViewController, CartViewControllerProtocol {
         viewModel.isLoadingPublisher.sink { [weak self] isLoading in
             guard let self, let isLoading else { return }
             if isLoading {
-                showLoading()
+                UIBlockingProgressHUD.show()
             } else {
-                hideLoading()
+                UIBlockingProgressHUD.dismiss()
                 self.cartView.tableView.refreshControl?.endRefreshing()
             }
         }
@@ -201,4 +201,3 @@ extension CartViewController: UITableViewDataSource {
 }
 
 extension CartViewController: ErrorView {}
-extension CartViewController: LoadingView {}

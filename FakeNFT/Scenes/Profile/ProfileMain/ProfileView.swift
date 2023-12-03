@@ -24,7 +24,6 @@ final class ProfileView: UIView {
         nil
     ]
     
-    // картинка профиля
     private lazy var avatarImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = Asset.profile.image
@@ -34,7 +33,7 @@ final class ProfileView: UIView {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    // лейбл с именем юзера
+    
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.text = ""
@@ -43,7 +42,7 @@ final class ProfileView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    // раздел "О себе юзера"
+    
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .caption13
@@ -51,11 +50,14 @@ final class ProfileView: UIView {
         label.numberOfLines = 0
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = 18
-        label.attributedText = NSAttributedString(string: "", attributes: [.kern: 0.08,NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        label.attributedText = NSAttributedString(
+            string: "",
+            attributes: [.kern: 0.08, NSAttributedString.Key.paragraphStyle: paragraphStyle]
+        )
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    // www ссылка
+    
     private lazy var websiteLabel: UILabel = {
         let label = UILabel()
         label.font = .caption15
@@ -67,7 +69,7 @@ final class ProfileView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    // тейбл вью
+    
     private lazy var profileAssetsTable: UITableView = {
         let tableView = UITableView()
         tableView.separatorStyle = .none
@@ -133,33 +135,34 @@ final class ProfileView: UIView {
     }
     
     private func setupConstraints() {
-        [avatarImage,
-         nameLabel,
-         descriptionLabel,
-         websiteLabel,
-         profileAssetsTable].forEach {
+        [
+            avatarImage,
+            nameLabel,
+            descriptionLabel,
+            websiteLabel,
+            profileAssetsTable
+        ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             addSubview($0)
         }
         
         NSLayoutConstraint.activate([
-            // фотка профиля
             avatarImage.heightAnchor.constraint(equalToConstant: 70),
             avatarImage.widthAnchor.constraint(equalToConstant: 70),
             avatarImage.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
             avatarImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            // лейбл с именем юзера
+            
             nameLabel.topAnchor.constraint(equalTo: avatarImage.topAnchor, constant: 21),
             nameLabel.leadingAnchor.constraint(equalTo: avatarImage.trailingAnchor, constant: 16),
-            // описание интересов юзера
+            
             descriptionLabel.topAnchor.constraint(equalTo: avatarImage.bottomAnchor, constant: 20),
             descriptionLabel.heightAnchor.constraint(equalToConstant: 72),
             descriptionLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
             descriptionLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            // лейбл с веб-сайтом юзера
+            
             websiteLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 8),
             websiteLabel.leadingAnchor.constraint(equalTo: descriptionLabel.leadingAnchor),
-            // таблица с разделами (мои нфт, избранное, о разработчике)
+            
             profileAssetsTable.topAnchor.constraint(equalTo: websiteLabel.bottomAnchor, constant: 40),
             profileAssetsTable.heightAnchor.constraint(equalToConstant: 54 * 3),
             profileAssetsTable.leadingAnchor.constraint(equalTo: self.leadingAnchor),
@@ -168,23 +171,19 @@ final class ProfileView: UIView {
     }
 }
 
-// возвращаем кол-во строк в таблице
 extension ProfileView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return assetNameLabel.count
     }
     
-    // настройка ячейки строки таблицы
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ProfileAssetsCell = tableView.dequeueReusableCell()
-        
         cell.backgroundColor = .screenBackground
         cell.setAssets(label: assetNameLabel[indexPath.row], value: assetValue[indexPath.row])
         cell.selectionStyle = .none
         return cell
     }
     
-    // высота строки ячейки
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 54
     }
@@ -193,17 +192,17 @@ extension ProfileView: UITableViewDataSource {
 extension ProfileView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
-            case 0:
-                let controller = MyNFTViewController(nftIDs: viewModel.nfts ?? [], likedIDs: viewModel.likes ?? [])
-                viewController.navigationController?.pushViewController(controller, animated: true)
-            case 1:
-                let controller = FavoritesViewController(likedIDs: viewModel.likes ?? [])
-                viewController.navigationController?.pushViewController(controller, animated: true)
-            case 2:
-                let controller = DevelopersViewController()
-                viewController.navigationController?.pushViewController(controller, animated: true)
-            default:
-                break
+        case 0:
+            let controller = MyNFTViewController(nftIDs: viewModel.nfts ?? [], likedIDs: viewModel.likes ?? [])
+            viewController.navigationController?.pushViewController(controller, animated: true)
+        case 1:
+            let controller = FavoritesViewController(likedIDs: viewModel.likes ?? [])
+            viewController.navigationController?.pushViewController(controller, animated: true)
+        case 2:
+            let controller = DevelopersViewController()
+            viewController.navigationController?.pushViewController(controller, animated: true)
+        default:
+            break
         }
     }
 }

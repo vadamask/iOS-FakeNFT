@@ -11,7 +11,7 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
     private let viewModel: MyNFTViewModelProtocol
     private let nftIDs: [String]
     private let likedIDs: [String]
-    private var badConnection: Bool = false
+    private var badConnection = false
     // кнопка назад
     private lazy var backButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
@@ -79,8 +79,9 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
     private func bind() {
         viewModel.onChange = { [weak self] in
             self?.badConnection = false
-            guard let view = self?.view as? MyNFTView,
-                  let nfts = self?.viewModel.myNFTs else { return }
+            guard
+                let view = self?.view as? MyNFTView,
+                let nfts = self?.viewModel.myNFTs else { return }
             view.updateNFT(nfts: nfts)
         }
         

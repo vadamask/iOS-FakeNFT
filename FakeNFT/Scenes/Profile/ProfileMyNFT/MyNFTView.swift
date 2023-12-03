@@ -27,7 +27,6 @@ final class MyNFTView: UIView {
     
     init(frame: CGRect, viewModel: MyNFTViewModelProtocol) {
         self.viewModel = viewModel
-        //self.myNFTs = viewModel.myNFTs
         super.init(frame: .zero)
         
         self.backgroundColor = .screenBackground
@@ -81,8 +80,7 @@ extension MyNFTView: UITableViewDataSource, UITableViewDelegate {
         )
         
         cell.tapAction = { [weak self] in
-            let tappedNFT = self?.myNFTs?.filter({ $0.id == myNFT.id }).first
-           
+            let tappedNFT = self?.myNFTs?.first { $0.id == myNFT.id }
             if let tappedNFTid = tappedNFT?.id { self?.viewModel.toggleLikeFromMyNFT(id: tappedNFTid) }
         }
         cell.configureCell(with: model)

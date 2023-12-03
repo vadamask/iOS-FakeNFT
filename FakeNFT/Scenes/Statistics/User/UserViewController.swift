@@ -78,11 +78,11 @@ final class UserViewController: UIViewController {
         super.viewDidLoad()
 
         viewModel?.showLoading = {
-            self.showLoading()
+            UIBlockingProgressHUD.show()
         }
 
         viewModel?.hideLoading = {
-            self.hideLoading()
+            UIBlockingProgressHUD.dismiss()
         }
 
         viewModel?.fetchUserDetails()
@@ -204,11 +204,10 @@ extension UserViewController: UITableViewDataSource {
 }
 // MARK: - UITableViewDelegate
 extension UserViewController: UITableViewDelegate {
-    // Тут будет вызов экрана коллекции NFT
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let nftCollection = nftCollection else { return }
         if nftCollection.isEmpty {
-            let error = ErrorModel(message: L10n.User.noNftError, actionText: "ОК", action: {})
+            let error = ErrorModel(message: L10n.User.noNftError, actionText: "ОК") {}
             showError(error)
         } else {
             viewModel?.navigateToNFTCollection(nftIds: nftCollection)
@@ -216,6 +215,4 @@ extension UserViewController: UITableViewDelegate {
     }
 }
 
-// MARK: - Extensions
-extension UserViewController: LoadingView {}
 extension UserViewController: ErrorView {}

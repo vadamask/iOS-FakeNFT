@@ -6,10 +6,13 @@
 //
 
 import UIKit
-// создание жеста свайпа с левого края экрана (возвращение не предыдущий экран)
+
 extension UIViewController {
     func addEdgeSwipeBackGesture() {
-        let edgeSwipeGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleSwipeFromEdge(_:)))
+        let edgeSwipeGesture = UIScreenEdgePanGestureRecognizer(
+            target: self,
+            action: #selector(handleSwipeFromEdge)
+        )
         edgeSwipeGesture.edges = .left
         view.addGestureRecognizer(edgeSwipeGesture)
     }

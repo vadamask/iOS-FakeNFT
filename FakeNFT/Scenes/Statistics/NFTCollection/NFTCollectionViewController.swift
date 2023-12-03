@@ -53,10 +53,10 @@ final class NFTCollectionViewController: UIViewController {
         }
 
         viewModel.showLoading = {
-            self.showLoading()
+            UIBlockingProgressHUD.show()
         }
         viewModel.hideLoading = {
-            self.hideLoading()
+            UIBlockingProgressHUD.dismiss()
         }
     }
 
@@ -115,6 +115,3 @@ extension NFTCollectionViewController: UICollectionViewDataSource {
 
 // MARK: - CollectionViewDelegate
 extension NFTCollectionViewController: UICollectionViewDelegate {}
-
-// MARK: - Extensions
-extension NFTCollectionViewController: LoadingView {}

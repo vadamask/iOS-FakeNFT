@@ -9,7 +9,7 @@ import UIKit
 import Combine
 import SnapKit
 
-final class CollectionViewController: UICollectionViewController, LoadingView, ErrorView {
+final class CollectionViewController: UICollectionViewController, ErrorView {
     internal lazy var activityIndicator = UIActivityIndicatorView()
     typealias DataSource = UICollectionViewDiffableDataSource<CollectionHeaderViewModel, CollectionCellViewModel>
     typealias Snapshot = NSDiffableDataSourceSnapshot<CollectionHeaderViewModel, CollectionCellViewModel>
@@ -85,10 +85,10 @@ final class CollectionViewController: UICollectionViewController, LoadingView, E
                     self?.applySnapshot()
                 case .loading:
                     self?.collectionView.isUserInteractionEnabled = false
-                    self?.showLoading()
+                    UIBlockingProgressHUD.show()
                 case .loaded:
                     self?.collectionView.isUserInteractionEnabled = true
-                    self?.hideLoading()
+                    UIBlockingProgressHUD.dismiss()
                     self?.applySnapshot()
                 case .error(let error):
                     var description: String

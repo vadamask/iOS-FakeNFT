@@ -6,7 +6,7 @@
 //
 
 import UIKit
-// установка и обновление кол-ва звёзд в рейтинге в зависимости от оценки
+
 final class StarRatingController: UIStackView {
     private var starsRating = 0
     

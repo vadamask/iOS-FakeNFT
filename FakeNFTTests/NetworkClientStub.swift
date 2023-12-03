@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 final class NetworkClientStub: NetworkClient {
-    func send<T>(request: FakeNFT.NetworkRequest) -> AnyPublisher<T, FakeNFT.NetworkClientError> where T : Decodable {
+    func send<T>(request: FakeNFT.NetworkRequest) -> AnyPublisher<T, FakeNFT.NetworkClientError> where T: Decodable {
         return Future { promise in
             promise(.failure(NetworkClientError.errorJsonLoad))
         }

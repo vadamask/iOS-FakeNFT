@@ -11,7 +11,7 @@ import UIKit
 final class EditProfileView: UIView {
     private var viewController: EditProfileViewController
     private let viewModel: ProfileViewModelProtocol
-    // кнопка закрыть
+    
     private lazy var closeButton: UIButton = {
         let button = UIButton()
         button.setImage(Asset.closeButton.image, for: .normal)
@@ -20,7 +20,7 @@ final class EditProfileView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    // фотка профиля
+    
     private lazy var avatarImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = Asset.profile.image
@@ -30,10 +30,10 @@ final class EditProfileView: UIView {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    // надпись поверх фото "Сменить фото"
+    
     private lazy var changeAvatarLabel: UILabel = {
         let label = UILabel()
-        label.text = L10n.Profile.changePhoto // сменить фото
+        label.text = L10n.Profile.changePhoto
         label.font = .caption10
         label.textColor = .textPrimary
         label.textAlignment = .center
@@ -49,7 +49,7 @@ final class EditProfileView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    // надпись под фото "Загрузить изображение"
+    
     private lazy var avatarUpdateURLLabel: UILabel = {
         let label = UILabel()
         label.font = .bodyRegular17
@@ -64,7 +64,6 @@ final class EditProfileView: UIView {
         return label
     }()
     
-    // лейбл "Имя"
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.font = .headline22
@@ -73,7 +72,7 @@ final class EditProfileView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    // поле для редактирования юзернейма
+    
     private lazy var nameTextField: UITextField = {
         let textField = UITextField()
         textField.font = .bodyRegular17
@@ -89,7 +88,7 @@ final class EditProfileView: UIView {
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
-    // лейбл "Описание"
+    
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .headline22
@@ -98,7 +97,7 @@ final class EditProfileView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    // поле редактирования текста описания
+    
     private lazy var descriptionTextView: UITextView = {
         let textView = UITextView()
         textView.font = .bodyRegular17
@@ -111,7 +110,7 @@ final class EditProfileView: UIView {
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }()
-    // лейбл "Сайт"
+    
     private lazy var websiteLabel: UILabel = {
         let label = UILabel()
         label.attributedText = NSAttributedString(string: L10n.Profile.website, attributes: [.kern: 0.35])
@@ -120,7 +119,7 @@ final class EditProfileView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    // поле редактирования веб-сайта
+    
     private lazy var websiteTextField: UITextField = {
         let textField = UITextField()
         textField.font = .bodyRegular17
@@ -155,7 +154,6 @@ final class EditProfileView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // скрытие клавиатуры
     @objc private func dismissKeyboard() {
         endEditing(true)
     }
@@ -170,7 +168,7 @@ final class EditProfileView: UIView {
         descriptionTextView.text = viewModel.description
         websiteTextField.text = viewModel.website
     }
-    // кнопка закрыть нажата
+    
     @objc private func closeDidTap(_ sender: UITapGestureRecognizer) {
         guard
             let name = nameTextField.text,
@@ -193,7 +191,6 @@ final class EditProfileView: UIView {
         viewController.dismiss(animated: true)
     }
     
-    // смена картинки профиля
     @objc private func changeAvatarDidTap(_ sender: UITapGestureRecognizer) {
         avatarUpdateURLLabel.isHidden = false
         let alert = UIAlertController(
@@ -202,15 +199,15 @@ final class EditProfileView: UIView {
             preferredStyle: .alert
         )
         
-        alert.addTextField(configurationHandler: {(textField: UITextField) in
+        alert.addTextField { textField in
             textField.placeholder = L10n.Profile.enterTheLink
-        })
+        }
         
-        alert.addAction(UIAlertAction(
-            title: "ОK",
-            style: .default,
-            handler: { [weak self] _ in
-                guard
+        alert.addAction(
+            UIAlertAction(
+                title: "ОK",
+                style: .default) { [weak self] _ in
+                    guard
                     let self = self,
                     let textField = alert.textFields?[0],
                     let updateURL = textField.text
@@ -223,23 +220,27 @@ final class EditProfileView: UIView {
                         title: L10n.Profile.invalidLink,
                         message: L10n.Profile.checkTheLinkFormat,
                         preferredStyle: .alert)
-                    wrongURLAlert.addAction(UIAlertAction(title: "ОK", style: .cancel, handler: { _ in
-                        wrongURLAlert.dismiss(animated: true)
-                    }))
+                    wrongURLAlert.addAction(
+                        UIAlertAction(
+                            title: "ОK",
+                            style: .cancel
+                        ) { _ in
+                            wrongURLAlert.dismiss(animated: true)
+                        }
+                    )
                     self.viewController.present(wrongURLAlert, animated: true)
                 }
                 alert.dismiss(animated: true)
-            })
+            }
         )
         self.viewController.present(alert, animated: true)
     }
-    // проверка, что пользователь ввел ссылку, а не каляки-маляки
+    
     private func checkURL(urlString: String?) -> Bool {
-        if let urlString = urlString,
-           let url = NSURL(string: urlString) {
-            return UIApplication.shared.canOpenURL(url as URL)
-        }
-        return false
+        guard
+            let urlString = urlString,
+            let url = NSURL(string: urlString) else { return false }
+        return UIApplication.shared.canOpenURL(url as URL)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -256,61 +257,61 @@ final class EditProfileView: UIView {
     }
     
     private func setupConstraints() {
-        [closeButton,
-         avatarImage,
-         changeAvatarLabel,
-         avatarUpdateURLLabel,
-         nameLabel,
-         nameTextField,
-         descriptionLabel,
-         descriptionTextView,
-         websiteLabel,
-         websiteTextField
+        [
+            closeButton,
+            avatarImage,
+            changeAvatarLabel,
+            avatarUpdateURLLabel,
+            nameLabel,
+            nameTextField,
+            descriptionLabel,
+            descriptionTextView,
+            websiteLabel,
+            websiteTextField
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview($0)
         }
             NSLayoutConstraint.activate([
-                // кнопка закрыть
                 closeButton.heightAnchor.constraint(equalToConstant: 42),
                 closeButton.widthAnchor.constraint(equalToConstant: 42),
                 closeButton.topAnchor.constraint(equalTo: topAnchor, constant: 30),
                 closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-                // аватарка профиля
+                
                 avatarImage.heightAnchor.constraint(equalToConstant: 70),
                 avatarImage.widthAnchor.constraint(equalToConstant: 70),
                 avatarImage.topAnchor.constraint(equalTo: topAnchor, constant: 94),
                 avatarImage.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
-                // смена аватарки
+                
                 changeAvatarLabel.heightAnchor.constraint(equalToConstant: 70),
                 changeAvatarLabel.widthAnchor.constraint(equalToConstant: 70),
                 changeAvatarLabel.topAnchor.constraint(equalTo: topAnchor, constant: 94),
                 changeAvatarLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
-                // лейбл "Загрузить изображение"
+                
                 avatarUpdateURLLabel.topAnchor.constraint(equalTo: changeAvatarLabel.bottomAnchor, constant: 4),
                 avatarUpdateURLLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
                 avatarUpdateURLLabel.heightAnchor.constraint(equalToConstant: 44),
                 avatarUpdateURLLabel.widthAnchor.constraint(equalToConstant: 250),
-                // лейбл "Имя"
+                
                 nameLabel.topAnchor.constraint(equalTo: avatarImage.bottomAnchor, constant: 24),
                 nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-                // поле для редактирования юзернейма
+                
                 nameTextField.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
                 nameTextField.heightAnchor.constraint(equalToConstant: 46),
                 nameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
                 nameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-                // лейбл "Описание"
+                
                 descriptionLabel.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 22),
                 descriptionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-                // поле редактирования текста описания
+                
                 descriptionTextView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 8),
                 descriptionTextView.heightAnchor.constraint(equalToConstant: 132),
                 descriptionTextView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
                 descriptionTextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-                // лейбл "Сайт"
+                
                 websiteLabel.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: 24),
                 websiteLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-                // поле редактирования веб-сайта
+                
                 websiteTextField.topAnchor.constraint(equalTo: websiteLabel.bottomAnchor, constant: 8),
                 websiteTextField.heightAnchor.constraint(equalToConstant: 46),
                 websiteTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
