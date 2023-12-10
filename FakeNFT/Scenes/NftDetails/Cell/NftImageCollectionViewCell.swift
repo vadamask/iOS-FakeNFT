@@ -1,7 +1,6 @@
 import UIKit
 
 final class NftImageCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
-
     // MARK: - Properties
 
     private lazy var scrollView: UIScrollView = {
@@ -24,10 +23,14 @@ final class NftImageCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         super.init(frame: frame)
 
         contentView.addSubview(scrollView)
-        scrollView.constraintEdges(to: contentView)
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
 
         scrollView.addSubview(imageView)
-        imageView.constraintCenters(to: scrollView)
+        imageView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
         imageView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
         imageView.heightAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
     }
@@ -46,7 +49,6 @@ final class NftImageCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
 // MARK: - UIScrollViewDelegate
 
 extension NftImageCollectionViewCell: UIScrollViewDelegate {
-
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
     }

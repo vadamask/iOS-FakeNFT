@@ -1,10 +1,9 @@
 import UIKit
 
 public final class NftDetailAssembly {
+    private let servicesAssembler: ServicesAssemblyProtocol
 
-    private let servicesAssembler: ServicesAssembly
-
-    init(servicesAssembler: ServicesAssembly) {
+    init(servicesAssembler: ServicesAssemblyProtocol) {
         self.servicesAssembler = servicesAssembler
     }
 

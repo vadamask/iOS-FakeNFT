@@ -13,7 +13,6 @@ enum NftDetailState {
 }
 
 final class NftDetailPresenterImpl: NftDetailPresenter {
-
     // MARK: - Properties
 
     weak var view: NftDetailView?
@@ -43,15 +42,15 @@ final class NftDetailPresenterImpl: NftDetailPresenter {
         case .initial:
             assertionFailure("can't move to initial state")
         case .loading:
-            view?.showLoading()
+            UIBlockingProgressHUD.show()
             loadNft()
         case .data(let nft):
-            view?.hideLoading()
+            UIBlockingProgressHUD.dismiss()
             let cellModels = nft.images.map { NftDetailCellModel(url: $0) }
             view?.displayCells(cellModels)
         case .failed(let error):
             let errorModel = makeErrorModel(error)
-            view?.hideLoading()
+            UIBlockingProgressHUD.dismiss()
             view?.showError(errorModel)
         }
     }
@@ -71,12 +70,12 @@ final class NftDetailPresenterImpl: NftDetailPresenter {
         let message: String
         switch error {
         case is NetworkClientError:
-            message = NSLocalizedString("Error.network", comment: "")
+            message = L10n.Error.network
         default:
-            message = NSLocalizedString("Error.unknown", comment: "")
+            message = L10n.Error.unknown
         }
 
-        let actionText = NSLocalizedString("Error.repeat", comment: "")
+        let actionText = L10n.Error.repeat
         return ErrorModel(message: message, actionText: actionText) { [weak self] in
             self?.state = .loading
         }

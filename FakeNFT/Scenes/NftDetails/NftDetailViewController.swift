@@ -1,12 +1,12 @@
 import UIKit
+import SnapKit
 import Kingfisher
 
-protocol NftDetailView: AnyObject, ErrorView, LoadingView {
+protocol NftDetailView: AnyObject, ErrorView {
     func displayCells(_ cellModels: [NftDetailCellModel])
 }
 
 final class NftDetailViewController: UIViewController {
-
     private let presenter: NftDetailPresenter
 
     private lazy var collectionView: UICollectionView = {
@@ -27,7 +27,7 @@ final class NftDetailViewController: UIViewController {
     private lazy var closeButton: UIButton = {
         let button = UIButton()
         button.tintColor = .closeButton
-        button.setImage(UIImage(named: "close"), for: .normal)
+        button.setImage(Asset.closeButton.image, for: .normal)
         button.addTarget(self, action: #selector(close), for: .touchUpInside)
         return button
     }()
@@ -62,10 +62,14 @@ final class NftDetailViewController: UIViewController {
 
     private func setupLayout() {
         collectionView.addSubview(activityIndicator)
-        activityIndicator.constraintCenters(to: collectionView)
+        activityIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
 
         view.addSubview(collectionView)
-        collectionView.constraintEdges(to: view)
+        collectionView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
 
         view.addSubview(pageControl)
         pageControl.translatesAutoresizingMaskIntoConstraints = false
@@ -83,8 +87,7 @@ final class NftDetailViewController: UIViewController {
         ])
     }
 
-    @objc
-    private func close() {
+    @objc private func close() {
         dismiss(animated: true)
     }
 }
@@ -106,8 +109,10 @@ extension NftDetailViewController: UICollectionViewDataSource {
         cellModels.count
     }
 
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
         let cell: NftImageCollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
 
         let cellModel = cellModels[indexPath.row]
@@ -120,9 +125,11 @@ extension NftDetailViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegateFlowLayout
 
 extension NftDetailViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
         collectionView.bounds.size
     }
 
